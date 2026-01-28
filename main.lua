@@ -1,5 +1,3 @@
--- does the git log thing work?
-
 function love.load()
 
 end
