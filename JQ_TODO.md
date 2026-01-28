@@ -11,3 +11,9 @@
  #### Implementation Specifics:
   - We will have a x-velocity that will allow the score scale faster while we are move faster and vice versa
   - Figure out the best way to have the background move behind the play (multiple frames? panoramic image? how does it stitch back to the front)
+
+
+#### Important Notes:
+  - We have to report this for the architectural spike
+    - Ensure you take photos during development or when you complete a task
+  - Code does not have to be that good just a proof of concept for now
