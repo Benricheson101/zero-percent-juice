@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+LOVE_VERSION=11.5
+RELEASE_NAME="Zero Percent Juice"
+PACKAGE_NAME="edu.sunypoly.cs371.zpj"
+OUTPUT_DIRECTORY="$(git rev-parse --show-toplevel)/build" # top level /build directory
+
+mkdir -p "$OUTPUT_DIRECTORY"
+
+err() {
+  echo $@ >&2
+}
+
+build_darwin() {
+  err "=> building for macos"
+
+  if [[ ! -f "$TMPDIR/love-${LOVE_VERSION}-macos.zip" ]] ; then
+    curl -L -o "$TMPDIR/love-${LOVE_VERSION}-macos.zip" "https://github.com/love2d/love/releases/download/${LOVE_VERSION}/love-${LOVE_VERSION}-macos.zip"
+  fi
+
+  builddir="$(mktemp -d)"
+
+  unzip -q "$TMPDIR/love.zip" -d "$builddir"
+  app="$builddir/love.app"
+
+  err "=> building in $builddir"
+
+  zip -9 -r "$app/Contents/Resources/zpj.love" $(git ls-files -- . :\!:{.gitignore,\*.md,scripts/})
+
+  plist="$app/Contents/Info.plist"
+
+  plutil -replace CFBundleIdentifier -string "$PACKAGE_NAME" "$plist"
+  plutil -replace CFBundleName -string "$RELEASE_NAME" "$plist"
+  plutil -remove UTExportedTypeDeclarations "$plist"
+
+  mv "$app" "$builddir/${RELEASE_NAME}.app"
+  app="${app%love.app}${RELEASE_NAME}.app"
+
+  (cd "$builddir" && zip -q -9 -r "$OUTPUT_DIRECTORY/$(basename "${app%.app}" | tr ' ' '_')-darwin.zip" "$(basename "$app")")
+
+  rm -rf "$builddir"
+
+  err "=> build succeeded"
+}
+
+platform=${1:-$(uname -s)}
+shopt -s nocasematch
+case "$platform" in
+  darwin)
+    build_darwin
+    ;;
+
+  *)
+    err "unknown platform" $(uname -s)
+    exit 1
+    ;;
+esac
