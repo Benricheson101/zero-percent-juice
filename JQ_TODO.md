@@ -11,6 +11,8 @@
  #### Implementation Specifics:
   - We will have a x-velocity that will allow the score scale faster while we are move faster and vice versa
   - Figure out the best way to have the background move behind the play (multiple frames? panoramic image? how does it stitch back to the front)
+  - The high score will be a function of distance.
+    - Distance will be a function of time and velocity (d = v/t)
 
 
 #### Important Notes:
