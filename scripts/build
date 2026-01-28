@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
 
+# build script for packaging executables. packaged executables are put into ./build
+#
+# build configuration (LOVE version, name, package, build directory) can be changed below
+#
+# USAGE:
+#     ./scripts/build <clean|platform...>
+
 LOVE_VERSION=11.5
 RELEASE_NAME="Zero Percent Juice"
 PACKAGE_NAME="edu.sunypoly.cs371.zpj"
-OUTPUT_DIRECTORY="$(git rev-parse --show-toplevel)/build" # top level /build directory
+OUTPUT_DIRECTORY="$(git rev-parse --show-toplevel)/build"
 
 GAME_FILES="$(git ls-files -- . :\!:{.gitignore,\*.md,scripts/})"
 
