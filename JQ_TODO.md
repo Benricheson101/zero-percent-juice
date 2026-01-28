@@ -19,3 +19,8 @@
   - We have to report this for the architectural spike
     - Ensure you take photos during development or when you complete a task
   - Code does not have to be that good just a proof of concept for now
+
+
+#### Separation of Concerns:
+  - Javier -> work on the basic logic (up and down) / calculating high score.
+  - Quinn -> work on adjusting the background based on velocity to create the illusion of moving forward 
