@@ -1,3 +1,5 @@
+-- does the git log thing work?
+
 function love.load()
 
 end
@@ -14,7 +16,7 @@ function love.keypressed(key, keyCode, isRepeat)
 
 end
 
-function love.keyreleased(key, keyCode) 
+function love.keyreleased(key, keyCode)
 
 
 end
