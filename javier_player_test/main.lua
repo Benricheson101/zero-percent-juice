@@ -26,19 +26,19 @@ function love.update(dt)
     -- Change Velocity by Acceleration amount when arrow key is down
     -- Might change up and down to move a static amount in the future
     -- Might also add in a speed cap in the future as well
-    if love.keyboard.isDown("up") then
+    if love.keyboard.isDown("up") or love.keyboard.isDown("w") then
 		VelocityY = VelocityY - AccelerationY * dt
 	end
 
-    if love.keyboard.isDown("down") then
+    if love.keyboard.isDown("down") or love.keyboard.isDown("s") then
 		VelocityY = VelocityY + AccelerationY * dt
 	end
 
-    if love.keyboard.isDown("left") then
+    if love.keyboard.isDown("left") or love.keyboard.isDown("a") then
 		VelocityX = VelocityX - AccelerationX * dt
 	end
 
-    if love.keyboard.isDown("right") then
+    if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
 		VelocityX = VelocityX + AccelerationX * dt
 	end
 
