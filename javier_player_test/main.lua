@@ -22,7 +22,7 @@ function love.load()
 end
 
 -- Important callback function for inputs that may not
--- are not as imperative to be constantly checking
+-- be as imperative to be constantly checking
 function love.keypressed(key)
     if love.keyboard.isDown("escape") then
         love.event.quit()
