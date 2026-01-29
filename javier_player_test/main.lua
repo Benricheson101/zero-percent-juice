@@ -21,8 +21,15 @@ function love.load()
 
 end
 
-function love.update(dt)
+-- Important callback function for inputs that may not
+-- are not as imperative to be constantly checking
+function love.keypressed(key)
+    if love.keyboard.isDown("escape") then
+        love.event.quit()
+    end
+end
 
+function love.update(dt)
     -- Change Velocity by Acceleration amount when arrow key is down
     -- Might change up and down to move a static amount in the future
     -- Might also add in a speed cap in the future as well
@@ -41,7 +48,6 @@ function love.update(dt)
     if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
 		VelocityX = VelocityX + AccelerationX * dt
 	end
-
 
     -- Move player based on current velocity
     -- Right now player doesn't move on x-axis, PosX is updated instead
