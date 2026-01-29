@@ -103,9 +103,11 @@ function love.draw()
     love.graphics.rectangle("fill", player.x, player.y, 100, 100)
 
     -- Displays X and Y positions and X and Y velocities
-    love.graphics.print(string.format("Current X Position: %d", PosX), 0, 0)
-    love.graphics.print(string.format("Current Y Position: %d", player.y), 0, 50)
-    love.graphics.print(string.format("Current X Velocity: %d", VelocityX), 0, 100)
-    love.graphics.print(string.format("Current Y Velocity: %d", VelocityY), 0, 150)
+    love.graphics.print(table.concat({
+        string.format("Current X Position: %d\n", PosX),
+        string.format("Current Y Position: %d\n", player.y),
+        string.format("Current X Velocity: %d\n", VelocityX),
+        string.format("Current Y Velocity: %d\n", VelocityY)
+    }))
 
 end
