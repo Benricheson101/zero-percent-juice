@@ -1,5 +1,7 @@
 function love.load()
 
+    DebugPrint = false
+
     GlobalHeight = love.graphics.getHeight()
     GlobalWidth = love.graphics.getWidth()
 
@@ -24,6 +26,10 @@ end
 function love.keypressed(key)
     if love.keyboard.isDown("escape") then
         love.event.quit()
+    end
+
+    if love.keyboard.isDown("f11") then
+        DebugPrint = not DebugPrint
     end
 end
 
@@ -94,13 +100,16 @@ function love.draw()
     --     string.format("Current Y Velocity: %d\n", VelocityY)
     -- }))
 
-    love.graphics.print(table.concat({
-        string.format("Total Distance: %d\n", TotalDistance),
-        string.format("Current Camera X Position: %d\n", Camera.x),
-        string.format("Current Player Y Position: %d\n", Player.y),
-        string.format("Current Camera X Velocity: %d\n", VelocityX),
-        string.format("Current Player Y Velocity: %d\n", VelocityY),
-    }))
+    if DebugPrint then
+        love.graphics.print(table.concat({
+            string.format("Total Distance: %d\n", TotalDistance),
+            string.format("Current Camera X Position: %d\n", Camera.x),
+            string.format("Current Player Y Position: %d\n", Player.y),
+            string.format("Current Camera X Velocity: %d\n", VelocityX),
+            string.format("Current Player Y Velocity: %d\n", VelocityY),
+            string.format("FPS: %d\n", love.timer.getFPS())
+        }))
+    end
     
     love.graphics.circle("fill", GlobalWidth * .2, Player.y, 25)    
 end
