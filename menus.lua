@@ -11,10 +11,10 @@ end
 
 -- how much currency
 -- available upgrades
-function M.upgradesMenu()
+function M.drawUpgradesMenu()
 end
 
-function M.splash()
+function M.drawSplash()
 end
 
 return M

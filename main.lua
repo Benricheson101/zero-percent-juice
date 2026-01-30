@@ -3,6 +3,8 @@ local menus = require("menus")
 local window_width
 local window_height
 
+local screen = 'main_menu'
+
 function love.load()
   window_width, window_height = love.graphics.getDimensions()
 end
@@ -11,7 +13,11 @@ function love.draw()
   love.graphics.print('Hello World', 400, 300)
   love.graphics.print('width: ' .. window_width .. '\nheight: ' .. window_height)
 
-  menus.drawMainMenu()
+  if screen == 'main_menu' then
+    menus.drawMainMenu()
+  elseif screen == 'loading' then
+    menus.drawSplash()
+  end
 end
 
 function love.update(dt)
