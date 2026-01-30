@@ -21,6 +21,11 @@ function love.load()
 
     DecelerationX = 30
     DecelerationY = 30
+
+    -- Image testing
+    Background = love.graphics.newImage("TEST_ONLY_IMAGE.png")
+    BackgroundHeight = Background:getHeight()
+    BackgroundWidth = Background:getWidth()
 end
 
 function love.keypressed(key)
@@ -99,6 +104,9 @@ function love.draw()
     --     string.format("Current X Velocity: %d\n", VelocityX),
     --     string.format("Current Y Velocity: %d\n", VelocityY)
     -- }))
+
+    local offset = Camera.x % BackgroundWidth
+    love.graphics.draw(Background, -offset, 0)
 
     if DebugPrint then
         love.graphics.print(table.concat({
