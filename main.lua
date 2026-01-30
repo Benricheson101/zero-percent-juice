@@ -2,6 +2,7 @@ local window_width
 local window_height
 
 function love.load()
+    require("menus")
   window_width, window_height = love.graphics.getDimensions()
 end
 
