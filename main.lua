@@ -1,115 +1,66 @@
+local Player = require("player")
+local Camera = require("camera")
+
 function love.load()
-	love.graphics.setBackgroundColor(1, 1, 1)
 
-	GlobalWidth = love.graphics.getWidth()
-	GlobalHeight = love.graphics.getHeight()
+    DebugPrint = false
 
-	xPos = GlobalWidth / 2
-	yPos = GlobalHeight / 2
+    GlobalHeight = love.graphics.getHeight()
+    GlobalWidth = love.graphics.getWidth()
 
-	shapes = { "square", "circle" }
-	shapeIndex = 1
-	currentShape = shapes[shapeIndex]
+    Player.load()
+    Camera.load()
 
-	createdShapes = {}
+    TotalDistance = 0
 
-	r = love.math.random()
-	g = love.math.random()
-	b = love.math.random()
+    -- Image testing
+    Background = love.graphics.newImage("images/TEST_ONLY_IMAGE.png")
+    BackgroundHeight = Background:getHeight()
+    BackgroundWidth = Background:getWidth()
 end
 
 function love.keypressed(key)
-	if key == "space" then
-		shapeIndex = shapeIndex + 1
-		if shapeIndex > #shapes then
-			shapeIndex = 1
-		end
-	end
-	currentShape = shapes[shapeIndex]
+    if love.keyboard.isDown("escape") then
+        love.event.quit()
+    end
+
+    if love.keyboard.isDown("f11") then
+        DebugPrint = not DebugPrint
+    end
 end
 
-function love.mousepressed(x, y, button)
-	if button == 1 then
-		local newR = love.math.random()
-		local newG = love.math.random()
-		local newB = love.math.random()
-		table.insert(createdShapes, { x, y, { newR, newG, newB } })
-	elseif button == 2 then
-		createdShapes = {}
-	end
+function love.update(dt)    
+    Player.update(dt)
+    Camera.update(dt)
+
+    if not (TotalDistance > Camera.xPos) then
+        local calculatedDistance = Camera.velocityX * dt
+        if calculatedDistance > 0 then
+            TotalDistance = TotalDistance + calculatedDistance
+        end
+    end
 end
 
-function love.update(dt)
-	r = r + 0.3 * dt
-	g = g + 0.5 * dt
-	b = b + 0.9 * dt
-
-	if r > 1 then
-		r = 0
-	end
-	if g > 1 then
-		g = 0
-	end
-	if b > 1 then
-		b = 0
-	end
-
-	local speed = 400
-
-	if love.keyboard.isDown("w") then
-		yPos = yPos - speed * dt
-		if yPos < 0 then
-			yPos = GlobalHeight
-		end
-	end
-
-	if love.keyboard.isDown("a") then
-		xPos = xPos - speed * dt
-		if xPos < 0 then
-			xPos = GlobalWidth
-		end
-	end
-
-	if love.keyboard.isDown("s") then
-		yPos = yPos + speed * dt
-		if yPos > GlobalHeight then
-			yPos = 0
-		end
-	end
-
-	if love.keyboard.isDown("d") then
-		xPos = xPos + speed * dt
-		if xPos > GlobalWidth then
-			xPos = 0
-		end
-	end
-end
 
 function love.draw()
-	love.graphics.setColor(0, 0, 0)
-	love.graphics.print(table.concat({
-		"Mode: " .. currentShape .. "\n",
-		"CreatedShapes: " .. #createdShapes,
-	}))
 
-	-- Rendering the createdShapes
-	for i = 1, #createdShapes do
-		local shape = createdShapes[i]
-		local x = shape[1]
-		local y = shape[2]
+    local offset = Camera.xPos % BackgroundWidth
+    -- love.graphics.draw(Background, -offset, 0)
+    for i = -1, 2 do
+        local x = (i * BackgroundWidth) - offset
+        love.graphics.draw(Background, x, 0)
+    end
 
-		local color = shape[3]
-
-		love.graphics.setColor(color[1], color[2], color[3])
-		love.graphics.setLineWidth(5)
-		love.graphics.circle("line", x, y, 25)
-	end
-
-	-- Rendering the player
-	love.graphics.setColor(r, g, b)
-	if currentShape == "square" then
-		love.graphics.rectangle("fill", xPos, yPos, 88, 88)
-	elseif currentShape == "circle" then
-		love.graphics.circle("fill", xPos, yPos, 50)
-	end
+    if DebugPrint then
+        love.graphics.print(table.concat({
+            string.format("Total Distance: %d\n", TotalDistance),
+            string.format("Current Camera X Position: %d\n", Camera.xPos),
+            string.format("Current Player Y Position: %d\n", Player.yPos),
+            string.format("Current Camera X Velocity: %d\n", Camera.velocityX),
+            string.format("Current Player Y Velocity: %d\n", Player.velocityY),
+            string.format("FPS: %d\n", love.timer.getFPS())
+        }))
+    end
+    
+    Player.draw()
 end
