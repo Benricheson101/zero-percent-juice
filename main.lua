@@ -1,9 +1,14 @@
-function love.load()
+local window_width
+local window_height
 
+function love.load()
+  window_width, window_height = love.graphics.getDimensions()
 end
 
 function love.draw()
   love.graphics.print('Hello World', 400, 300)
+
+  love.graphics.print('width: ' .. window_width .. '\nheight: ' .. window_height)
 end
 
 function love.update(dt)
