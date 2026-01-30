@@ -18,7 +18,6 @@ local text = love.graphics.print
 local textf = love.graphics.printf
 
 --global variables
-all_upgrades = {1,1,1,1,1} --dummy values for now
 consolas_32 = love.graphics.newFont("assets/consola.ttf", 32)
 
 
@@ -99,8 +98,8 @@ function M.drawUpgradesMenu()
         rectangle("line", topX+75, topY+70, 75, 30) -- level box
         setColor(0,0,0)
         text("Upgrade " .. i, topX + 10, topY + 10) -- upgrade name
-        text("$" .. (all_upgrades[i]*10), topX + 10, topY + 75)-- price
-        text("Level: " .. all_upgrades[i], topX + 80, topY+75)-- level
+        text("$" .. (all_upgrades[i].name), topX + 10, topY + 75)-- price
+        text("Level: " .. all_upgrades[i].name, topX + 80, topY+75)-- level
         --draw upgrade icon here
         
     end
