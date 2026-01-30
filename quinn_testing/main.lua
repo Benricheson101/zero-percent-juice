@@ -1,3 +1,6 @@
+local Player = require("player")
+local Camera = require("camera")
+
 function love.load()
 
     DebugPrint = false
@@ -5,22 +8,10 @@ function love.load()
     GlobalHeight = love.graphics.getHeight()
     GlobalWidth = love.graphics.getWidth()
 
-    Camera = {}
-    Camera.x = 0
-
-    Player = {}
-    Player.y = GlobalHeight / 2
+    Player.load()
+    Camera.load()
 
     TotalDistance = 0
-
-    VelocityX = 0
-    VelocityY = 0
-
-    AccelerationX = 100
-    AccelerationY = 100
-
-    DecelerationX = 30
-    DecelerationY = 30
 
     -- Image testing
     Background = love.graphics.newImage("TEST_ONLY_IMAGE.png")
@@ -38,89 +29,38 @@ function love.keypressed(key)
     end
 end
 
-function love.update(dt)
-    if love.keyboard.isDown("up") or love.keyboard.isDown("w") then
-		VelocityY = VelocityY - AccelerationY * dt
-	end
+function love.update(dt)    
+    Player.update(dt)
+    Camera.update(dt)
 
-    if love.keyboard.isDown("down") or love.keyboard.isDown("s") then
-		VelocityY = VelocityY + AccelerationY * dt
-	end
-
-    if love.keyboard.isDown("left") or love.keyboard.isDown("a") then
-		VelocityX = VelocityX - AccelerationX * dt
-	end
-
-    if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
-		VelocityX = VelocityX + AccelerationX * dt
-	end
-
-    Player.y = Player.y + VelocityY * dt
-    Camera.x = Camera.x + VelocityX * dt
-
-    -- Calculates the furthest score.
-    if not (TotalDistance > Camera.x) then
-        local calculatedDistance = VelocityX * dt
+    if not (TotalDistance > Camera.xPos) then
+        local calculatedDistance = Camera.velocityX * dt
         if calculatedDistance > 0 then
             TotalDistance = TotalDistance + calculatedDistance
-        end
-    end
-    
-
-    if VelocityX > 0 then
-        VelocityX = VelocityX - DecelerationX * dt
-        if VelocityX < 0 then
-            VelocityX = 0
-        end
-    end
-
-    if VelocityX < 0 then
-        VelocityX = VelocityX + DecelerationX * dt
-        if VelocityX > 0 then
-            VelocityX = 0
-        end
-    end
-
-    if VelocityY > 0 then
-        VelocityY = VelocityY - DecelerationY * dt
-        if VelocityY < 0 then
-            VelocityY = 0
-        end
-    end
-
-    if VelocityY < 0 then
-        VelocityY = VelocityY + DecelerationY * dt
-        if VelocityY > 0 then
-            VelocityY = 0
         end
     end
 end
 
 
 function love.draw()
-    -- love.graphics.print(table.concat({
-    --     string.format("Current X Position: %d\n", PosX),
-    --     string.format("Current Y Position: %d\n", player.y),
-    --     string.format("Current X Velocity: %d\n", VelocityX),
-    --     string.format("Current Y Velocity: %d\n", VelocityY)
-    -- }))
 
-    local offset = Camera.x % BackgroundWidth
+    local offset = Camera.xPos % BackgroundWidth
     -- love.graphics.draw(Background, -offset, 0)
-    for i = -2, 2 do
-        love.graphics.draw(Background, -offset * i, 0)
+    for i = -1, 2 do
+        local x = (i * BackgroundWidth) - offset
+        love.graphics.draw(Background, x, 0)
     end
 
     if DebugPrint then
         love.graphics.print(table.concat({
             string.format("Total Distance: %d\n", TotalDistance),
-            string.format("Current Camera X Position: %d\n", Camera.x),
-            string.format("Current Player Y Position: %d\n", Player.y),
-            string.format("Current Camera X Velocity: %d\n", VelocityX),
-            string.format("Current Player Y Velocity: %d\n", VelocityY),
+            string.format("Current Camera X Position: %d\n", Camera.xPos),
+            string.format("Current Player Y Position: %d\n", Player.yPos),
+            string.format("Current Camera X Velocity: %d\n", Camera.velocityX),
+            string.format("Current Player Y Velocity: %d\n", Player.velocityY),
             string.format("FPS: %d\n", love.timer.getFPS())
         }))
     end
     
-    love.graphics.circle("fill", GlobalWidth * .2, Player.y, 25)    
+    Player.draw()
 end
