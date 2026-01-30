@@ -22,6 +22,8 @@ function Player.update(dt)
     -- Adjusting Player Position
     Player.yPos = Player.yPos + Player.velocityY * dt
 
+    Player.yPos = Player.yPos % GlobalHeight
+
     -- Deceleration
     if Player.velocityY > 0 then
         Player.velocityY = Player.velocityY - Player.decelerationY * dt
