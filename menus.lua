@@ -30,6 +30,12 @@ function M.drawMainMenu()
     love.graphics.printf("Press ....... to Start", 0, 200, love.graphics.getWidth(), "center")
 end
 
+local function isMouseInRect(x, y, w, h)
+    local mx = mouseX()
+    local my = mouseY()
+    return mx >= x and mx <= x + w and my >= y and my <= y + h
+end
+
 -- how much currency
 -- available upgrades
 function M.drawUpgradesMenu()
@@ -85,28 +91,55 @@ function M.drawUpgradesMenu()
     setColor(0,0,0)
     text("Pressure", width()/2 - 25, height()/2 + 50)
 
+    local scrollY = 0 --Future upgrades scrolling
+
     for i=1, #all_upgrades do
         --draw each upgrade box
         setColor(140/255, 135/255, 135/255)
         local topX = 20+ (width()-190)*((i-1)%2)
-        local topY = 50 + math.floor((i-1)/2)*110
+        local topY = 50 + math.floor((i-1)/2)*110 - scrollY
         rectangle("fill", topX, topY, 150, 100)
+        local mouseOver = isMouseInRect(topX, topY, 150, 100)
         setLineWidth(3)
-        setColor(0.3,0.3,0.3)
+        if mouseOver then
+            setColor(0.7,0.7,0.3)
+        else
+            setColor(0.3,0.3,0.3)
+        end
         rectangle("line", topX, topY, 150, 70) -- icon / name box
         rectangle("line", topX, topY+70, 75, 30) -- price box
         rectangle("line", topX+75, topY+70, 75, 30) -- level box
-        setColor(0,0,0)
-        text("Upgrade " .. i, topX + 10, topY + 10) -- upgrade name
-        text("$" .. (all_upgrades[i].name), topX + 10, topY + 75)-- price
-        text("Level: " .. all_upgrades[i].name, topX + 80, topY+75)-- level
         --draw upgrade icon here
+        all_upgrades[i]:drawIcon(topX, topY)
+        setColor(0,0,0)
+        text(all_upgrades[i].name, topX + 10, topY + 5) -- upgrade name
+        text("$" .. all_upgrades[i]:getPrice(), topX + 10, topY + 75)-- price
+        text("Level: " .. all_upgrades[i].level, topX + 80, topY+75)-- level
+        
         
     end
 
     setColor(232/255, 220/255, 44/255)
     textf("Currency: $$$$$$", consolas_32,190, 20,width()-2*190, "center")
 
+end
+
+function M.clickUpgradesMenu(x, y)
+    --check if any upgrade boxes were clicked
+    for i=1, #all_upgrades do
+        local topX = 20+ (width()-190)*((i-1)%2)
+        local topY = 50 + math.floor((i-1)/2)*110
+        if isMouseInRect(topX, topY, 150, 100) then
+            all_upgrades[i].level = all_upgrades[i].level + 1
+            --TODO: check money and consume money
+        end
+    end
+
+    --check if the center was clicked
+    local distToCenter = math.sqrt( (mouseX() - width()/2)^2 + (mouseY() - height()/2)^2 )
+    if distToCenter <= 100 then
+        print("Center clicked!")
+    end
 end
 
 function M.drawSplash()

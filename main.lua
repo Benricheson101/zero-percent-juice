@@ -40,3 +40,9 @@ function love.keyreleased(key, keyCode)
 
 
 end
+
+function love.mousepressed(x, y, button, istouch, presses)
+    if screen == 'upgrades' then
+        menus.clickUpgradesMenu(x, y)
+    end
+end
