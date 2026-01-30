@@ -106,7 +106,10 @@ function love.draw()
     -- }))
 
     local offset = Camera.x % BackgroundWidth
-    love.graphics.draw(Background, -offset, 0)
+    -- love.graphics.draw(Background, -offset, 0)
+    for i = -2, 2 do
+        love.graphics.draw(Background, -offset * i, 0)
+    end
 
     if DebugPrint then
         love.graphics.print(table.concat({
