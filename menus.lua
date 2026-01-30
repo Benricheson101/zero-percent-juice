@@ -15,6 +15,11 @@ local translate = love.graphics.translate
 local mouseX = love.mouse.getX
 local mouseY = love.mouse.getY
 local text = love.graphics.print
+local textf = love.graphics.printf
+
+--global variables
+all_upgrades = {1,1,1,1,1} --dummy values for now
+consolas_32 = love.graphics.newFont("assets/consola.ttf", 32)
 
 
 -- main menu:
@@ -81,6 +86,27 @@ function M.drawUpgradesMenu()
     setColor(0,0,0)
     text("Pressure", width()/2 - 25, height()/2 + 50)
 
+    for i=1, #all_upgrades do
+        --draw each upgrade box
+        setColor(140/255, 135/255, 135/255)
+        local topX = 20+ (width()-190)*((i-1)%2)
+        local topY = 50 + math.floor((i-1)/2)*110
+        rectangle("fill", topX, topY, 150, 100)
+        setLineWidth(3)
+        setColor(0.3,0.3,0.3)
+        rectangle("line", topX, topY, 150, 70) -- icon / name box
+        rectangle("line", topX, topY+70, 75, 30) -- price box
+        rectangle("line", topX+75, topY+70, 75, 30) -- level box
+        setColor(0,0,0)
+        text("Upgrade " .. i, topX + 10, topY + 10) -- upgrade name
+        text("$" .. (all_upgrades[i]*10), topX + 10, topY + 75)-- price
+        text("Level: " .. all_upgrades[i], topX + 80, topY+75)-- level
+        --draw upgrade icon here
+        
+    end
+
+    setColor(232/255, 220/255, 44/255)
+    textf("Currency: $$$$$$", consolas_32,190, 20,width()-2*190, "center")
 
 end
 
