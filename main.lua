@@ -1,15 +1,17 @@
+local menus = require("menus")
+
 local window_width
 local window_height
 
 function love.load()
-    require("menus")
   window_width, window_height = love.graphics.getDimensions()
 end
 
 function love.draw()
   love.graphics.print('Hello World', 400, 300)
-
   love.graphics.print('width: ' .. window_width .. '\nheight: ' .. window_height)
+
+  menus.drawMainMenu()
 end
 
 function love.update(dt)
