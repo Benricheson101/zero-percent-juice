@@ -1,3 +1,5 @@
+local color = require('util').color
+
 return {
     fonts = {
         ui = love.graphics.newFont("assets/consola.ttf", 32),
