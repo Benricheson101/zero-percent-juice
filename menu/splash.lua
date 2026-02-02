@@ -9,6 +9,8 @@ local SplashMenu = {}
 --   return o
 -- end
 
+local progress = 0
+
 local function drawLoadingScreen(progress, text)
   local window_width, window_height = love.graphics.getDimensions()
   -- local font = love.graphics.setNewFont(30)
@@ -25,7 +27,10 @@ local function drawLoadingScreen(progress, text)
   local topleftx = horiz_center - (rectangle_width / 2)
   local toplefty = vert_center - (rectangle_height / 2)
 
+  local prodreddDisps = math.floor(100-progress*100)
+
   love.graphics.printf('Loading...', constants.fonts.ui, 0, vert_center - 100, window_width, "center")
+  love.graphics.printf(prodreddDisps .. '% Juice', constants.fonts.ui, 0, vert_center - 70, window_width, "center")
 
   love.graphics.setColor(constants.colors.red)
   love.graphics.rectangle('fill', topleftx, toplefty, rectangle_width, rectangle_height)
@@ -45,20 +50,15 @@ end
 
 
 function SplashMenu.draw()
+  drawLoadingScreen(progress/16, "Loading sprites...")
 end
 
-local loaded = false
-function SplashMenu.update(dt)
-  if not loaded then
 
-    love.graphics.clear()
-    for i = 1, 100, 1 do
-      drawLoadingScreen(i/100, "Loading sprites...")
-      love.graphics.present()
-      love.timer.sleep(1/60)
-    end
+function SplashMenu.update(dt)
+  progress = progress +dt
+  if progress >= 1600 then
+    
   end
-  loaded = true
 end
 
 function SplashMenu.load()
