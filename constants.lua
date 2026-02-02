@@ -1,4 +1,6 @@
-local color = require('util').color
+local util = require('util')
+local color = util.color
+local hex = util.hex
 
 return {
     fonts = {
@@ -10,5 +12,8 @@ return {
         blue = {0, 0, 1, 1},
         white = {1, 1, 1, 1},
         black = {0, 0, 0, 1},
+
+        --- background of main menu
+        skyblue = hex(0x699BD7)
     }
 }
