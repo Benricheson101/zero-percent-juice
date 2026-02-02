@@ -1,3 +1,5 @@
+local constants = require('constants')
+
 local M = {}
 
 --aliases to make life easier
@@ -16,9 +18,6 @@ local mouseX = love.mouse.getX
 local mouseY = love.mouse.getY
 local text = love.graphics.print
 local textf = love.graphics.printf
-
---global variables
-consolas_32 = love.graphics.newFont("assets/consola.ttf", 32)
 
 
 -- main menu:
@@ -57,7 +56,7 @@ function M.drawUpgradesMenu()
             local t = distToCenter / 400
             needleAngle = maxAngle + t * (minAngle - maxAngle)--lerp
         end
-    else 
+    else
         inCenter = true
     end
 
@@ -79,7 +78,7 @@ function M.drawUpgradesMenu()
     setColor(1, 1, 1)
     circle("fill", width()/2, height()/2, 70)
     --the needle on the guage
-    
+
 
     matrixPush()
     translate(width()/2, height()/2)
@@ -115,12 +114,12 @@ function M.drawUpgradesMenu()
         text(all_upgrades[i].name, topX + 10, topY + 5) -- upgrade name
         text("$" .. all_upgrades[i]:getPrice(), topX + 10, topY + 75)-- price
         text("Level: " .. all_upgrades[i].level, topX + 80, topY+75)-- level
-        
-        
+
+
     end
 
     setColor(232/255, 220/255, 44/255)
-    textf("Currency: $$$$$$", consolas_32,190, 20,width()-2*190, "center")
+    textf("Currency: $$$$$$", constants.fonts.ui,190, 20,width()-2*190, "center")
 
 end
 

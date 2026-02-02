@@ -6,7 +6,7 @@ local SplashMenu = require("menu.splash")
 local window_width
 local window_height
 
-local screen = 'splash'
+local screen = 'upgrades'
 function love.load()
     window_width, window_height = love.graphics.getDimensions()
 end
