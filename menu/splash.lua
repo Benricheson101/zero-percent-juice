@@ -1,4 +1,3 @@
-local colors = require('colors')
 local constants = require('constants')
 
 local SplashMenu = {}
@@ -28,10 +27,10 @@ local function drawLoadingScreen(progress, text)
 
   love.graphics.printf('Loading...', constants.fonts.ui, 0, vert_center - 100, window_width, "center")
 
-  love.graphics.setColor(colors.red)
+  love.graphics.setColor(constants.colors.red)
   love.graphics.rectangle('fill', topleftx, toplefty, rectangle_width, rectangle_height)
 
-  love.graphics.setColor(colors.black)
+  love.graphics.setColor(constants.colors.black)
 
   local innertopleftx = topleftx + (padding / 2)
   local innertoplefty = toplefty + (padding / 2)
@@ -41,7 +40,7 @@ local function drawLoadingScreen(progress, text)
 
   love.graphics.rectangle('fill', innertopleftx, innertoplefty, progressWidthProgress, rectangle_height - padding)
 
-  love.graphics.setColor(colors.white)
+  love.graphics.setColor(constants.colors.white)
 end
 
 
