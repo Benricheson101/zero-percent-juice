@@ -26,8 +26,8 @@ consolas_32 = love.graphics.newFont("assets/consola.ttf", 32)
 -- upgrades
 -- start game
 function M.drawMainMenu()
-    love.graphics.printf("Main Menu", 0, 100, love.graphics.getWidth(), "center")
-    love.graphics.printf("Press ....... to Start", 0, 200, love.graphics.getWidth(), "center")
+  love.graphics.printf("Main Menu", 0, 100, love.graphics.getWidth(), "center")
+  love.graphics.printf("Press ....... to Start", 0, 200, love.graphics.getWidth(), "center")
 end
 
 local function isMouseInRect(x, y, w, h)
