@@ -10,8 +10,6 @@ function MainMenu.draw()
     love.graphics.print('Exit')
 end
 
-function MainMenu.mousepressed(x, y)
-
-end
+function MainMenu.mousepressed(x, y) end
 
 return MainMenu

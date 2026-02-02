@@ -17,7 +17,7 @@ function M.rgb(r, g, b, a)
 end
 
 function M.hex(hex)
-    return M.rgb (
+    return M.rgb(
         bit.band(bit.rshift(hex, 16), 255),
         bit.band(bit.rshift(hex, 8), 255),
         bit.band(hex, 255),
