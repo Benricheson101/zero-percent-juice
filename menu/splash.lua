@@ -75,12 +75,13 @@ local function drawLoadingScreen(progress, text)
 end
 
 function SplashMenu.draw()
-    drawLoadingScreen(progress / 16, 'Loading sprites...')
+    drawLoadingScreen(math.min(progress,8) / 8, 'Loading sprites...')
 end
 
 function SplashMenu.update(dt)
     progress = progress + dt
-    if progress >= 1600 then
+    if progress >= 8.5 then
+        Screen = 'main_menu'
     end
 end
 

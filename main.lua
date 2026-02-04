@@ -1,5 +1,8 @@
 Object = require('classic') -- this MUST be first
 require('upgrades') --do this before menus
+
+Screen = 'splash'
+
 local menus = require('menus')
 local constants = require('constants')
 local util = require('util')
@@ -10,7 +13,7 @@ local MainMenu = require('menu.mainmenu')
 local window_width
 local window_height
 
-local screen = 'splash'
+
 function love.load()
     window_width, window_height = love.graphics.getDimensions()
 end
@@ -21,20 +24,20 @@ function love.draw()
         'width: ' .. window_width .. '\nheight: ' .. window_height
     )
 
-    if screen == 'main_menu' then
+    if Screen == 'main_menu' then
         -- menus.drawMainMenu()
         MainMenu.draw()
-    elseif screen == 'loading' then
+    elseif Screen == 'loading' then
         menus.drawSplash()
-    elseif screen == 'upgrades' then
+    elseif Screen == 'upgrades' then
         menus.drawUpgradesMenu()
-    elseif screen == 'splash' then
+    elseif Screen == 'splash' then
         SplashMenu.draw()
     end
 end
 
 function love.update(dt)
-    if screen == 'splash' then
+    if Screen == 'splash' then
         SplashMenu.update(dt)
     end
 end
@@ -48,9 +51,9 @@ end
 function love.keyreleased(key, keyCode) end
 
 function love.mousepressed(x, y, button, istouch, presses)
-    if screen == 'upgrades' then
+    if Screen == 'upgrades' then
         menus.clickUpgradesMenu(x, y)
-    elseif screen == 'main_menu' then
+    elseif Screen == 'main_menu' then
         MainMenu.mousepressed(x, y)
     end
 end
