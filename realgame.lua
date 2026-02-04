@@ -1,6 +1,6 @@
 local M = {}
 
-local constants = require "constants"
+local constants = require('constants')
 function M.draw()
     love.graphics.clear(constants.colors.black)
 
@@ -10,7 +10,8 @@ function M.draw()
     love.graphics.printf(
         text,
         0,
-        math.floor(WindowHeight / 2) - math.floor(constants.fonts.title:getHeight() / 2),
+        math.floor(WindowHeight / 2)
+            - math.floor(constants.fonts.title:getHeight() / 2),
         WindowWidth,
         'center'
     )

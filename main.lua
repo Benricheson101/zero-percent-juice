@@ -14,19 +14,12 @@ local MainMenu = require('menu.mainmenu')
 WindowWidth = 0
 WindowHeight = 0
 
-
 function love.load()
     WindowWidth, WindowHeight = love.graphics.getDimensions()
 end
 
 function love.draw()
-    -- love.graphics.print('Hello World', 400, 300)
-    -- love.graphics.print(
-    --     'width: ' .. window_width .. '\nheight: ' .. window_height
-    -- )
-
     if Screen == 'main_menu' then
-        -- menus.drawMainMenu()
         MainMenu.draw()
     elseif Screen == 'upgrades' then
         menus.drawUpgradesMenu()
