@@ -7,6 +7,8 @@ function Player.load()
     Player.velocityY = 0
     Player.accelerationY = 100
     Player.decelerationY = 30
+    Player.maxVelocityY = 600
+    Player.minVelocityY = -600
 end
 
 function Player.update(dt)
@@ -37,6 +39,14 @@ function Player.update(dt)
         if Player.velocityY > 0 then
             Player.velocityY = 0
         end
+    end
+
+    if Player.velocityY > Player.maxVelocityY then
+            Player.velocityY = Player.maxVelocityY
+    end
+
+    if Player.velocityY < Player.minVelocityY then
+            Player.velocityY = Player.minVelocityY
     end
 end
 

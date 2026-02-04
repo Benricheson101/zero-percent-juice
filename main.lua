@@ -1,5 +1,6 @@
 local Player = require("player")
 local Camera = require("camera")
+local Sound = require("sound")
 
 function love.load()
 
@@ -10,6 +11,7 @@ function love.load()
 
     Player.load()
     Camera.load()
+    Sound.load()
 
     TotalDistance = 0
 
@@ -27,11 +29,13 @@ function love.keypressed(key)
     if love.keyboard.isDown("f11") then
         DebugPrint = not DebugPrint
     end
+    Sound.keypressed(key)
 end
 
-function love.update(dt)    
+function love.update(dt)
     Player.update(dt)
     Camera.update(dt)
+    Sound.update(dt, Camera.velocityX)
 
     if not (TotalDistance > Camera.xPos) then
         local calculatedDistance = Camera.velocityX * dt

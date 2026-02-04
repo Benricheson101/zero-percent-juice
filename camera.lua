@@ -6,6 +6,8 @@ function Camera.load()
     Camera.velocityX = 0
     Camera.accelerationX = 100
     Camera.decelerationX = 30
+    Camera.maxVelocityX = 1200
+    Camera.minVelocityX = -1200
 end
 
 function Camera.update(dt)
@@ -32,6 +34,15 @@ function Camera.update(dt)
             Camera.velocityX = 0
         end
     end
+
+    if Camera.velocityX > Camera.maxVelocityX then
+            Camera.velocityX = Camera.maxVelocityX
+    end
+
+    if Camera.velocityX < Camera.minVelocityX then
+            Camera.velocityX = Camera.minVelocityX
+    end
+
 end
 
 
