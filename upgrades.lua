@@ -1,5 +1,11 @@
+--@class Upgrade:Object
 Upgrade = Object:extend()
 
+--@param name:string The name of the upgrade
+--@param drawIconFunc:function A function that draws the icon sprite
+--@param priceFunc:function A function that returns the price based on level
+--@param unlockScore:number The score required to unlock this upgrade
+--@return Upgrade
 function Upgrade:new(name, drawIconFunc, priceFunc, unlockScore)
     self.name = name
     self.drawIconFunc = drawIconFunc
@@ -8,13 +14,18 @@ function Upgrade:new(name, drawIconFunc, priceFunc, unlockScore)
     self.level = 0
 end
 
+--@param x:number The x position to draw the icon
+--@param y:number The y position to draw the icon
+--@return void
 function Upgrade:drawIcon(x, y)
     self.drawIconFunc(x, y, self.level)
 end
 
+--@return number The price of the upgrade based on its current level
 function Upgrade:getPrice()
     return self.priceFunc(self.level)
 end
+
 
 all_upgrades = {
     --example upgrades, It may aslo be a good idea to make real sub classes for each upgrade

@@ -10,7 +10,7 @@ local MainMenu = require('menu.mainmenu')
 local window_width
 local window_height
 
-local screen = 'main_menu'
+local screen = 'splash'
 function love.load()
     window_width, window_height = love.graphics.getDimensions()
 end
