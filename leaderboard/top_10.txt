@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Champion",
+    "score": 150
+  },
+  {
+    "name": "Alice",
+    "score": 100
+  },
+  {
+    "name": "Bob",
+    "score": 95
+  },
+  {
+    "name": "Player5",
+    "score": 95
+  },
+  {
+    "name": "Player6",
+    "score": 94
+  },
+  {
+    "name": "Player7",
+    "score": 93
+  },
+  {
+    "name": "Player8",
+    "score": 92
+  },
+  {
+    "name": "Player9",
+    "score": 91
+  },
+  {
+    "name": "Diana",
+    "score": 90
+  },
+  {
+    "name": "Player10",
+    "score": 90
+  }
+]
