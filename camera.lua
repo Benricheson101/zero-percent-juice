@@ -3,7 +3,7 @@ local Camera = {}
 function Camera.load()
     Camera.xPos = 0
 
-    Camera.velocityX = 0
+    Camera.velocityX = 100
     Camera.accelerationX = 100
     Camera.decelerationX = 30
     Camera.maxVelocityX = 1200
