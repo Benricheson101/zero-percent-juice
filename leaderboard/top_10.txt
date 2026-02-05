@@ -1,10 +1,18 @@
 [
   {
+    "name": "BrodieLolz",
+    "score": 876
+  },
+  {
     "name": "Champion",
     "score": 150
   },
   {
     "name": "Alice",
+    "score": 100
+  },
+  {
+    "name": "Test",
     "score": 100
   },
   {
@@ -30,13 +38,5 @@
   {
     "name": "Player9",
     "score": 91
-  },
-  {
-    "name": "Diana",
-    "score": 90
-  },
-  {
-    "name": "Player10",
-    "score": 90
   }
 ]
