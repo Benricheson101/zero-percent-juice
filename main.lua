@@ -47,9 +47,30 @@ end
 
 
 function love.draw()
-
     local offset = Camera.xPos % BackgroundWidth
-    -- love.graphics.draw(Background, -offset, 0)
+    
+    -- Temporal accumulation blur based on velocity
+    local velocity = math.abs(Camera.velocityX)
+    local numBlurFrames = math.floor(velocity / 80)
+    local maxAlpha = math.min(velocity / 400, 0.85)
+    
+    -- Draw blur frames (older frames first, more transparent)
+    for blurFrame = numBlurFrames, 1, -1 do
+        local timeDelta = blurFrame * 0.022
+        local pastX = Camera.xPos - (Camera.velocityX * timeDelta)
+        local pastOffset = pastX % BackgroundWidth
+        
+        local alpha = (blurFrame / (numBlurFrames + 1)) * maxAlpha
+        love.graphics.setColor(1, 1, 1, alpha)
+        
+        for i = -1, 2 do
+            local x = (i * BackgroundWidth) - pastOffset
+            love.graphics.draw(Background, x, 0)
+        end
+    end
+    
+    -- Present frame
+    love.graphics.setColor(1, 1, 1, 1)
     for i = -1, 2 do
         local x = (i * BackgroundWidth) - offset
         love.graphics.draw(Background, x, 0)
