@@ -1,6 +1,7 @@
 local Player = require("player")
 local Camera = require("camera")
 local Sound = require("sound")
+local ObstacleSpawner = require("obstacleSpawner")
 
 -- Includes for POST request to leaderboard server
 local http = require("socket.http")
@@ -12,6 +13,7 @@ function RestartGame()
 	TotalDistance = 0
 	Camera.load()
 	Player.load()
+	ObstacleSpawner.load()
 
 	print("Game restarted!")
 end
@@ -30,6 +32,7 @@ function love.load()
 	Player.load()
 	Camera.load()
 	Sound.load()
+	ObstacleSpawner.load()
 
 	TotalDistance = 0
 
@@ -104,6 +107,7 @@ function love.update(dt)
 		Player.update(dt)
 		Camera.update(dt)
 		Sound.update(dt, Camera.velocityX)
+		ObstacleSpawner.update(dt)
 
 		if not (TotalDistance > Camera.xPos) then
 			local calculatedDistance = Camera.velocityX * dt
@@ -157,6 +161,7 @@ function love.draw()
 	end
 
 	Player.draw()
+	ObstacleSpawner.draw()
 
 	if GameState == "name_entry" then
 		love.graphics.setColor(0, 0, 0, 0.8)
