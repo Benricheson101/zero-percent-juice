@@ -13,7 +13,9 @@ function MenuButton:new(o)
     self.width = o.width or self.font:getWidth(self.text)
     self.height = o.height or self.font:getHeight()
 
-    self.canvas = o.canvas or love.graphics.newCanvas(o.width, o.height)
+    -- self.canvas = o.canvas or love.graphics.newCanvas(o.width, o.height)
+
+    self.canvas = o.canvas or love.graphics.newCanvas(self.width, self.height)
 
     self.on_click = o.on_click or function() end
 

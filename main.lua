@@ -1,6 +1,7 @@
 Object = require('classic') -- this MUST be first
 require('upgrades') --do this before menus
 local realgame = require('realgame')
+local leaderboard = require('menu.leaderboard.screen')
 
 Screen = os.getenv('ZPJ_START_SCREEN') or 'splash'
 
@@ -29,6 +30,8 @@ function love.draw()
         SplashMenu.draw()
     elseif Screen == 'game' then
         realgame.draw()
+    elseif Screen == 'leaderboard' then
+        leaderboard.draw()
     end
 end
 

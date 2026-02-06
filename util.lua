@@ -21,7 +21,7 @@ function M.hex(hex)
         bit.band(bit.rshift(hex, 16), 255),
         bit.band(bit.rshift(hex, 8), 255),
         bit.band(hex, 255),
-        255
+        256
     )
 end
 
