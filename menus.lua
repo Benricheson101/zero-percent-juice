@@ -155,6 +155,7 @@ function M.clickUpgradesMenu(x, y)
         math.sqrt((mouseX() - width() / 2) ^ 2 + (mouseY() - height() / 2) ^ 2)
     if distToCenter <= 100 then
         print('Center clicked!')
+        Screen = 'game'
     end
 end
 
