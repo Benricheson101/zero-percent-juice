@@ -1,7 +1,8 @@
 Object = require('classic') -- this MUST be first
 require('upgrades') --do this before menus
+local realgame = require('realgame')
 
-Screen = 'splash'
+Screen = os.getenv('ZPJ_START_SCREEN') or 'splash'
 
 local menus = require('menus')
 local constants = require('constants')
@@ -10,30 +11,23 @@ local util = require('util')
 local SplashMenu = require('menu.splash')
 local MainMenu = require('menu.mainmenu')
 
-local window_width
-local window_height
-
+WindowWidth = 0
+WindowHeight = 0
 
 function love.load()
-    window_width, window_height = love.graphics.getDimensions()
+    WindowWidth, WindowHeight = love.graphics.getDimensions()
     love.window.setIcon(love.image.newImageData('assets/logo.png'))
 end
 
 function love.draw()
-    love.graphics.print('Hello World', 400, 300)
-    love.graphics.print(
-        'width: ' .. window_width .. '\nheight: ' .. window_height
-    )
-
     if Screen == 'main_menu' then
-        -- menus.drawMainMenu()
         MainMenu.draw()
-    elseif Screen == 'loading' then
-        menus.drawSplash()
     elseif Screen == 'upgrades' then
         menus.drawUpgradesMenu()
     elseif Screen == 'splash' then
         SplashMenu.draw()
+    elseif Screen == 'game' then
+        realgame.draw()
     end
 end
 

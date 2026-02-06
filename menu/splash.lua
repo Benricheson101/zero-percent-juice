@@ -27,7 +27,7 @@ local function drawLoadingScreen(progress, text)
     local topleftx = horiz_center - (rectangle_width / 2)
     local toplefty = vert_center - (rectangle_height / 2)
 
-    local prodreddDisps = math.max(math.floor(100 - progress * 100),0)
+    local prodreddDisps = math.max(math.floor(100 - progress * 100), 0)
 
     love.graphics.printf(
         'Loading...',
@@ -75,7 +75,7 @@ local function drawLoadingScreen(progress, text)
 end
 
 function SplashMenu.draw()
-    drawLoadingScreen(math.min(progress,8) / 8, 'Loading sprites...')
+    drawLoadingScreen(math.min(progress, 8) / 8, 'Loading sprites...')
 end
 
 function SplashMenu.update(dt)
@@ -85,8 +85,6 @@ function SplashMenu.update(dt)
     end
 end
 
-function SplashMenu.load()
-
-end
+function SplashMenu.load() end
 
 return SplashMenu

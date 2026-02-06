@@ -10,7 +10,7 @@ local components = {
         width = 196,
         height = 61,
         on_click = function()
-            print('Clicked "Start Game"')
+            Screen = 'game'
         end,
     }),
 
