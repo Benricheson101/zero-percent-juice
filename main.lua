@@ -17,6 +17,7 @@ WindowHeight = 0
 function love.load()
     WindowWidth, WindowHeight = love.graphics.getDimensions()
     love.window.setIcon(love.image.newImageData('assets/logo.png'))
+    constants.fonts.default = love.graphics.getFont()
 end
 
 function love.draw()

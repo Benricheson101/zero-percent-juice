@@ -49,6 +49,7 @@ end
 -- how much currency
 -- available upgrades
 function M.drawUpgradesMenu()
+    love.graphics.setFont(constants.fonts.default)
     love.graphics.clear(160 / 255, 129 / 255, 112 / 255)
     --tank
     setColor(137 / 255, 137 / 255, 137 / 255)

@@ -1,6 +1,7 @@
 local M = {}
 
 local constants = require('constants')
+local count = 0
 function M.draw()
     love.graphics.clear(constants.colors.black)
 
@@ -15,6 +16,11 @@ function M.draw()
         WindowWidth,
         'center'
     )
+    count = count + 1
+    if count > 300 then
+        count = 0
+        Screen = 'upgrades'
+    end
 end
 
 return M

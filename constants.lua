@@ -6,6 +6,7 @@ return {
         ui = love.graphics.newFont('assets/consola.ttf', 32),
         button = love.graphics.newFont('assets/BerkeleyMono.ttf', 25),
         title = love.graphics.newFont('assets/BerkeleyMono.ttf', 60),
+        
     },
     colors = {
         red = { 1, 0, 0, 1 },
