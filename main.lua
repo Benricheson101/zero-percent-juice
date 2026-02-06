@@ -100,14 +100,17 @@ end
 function love.update(dt)
 	if GameState == "playing" then
 		if Camera.velocityX <= 0 then
-			GameState = "name_entry"
-			return
+			--GameState = "name_entry"
+			--return
 		end
 
 		Player.update(dt)
 		Camera.update(dt)
 		Sound.update(dt, Camera.velocityX)
 		ObstacleSpawner.update(dt)
+		if ObstacleSpawner.checkCollision(Player.xPos - Player.radius, Player.yPos - Player.radius, Player.radius * 2, Player.radius * 2) then
+			Camera.collision()
+		end
 
 		if not (TotalDistance > Camera.xPos) then
 			local calculatedDistance = Camera.velocityX * dt

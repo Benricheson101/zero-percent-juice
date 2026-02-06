@@ -18,7 +18,7 @@ function ObstacleSpawner.update(dt)
 
     for i = #Obstacles, 1, -1 do
         Obstacles[i]:update(dt)
-        if Obstacles[i].posX < -100 then
+        if Obstacles[i].xPos < -100 then
            table.remove(Obstacles, i) 
         end
     end
@@ -38,6 +38,25 @@ function ObstacleSpawner.spawn(spawnPosY)
     local o = Obstacle.new()
     o:setPosY(spawnPosY)
     table.insert(Obstacles, #Obstacles + 1, o)
+
+end
+
+function ObstacleSpawner.checkCollision(xPos, yPos, width, height)
+
+    local collisionDetected = false
+
+    for i = #Obstacles, 1, -1 do
+        local collided = xPos < Obstacles[i].xPos + Obstacles[i].width and
+                         Obstacles[i].xPos < xPos + width and
+                         yPos < Obstacles[i].yPos + Obstacles[i].height and
+                         Obstacles[i].yPos < yPos + height
+        if collided then
+            collisionDetected = true
+            table.remove(Obstacles, i)
+        end
+    end
+
+    return collisionDetected
 
 end
 

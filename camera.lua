@@ -45,5 +45,14 @@ function Camera.update(dt)
 
 end
 
+function Camera.collision()
+
+    Camera.velocityX = Camera.velocityX - 300
+    if Camera.velocityX < 0 then
+        Camera.velocityX = 0
+    end
+
+end
+
 
 return Camera

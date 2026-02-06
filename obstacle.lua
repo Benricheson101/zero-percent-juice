@@ -5,9 +5,11 @@ function Obstacle.new()
 
     local self = setmetatable({}, Obstacle)
 
-    self.posX = love.graphics.getWidth()
-    self.posY = 0
+    self.xPos = love.graphics.getWidth()
+    self.yPos = 0
     self.velocityX = 100
+    self.width = 25
+    self.height = 25
 
     return self
 
@@ -15,19 +17,19 @@ end
 
 function Obstacle:update(dt)
 
-    self.posX = self.posX - (self.velocityX * dt)
+    self.xPos = self.xPos - (self.velocityX * dt)
 
 end
 
 function Obstacle:draw()
 
-    love.graphics.rectangle("fill", self.posX, self.posY, 25, 25)
+    love.graphics.rectangle("fill", self.xPos, self.yPos, self.width, self.height)
 
 end
 
 function Obstacle:setPosY(newPosY)
 
-    self.posY = newPosY
+    self.yPos = newPosY
 
 end
 

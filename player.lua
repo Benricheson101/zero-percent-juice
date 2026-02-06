@@ -1,7 +1,9 @@
 local Player = {}
 
 function Player.load()
+    Player.xPos = GlobalWidth * .2
     Player.yPos = love.graphics.getHeight() / 2
+    Player.radius = 25
 
     -- Only Y because that is all the player is doing.
     Player.velocityY = 0
@@ -51,7 +53,16 @@ function Player.update(dt)
 end
 
 function Player.draw()
-    love.graphics.circle("fill", GlobalWidth * .2, Player.yPos, 25)
+    love.graphics.circle("fill", Player.xPos, Player.yPos, Player.radius)
+end
+
+function Player.collided()
+
+    Player.velocityY = Player.velocityY - 300
+    if Player.velocityY < 0 then
+        Player.velocityY = 0
+    end
+
 end
 
 return Player
