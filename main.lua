@@ -19,6 +19,7 @@ function love.load()
     WindowWidth, WindowHeight = love.graphics.getDimensions()
     love.window.setIcon(love.image.newImageData('assets/logo.png'))
     constants.fonts.default = love.graphics.getFont()
+    realgame.load()
 end
 
 function love.draw()
@@ -38,13 +39,28 @@ end
 function love.update(dt)
     if Screen == 'splash' then
         SplashMenu.update(dt)
+    elseif Screen == 'game' then
+        realgame.update(dt)
     end
 end
 
 function love.keypressed(key, keyCode, isRepeat)
+
+    if Screen == 'game' then
+        realgame.keypressed(key)
+    end
+
     if key == 'escape' then
         love.event.quit()
     end
+end
+
+function love.textinput(t)
+
+    if Screen == 'game' then
+        realgame.textinput(t)
+    end
+
 end
 
 function love.keyreleased(key, keyCode) end
