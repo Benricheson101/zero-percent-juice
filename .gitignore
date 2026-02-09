@@ -1,3 +1,9 @@
+.vscode/
+build/
+*.zip
+*.app
+*.love
+.DS_STORE
 bin/
 __pycache__/
 top_10.txt

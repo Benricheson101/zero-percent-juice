@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+
+# build script for packaging executables. packaged executables are put into ./build
+#
+# build configuration (LOVE version, name, package, build directory) can be changed below
+#
+# USAGE:
+#     ./scripts/build <clean|platform...>
+
+LOVE_VERSION=11.5
+RELEASE_NAME="Zero Percent Juice"
+PACKAGE_NAME="edu.sunypoly.cs371.zpj"
+OUTPUT_DIRECTORY="$(git rev-parse --show-toplevel)/build"
+
+GAME_FILES="$(git ls-files -- . :\!:{.gitignore,\*.md,scripts/})"
+
+mkdir -p "$OUTPUT_DIRECTORY"
+
+err() {
+  echo "$@" >&2
+}
+
+__setup() {
+  local PLATFORM="$1"
+
+  if [[ ! -f "$TMPDIR/love-${LOVE_VERSION}-${PLATFORM}.zip" ]] ; then
+    curl -L -o "$TMPDIR/love-${LOVE_VERSION}-${PLATFORM}.zip" "https://github.com/love2d/love/releases/download/${LOVE_VERSION}/love-${LOVE_VERSION}-${PLATFORM}.zip"
+  fi
+
+  builddir="$(mktemp -d "${TMPDIR:-/tmp}/zpj_build_${PLATFORM}.XXXXXX")"
+  err "  => building in $builddir"
+
+  unzip -q "$TMPDIR/love-${LOVE_VERSION}-${PLATFORM}.zip" -d "$builddir"
+}
+
+__cleanup() {
+  [[ -v builddir ]] && rm -rf "$builddir"
+}
+
+trap '__cleanup' EXIT
+
+build_darwin() {
+  err "building for macos"
+
+  __setup macos
+
+  app="$builddir/love.app"
+
+  zip -q -9 -r "$app/Contents/Resources/zpj.love" $GAME_FILES
+
+  plist="$app/Contents/Info.plist"
+
+  plutil -replace CFBundleIdentifier -string "$PACKAGE_NAME" "$plist"
+  plutil -replace CFBundleName -string "$RELEASE_NAME" "$plist"
+  plutil -remove UTExportedTypeDeclarations "$plist"
+
+  mv "$app" "$builddir/${RELEASE_NAME}.app"
+  app="${app%love.app}${RELEASE_NAME}.app"
+
+  zip_out="${OUTPUT_DIRECTORY}/$(basename "${app%.app}" | tr ' ' '_')-darwin.zip"
+  [[ -f "$zip_out" ]] && rm -f "$zip_out"
+  (cd "$builddir" && zip -y -q -9 -r "$zip_out" "$(basename "$app")")
+
+  err "  => macos build succeeded"
+}
+
+build_windows() {
+  local PLATFORM=${1:-win64}
+
+  err "building for $PLATFORM"
+
+  __setup $PLATFORM
+  app="$builddir/love-${LOVE_VERSION}-${PLATFORM}"
+
+  finaloutput="$builddir/build"
+  mkdir -p "$finaloutput"
+
+  mv "$app"/*.{dll,ico} "$app/license.txt" "$finaloutput"
+  cat "$app/love.exe" <(zip -q -9 -r - $GAME_FILES) > "${finaloutput}/${RELEASE_NAME}.exe"
+
+  zip_out="${OUTPUT_DIRECTORY}/${RELEASE_NAME// /_}-${PLATFORM}.zip"
+  [[ -f "$zip_out" ]] && rm -f "$zip_out"
+  (cd "$finaloutput" && zip -y -q -9 -r "$zip_out" .)
+
+  err "  => $PLATFORM build succeeded"
+}
+
+targets=("$@")
+if [[ $# == 0 ]] ; then
+  targets+="build"
+fi
+
+for target in ${targets[@]} ; do
+  shopt -s nocasematch
+  case "$target" in
+    darwin)
+      build_darwin
+      ;;
+
+    windows | win64)
+      build_windows win64
+      ;;
+
+    win32)
+      build_windows win32
+      ;;
+
+    all | build)
+      build_darwin
+      err
+      build_windows win64
+      err
+      build_windows win32
+      ;;
+
+    clean)
+      find \
+        "${TMPDIR:-/tmp}" \
+        -maxdepth 1 \
+        \( \
+        -type f -iname 'love-*.*-*.zip' \
+        -o -type d -iname 'zpj_build.*' \
+        \) \
+        -print0 \
+        | xargs -0 rm -r
+      ;;
+
+    *)
+      err "unknown target $platform"
+      exit 1
+      ;;
+  esac
+done
