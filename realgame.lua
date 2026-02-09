@@ -1,3 +1,5 @@
+RealGame = {}
+
 local Player = require("player")
 local Camera = require("camera")
 local Sound = require("sound")
@@ -18,7 +20,7 @@ function RestartGame()
 	print("Game restarted!")
 end
 
-function love.load()
+function RealGame.load()
 	DebugPrint = false
 
 	PlayerName = ""
@@ -42,7 +44,7 @@ function love.load()
 	BackgroundWidth = Background:getWidth()
 end
 
-function love.textinput(t)
+function RealGame.textinput(t)
 	if GameState == "name_entry" then
 		if t:match("^[a-zA-Z]$") and #PlayerName < MaxNameLength then
 			PlayerName = PlayerName .. t
@@ -50,7 +52,7 @@ function love.textinput(t)
 	end
 end
 
-function love.keypressed(key)
+function RealGame.keypressed(key)
 	if GameState == "name_entry" then
 		if key == "backspace" then
 			PlayerName = PlayerName:sub(1, -2)
@@ -97,7 +99,7 @@ function love.keypressed(key)
 	Sound.keypressed(key)
 end
 
-function love.update(dt)
+function RealGame.update(dt)
 	if GameState == "playing" then
 		if Camera.velocityX <= 0 then
 			GameState = "name_entry"
@@ -128,7 +130,7 @@ function love.update(dt)
 	end
 end
 
-function love.draw()
+function RealGame.draw()
 	local offset = Camera.xPos % BackgroundWidth
 
 	-- Temporal accumulation blur based on velocity
@@ -197,3 +199,5 @@ function love.draw()
 		love.graphics.printf("Press ENTER to submit", boxX, boxY + 190, boxW, "center")
 	end
 end
+
+return RealGame
