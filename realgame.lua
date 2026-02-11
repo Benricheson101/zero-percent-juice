@@ -13,9 +13,12 @@ function RealGame.RestartGame()
     GameState = 'playing'
     PlayerName = ''
     TotalDistance = 0
+    Equipped = false
     Camera.load()
     Player.load()
     ObstacleSpawner.load()
+    Player.setEquipped(false)
+    Camera.setEquipped(false)
 
     print('Game restarted!')
 end
@@ -31,10 +34,13 @@ function RealGame.load()
     GlobalHeight = love.graphics.getHeight()
     GlobalWidth = love.graphics.getWidth()
 
+    Equipped = false
     Player.load()
     Camera.load()
     Sound.load()
     ObstacleSpawner.load()
+    Player.setEquipped(false)
+    Camera.setEquipped(false)
 
     TotalDistance = 0
 
@@ -89,6 +95,14 @@ function RealGame.keypressed(key)
 
             RealGame.RestartGame()
         end
+        return
+    end
+
+    if key == 'u' then
+        Equipped = not Equipped
+        Player.setEquipped(Equipped)
+        Camera.setEquipped(Equipped)
+        print('Upgrade equipped:', Equipped)
         return
     end
 

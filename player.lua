@@ -11,6 +11,8 @@ function Player.load()
     Player.decelerationY = 30
     Player.maxVelocityY = 600
     Player.minVelocityY = -600
+
+    Player.equipped = false
 end
 
 function Player.update(dt)
@@ -54,6 +56,12 @@ end
 
 function Player.draw()
     love.graphics.circle("fill", Player.xPos, Player.yPos, Player.radius)
+
+    if Player.equipped then
+        love.graphics.setColor(1, 0.8, 0)
+        love.graphics.rectangle('fill', Player.xPos - 7.5, Player.yPos - Player.radius - 20, 15, 20)
+        love.graphics.setColor(1, 1, 1)
+    end
 end
 
 function Player.collided()
@@ -63,6 +71,10 @@ function Player.collided()
         Player.velocityY = 0
     end
 
+end
+
+function Player.setEquipped(equipped)
+    Player.equipped = equipped
 end
 
 return Player

@@ -6,7 +6,9 @@ function Camera.load()
     Camera.velocityX = 100
     Camera.accelerationX = 100
     Camera.decelerationX = 30
-    Camera.maxVelocityX = 1200
+    Camera.baseMaxVelocityX = 1200
+    Camera.boostedMaxVelocityX = 2000
+    Camera.maxVelocityX = Camera.baseMaxVelocityX
     Camera.minVelocityX = -1200
 end
 
@@ -52,6 +54,14 @@ function Camera.collision()
         Camera.velocityX = 0
     end
 
+end
+
+function Camera.setEquipped(equipped)
+    if equipped then
+        Camera.maxVelocityX = Camera.boostedMaxVelocityX
+    else
+        Camera.maxVelocityX = Camera.baseMaxVelocityX
+    end
 end
 
 
