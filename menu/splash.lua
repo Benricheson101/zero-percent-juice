@@ -9,6 +9,8 @@ local SplashMenu = {}
 --   return o
 -- end
 
+local load_time_seconds = 4.5
+
 local progress = 0
 
 local function drawLoadingScreen(progress, text)
@@ -75,12 +77,13 @@ local function drawLoadingScreen(progress, text)
 end
 
 function SplashMenu.draw()
-    drawLoadingScreen(math.min(progress, 8) / 8, 'Loading sprites...')
+    drawLoadingScreen(math.min(progress, load_time_seconds) / load_time_seconds, 'Loading sprites...')
 end
 
 function SplashMenu.update(dt)
     progress = progress + dt
-    if progress >= 8.5 then
+    -- sit on 100% (0%) for half a second before transitioning
+    if progress >= load_time_seconds + 0.5 then
         Screen = 'main_menu'
     end
 end
