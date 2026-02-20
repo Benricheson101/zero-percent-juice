@@ -15,8 +15,7 @@ local SceneManager = {}
 SceneManager.__index = SceneManager
 
 ---@param scenes table<string, Scene> scene objects mapped to names
----@param start_scene? string the initial scene
-function SceneManager:new(scenes, start_scene)
+function SceneManager:new(scenes)
     local o = setmetatable({}, self)
 
     o.scenes = {}
@@ -24,10 +23,6 @@ function SceneManager:new(scenes, start_scene)
 
     for name, scene in pairs(scenes) do
         o:add(name, scene)
-    end
-
-    if start_scene then
-        o:transition(start_scene)
     end
 
     return o
@@ -52,6 +47,7 @@ end
 ---@param name string
 ---@param scene Scene
 function SceneManager:add(name, scene)
+    scene.scene_manager = self
     self.scenes[name] = scene
 end
 
@@ -71,7 +67,7 @@ for _, name in ipairs(love_callbacks) do
         assert(self.active, 'SceneManager is not initialized. Trying to call callback method `' .. name .. '`')
 
         if self.active[name] then
-            self.active[name](self, ...)
+            self.active[name](self.active, ...)
         end
     end
 end

@@ -20,7 +20,7 @@ function love.load()
     local h = love.graphics.getHeight()
     love.window.updateMode(w, h, {resizable=true})
 
-    scene_manager:transition('game')
+    scene_manager:transition('example')
 end
 
 function love.keypressed(key, ...)

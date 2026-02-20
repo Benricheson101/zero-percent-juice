@@ -2,6 +2,7 @@
 -- it needs to use. The function signatures are below. An example scene implementation
 -- can be found in `./scenes/example.lua`
 ---@class Scene
+---@field scene_manager SceneManager
 ---@field new fun(self: Scene): Scene
 ---@field enter fun(self: Scene)
 ---@field exit fun(self: Scene)
