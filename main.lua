@@ -1,4 +1,5 @@
 local Ui = require("util.ui")
+local fonts = require("util.fonts")
 local SceneManager = require("renderer.scenemanager")
 
 local ExampleScene = require("scenes.example")
@@ -17,6 +18,7 @@ function love.load()
 
     -- Initialize the Ui scaling factor
     Ui:reload()
+    fonts:reload() -- load the fonts
     --tmp
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
@@ -37,6 +39,7 @@ end
 function love.resize(w, h)
     --whe the window is resized, update the Ui scaling factor
     Ui:reload()
+    fonts:reload()--re sacle all the fonts 
     scene_manager:resize(w, h)
 end
 
