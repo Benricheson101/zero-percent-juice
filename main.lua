@@ -1,5 +1,5 @@
 --main file here
-require("uiUtill")
+local Ui = require("util.ui")
 
 
 function love.load()

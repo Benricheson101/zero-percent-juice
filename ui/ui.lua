@@ -1,7 +1,7 @@
 -- uiUtill.lua
 
 -- The object that contains Ui scalling infomration
-Ui = {}
+local Ui = {}
 
 -- The design resolution for the UI. This is the resolution that the UI was designed for and will be used as the base for scaling.
 local designWidth = 1280
@@ -42,7 +42,7 @@ end
 -- Calculate the scaled dimension for a given size
 -- @param dim The dimension in the design space
 -- @return The scaled dimension on the screen
-function Ui:scaleDimention(dim)
+function Ui:scaleDimension(dim)
     return dim * self.scale
 end
 
@@ -51,3 +51,5 @@ end
 function Ui:getScale()
     return self.scale
 end
+
+return Ui
