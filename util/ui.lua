@@ -1,7 +1,7 @@
 -- uiUtill.lua
 
 -- The object that contains Ui scalling infomration
--- @class Ui
+--- @class Ui
 local Ui = {}
 
 -- The design resolution for the UI. This is the resolution that the UI was designed for and will be used as the base for scaling.
@@ -15,7 +15,7 @@ Ui.centerY = designHeight / 2
 Ui.top = 0
 Ui.left = 0
 
--- This function should be called whenever the window is resized to recalculate the scaling and positioning of the UI elements.
+--- This function should be called whenever the window is resized to recalculate the scaling and positioning of the UI elements.
 function Ui:reload()
     --get the current screen dimensions
     local screenWidth, screenHeight = love.graphics.getDimensions()
@@ -30,25 +30,25 @@ function Ui:reload()
     self.left = self.centerX - (designWidth * self.scale) / 2
 end
 
--- Calculate the scaled on screen coordinate for a given position
--- @param x integer The x coordinate in the design space
--- @param y integer The y coordinate in the design space
--- @return integer,integer The scaled x and y coordinates on the screen
+--- Calculate the scaled on screen coordinate for a given position
+--- @param x number The x coordinate in the design space
+--- @param y number The y coordinate in the design space
+--- @return number,number .The scaled x and y coordinates on the screen
 function Ui:scaleCoord(x,y)
     local scaledX = self.left + x * self.scale
     local scaledY = self.top + y * self.scale
     return scaledX, scaledY
 end
 
--- Calculate the scaled dimension for a given size
--- @param dim integer The dimension in the design space
--- @return float The scaled dimension on the screen
+--- Calculate the scaled dimension for a given size
+--- @param dim number The dimension in the design space
+--- @return number The scaled dimension on the screen
 function Ui:scaleDimension(dim)
     return dim * self.scale
 end
 
--- Get the current scale factor
--- @return float The current scale factor
+--- Get the current scale factor
+--- @return number The current scale factor
 function Ui:getScale()
     return self.scale
 end
