@@ -1,6 +1,7 @@
 -- uiUtill.lua
 
 -- The object that contains Ui scalling infomration
+-- @class Ui
 local Ui = {}
 
 -- The design resolution for the UI. This is the resolution that the UI was designed for and will be used as the base for scaling.
@@ -30,9 +31,9 @@ function Ui:reload()
 end
 
 -- Calculate the scaled on screen coordinate for a given position
--- @param x The x coordinate in the design space
--- @param y The y coordinate in the design space
--- @return The scaled x and y coordinates on the screen
+-- @param x integer The x coordinate in the design space
+-- @param y integer The y coordinate in the design space
+-- @return integer,integer The scaled x and y coordinates on the screen
 function Ui:scaleCoord(x,y)
     local scaledX = self.left + x * self.scale
     local scaledY = self.top + y * self.scale
@@ -40,14 +41,14 @@ function Ui:scaleCoord(x,y)
 end
 
 -- Calculate the scaled dimension for a given size
--- @param dim The dimension in the design space
--- @return The scaled dimension on the screen
+-- @param dim integer The dimension in the design space
+-- @return float The scaled dimension on the screen
 function Ui:scaleDimension(dim)
     return dim * self.scale
 end
 
 -- Get the current scale factor
--- @return The current scale factor
+-- @return float The current scale factor
 function Ui:getScale()
     return self.scale
 end
