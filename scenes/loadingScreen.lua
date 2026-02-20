@@ -40,6 +40,9 @@ function LoadingScreen:draw()
         self.scene_manager:transition('game')
     end
 
+    love.graphics.setColor(1,0,0)
+    love.graphics.rectangle("fill",0,love.graphics.getHeight()*(1-percent),love.graphics.getWidth(),love.graphics.getHeight())
+
     percent = math.max(percent,0)
     love.graphics.setColor(1,1,1)
     love.graphics.draw(boxes[index],posX,posY,0,dim/boxes[index]:getPixelWidth(),dim/boxes[index]:getPixelHeight())
