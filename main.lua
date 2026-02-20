@@ -23,6 +23,10 @@ function love.load()
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
     love.window.updateMode(w, h, {resizable=true})
+    
+    --window icon
+    love.window.setIcon(love.image.newImageData("assets/logo.png"))
+    love.window.setTitle("Zero Percent Juice")
 
     scene_manager:transition('loading')
 end
