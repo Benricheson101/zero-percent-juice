@@ -1,22 +1,32 @@
-Game = {}
-
+local Scene = require("renderer.scene")
 local Player = require('player')
 
-function Game.load()
-    Player.load(love.graphics.getWidth() * 0.2, love.graphics.getHeight() / 2,
-                0, 300, 50, 300)
+---@class GameScene : Scene
+local GameScene = {}
+setmetatable(GameScene, {__index = Scene})
+GameScene.__index = GameScene
+
+function GameScene:new()
+    local o = setmetatable({}, self)
+
+    Player.load(
+        love.graphics.getWidth() * 0.2,
+        love.graphics.getHeight() / 2,
+        0,
+        300,
+        50,
+        300
+    )
+
+    return o
 end
 
-function Game.update(dt)
-    
+function GameScene:update(dt)
     Player.update(dt)
-
 end
 
-function Game.draw()
-
+function GameScene:draw()
     Player.draw()
-
 end
 
-return Game
+return GameScene
