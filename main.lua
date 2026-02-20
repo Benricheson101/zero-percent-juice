@@ -3,6 +3,7 @@ local SceneManager = require("renderer.scenemanager")
 
 local ExampleScene = require("scenes.example")
 local GameScene = require("scenes.game")
+local LoadingScreen = require("scenes.loadingScreen")
 
 ---@type SceneManager
 local scene_manager
@@ -11,6 +12,7 @@ function love.load()
     scene_manager = SceneManager:new {
         example = ExampleScene:new(),
         game = GameScene:new(),
+        loading = LoadingScreen:new()
     }
 
     -- Initialize the Ui scaling factor
@@ -20,7 +22,7 @@ function love.load()
     local h = love.graphics.getHeight()
     love.window.updateMode(w, h, {resizable=true})
 
-    scene_manager:transition('game')
+    scene_manager:transition('loading')
 end
 
 function love.keypressed(key, ...)
