@@ -2,7 +2,7 @@ local Ui = require("util.ui")
 local SceneManager = require("renderer.scenemanager")
 
 local ExampleScene = require("scenes.example")
-local GameScene = require("game")
+local GameScene = require("scenes.game")
 
 ---@type SceneManager
 local scene_manager
