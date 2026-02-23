@@ -1,19 +1,17 @@
 # Build:   docker build -t leaderboard .
-# Run:     docker run -v /path/to/data:/app/data -p 8000:8000 leaderboard
-# Example: docker run -v ./leaderboard_data:/app/data -p 8000:8000 leaderboard
+# Run:     docker run -v $(pwd):/app -p 8000:8000 --name <container name> <image name>
 #
-# The volume mount persists leaderboard.json at /app/data/leaderboard.json
-# on the host at the specified path.
+# Mounts current directory to /app so main.py and leaderboard_data.db are accessible.
 
 FROM python:3.11-slim
 
-WORKDIR /app/code
+WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY main.py /app/code/
+COPY main.py /app/
 
 EXPOSE 8000
 
-CMD ["python", "main.py", "/app/data/leaderboard.json"]
+CMD ["python", "main.py"]
