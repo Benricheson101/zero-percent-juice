@@ -6,8 +6,10 @@ import pytest
 
 @pytest.fixture
 def test_db():
+    # Creates a db in memory to not affect real db
     conn = sql.connect(":memory:", check_same_thread=False)
-    conn.execute("CREATE TABLE leaderboard (id INTEGER PRIMARY KEY, name TEXT, score INTEGER)")
+    conn.execute(
+        "CREATE TABLE leaderboard (id INTEGER PRIMARY KEY, name TEXT, score INTEGER)")
     yield conn
     conn.close()
 
@@ -50,7 +52,8 @@ def test_leaderboard_order(client):
 
 
 def test_sql_injection_prevention(client):
-    response = client.post("/score", json={"name": "'; DROP TABLE leaderboard; --", "score": 100})
+    response = client.post(
+        "/score", json={"name": "'; DROP TABLE leaderboard; --", "score": 100})
     assert response.status_code == 200
     response = client.get("/leaderboard")
     assert response.status_code == 200
@@ -60,8 +63,10 @@ def test_sql_injection_prevention(client):
 
 
 def test_drop_table_as_name_preserves_table(client, test_db):
-    client.post("/score", json={"name": "DROP TABLE leaderboard", "score": 100})
-    result = test_db.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='leaderboard'").fetchone()
+    client.post(
+        "/score", json={"name": "DROP TABLE leaderboard", "score": 100})
+    result = test_db.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='leaderboard'").fetchone()
     assert result is not None, "Table was dropped - SQL injection successful!"
 
 
