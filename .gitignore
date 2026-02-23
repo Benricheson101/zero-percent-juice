@@ -1,5 +1,5 @@
 .vscode/
 bin/
 __pycache__/
-leaderboard/leaderboard_data.db
+*.db
 
