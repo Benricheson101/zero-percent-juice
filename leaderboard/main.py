@@ -1,9 +1,8 @@
-import json
 import os
-import sys
+import sqlite3 as sql
 from typing import List
-
 import fastapi
+from fastapi import Depends, HTTPException
 import uvicorn
 from pydantic import BaseModel
 
@@ -16,47 +15,41 @@ class ScoreEntry(BaseModel):
     score: float
 
 
-def get_leaderboard_file() -> str:
-    if len(sys.argv) > 1:
-        return sys.argv[1]
-    return "leaderboard.json"
-
-
-def load_leaderboard() -> List[dict]:
-    leaderboard_file = get_leaderboard_file()
-    if not os.path.exists(leaderboard_file):
-        with open(leaderboard_file, "w") as f:
-            json.dump([], f)
-        return []
-    with open(leaderboard_file, "r") as f:
-        return json.load(f)
-
-
-def save_leaderboard(leaderboard: List[dict]) -> None:
-    leaderboard_file = get_leaderboard_file()
-    with open(leaderboard_file, "w") as f:
-        json.dump(leaderboard, f, indent=2)
+def get_db():
+    # Checks if docker or local db exists
+    db_path = "/app/leaderboard_data.db" if os.path.exists(
+        "/app") else "leaderboard_data.db"
+    conn = sql.connect(db_path)
+    # Creates the table if it does not exist yet
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS leaderboard (id INTEGER PRIMARY KEY, name TEXT, score INTEGER)")
+    try:
+        yield conn
+    finally:
+        conn.close()
 
 
 @app.get("/leaderboard")
-def get_leaderboard() -> List[dict]:
-    return load_leaderboard()
+def get_leaderboard(db: sql.Connection = Depends(get_db)) -> List[dict]:
+    cursor = db.cursor()
+    cursor.execute(
+        "select name, score from leaderboard order by score desc limit 10")
+    result = cursor.fetchall()
+    return [{"name": row[0], "score": row[1]} for row in result]
 
 
 @app.post("/score")
-def add_score(entry: ScoreEntry) -> List[dict]:
-    leaderboard = load_leaderboard()
-
-    leaderboard.append({"name": entry.name, "score": entry.score})
-
-    # After appending we sort and take only the best 10
-    # in descending
-    leaderboard = sorted(
-        leaderboard, key=lambda x: x["score"], reverse=True)[:10]
-
-    save_leaderboard(leaderboard)
-
-    return leaderboard
+def add_score(entry: ScoreEntry, db: sql.Connection = Depends(get_db)) -> List[dict]:
+    if not entry.name.strip():
+        raise HTTPException(status_code=400, detail="Name cannot be empty or whitespace")
+    cursor = db.cursor()
+    cursor.execute(
+        "insert into leaderboard (name, score) values (?, ?)", (entry.name, entry.score))
+    db.commit()
+    cursor.execute(
+        "select name, score from leaderboard order by score desc limit 10")
+    result = cursor.fetchall()
+    return [{"name": row[0], "score": row[1]} for row in result]
 
 
 if __name__ == "__main__":
