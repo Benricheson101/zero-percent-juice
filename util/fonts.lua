@@ -9,6 +9,7 @@ fonts.default = love.graphics.getFont()
 function fonts:reload()
     local scale = Ui:getScale()
     self.impact75 = love.graphics.newFont("assets/fonts/impact.ttf", 75 * scale)
+    self.tahoma30 = love.graphics.newFont("assets/fonts/tahoma.ttf", 30 * scale)
 end
 
 return fonts
