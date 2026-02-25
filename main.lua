@@ -29,6 +29,8 @@ function love.load()
     love.window.setTitle("Zero Percent Juice")
 
     scene_manager:transition('loading')
+
+    scene_manager:transition('example')
 end
 
 function love.keypressed(key, ...)
