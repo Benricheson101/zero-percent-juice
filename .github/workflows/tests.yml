@@ -1,0 +1,28 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Lua
+        uses: leafo/gh-actions-lua@v12
+        with:
+          lua_version: "5.1"
+
+      - name: Setup LuaRocks
+        uses: leafo/gh-actions-luarocks@master
+
+      - name: Install busted
+        run: luarocks install busted
+
+      - name: Run tests
+        run: busted spec
