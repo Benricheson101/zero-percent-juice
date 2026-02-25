@@ -69,11 +69,12 @@ local function drawTank(pressure, selected)
     love.graphics.printf("Pressure",fonts.tahoma30,textX,textY,Ui:scaleDimension(400),"center")
 end
 
---- Draws a specific upgrade and the upgrade clicker
---- @param index number the index of the upgrade to draw, between 1 and 4
---- @param hilighted number 0 for no hilight, 1 for slight hilight, 2 for full hilight
-local function drawUpgrade(index, hilighted)
-    love.graphics.setColor(color.rgb(120,120,120))
+---Caclues the on screen position of the upgrade Ui elements
+---@param index number the index of the upgrade
+---@return number upgradeX the onscreen x position of the upgrade
+---@return number upgradeY the onscreen y position of the upgrade
+---@return number vslot the vertical slot of the upgrade
+local function calculateUpgradePosition(index)
     local upgradeX,upgradeY
     local vslot = math.floor((index-1)/2)
     if (index-1) %2 == 0 then
@@ -81,6 +82,17 @@ local function drawUpgrade(index, hilighted)
     else
         upgradeX,upgradeY = Ui:scaleCoord(1030,25+150*vslot)
     end
+    return upgradeX,upgradeY,vslot
+end
+
+--- Draws a specific upgrade and the upgrade clicker
+--- @param index number the index of the upgrade to draw, between 1 and 4
+--- @param hilighted number 0 for no hilight, 1 for slight hilight, 2 for full hilight
+local function drawUpgrade(index, hilighted)
+    love.graphics.setColor(color.rgb(120,120,120))
+
+    local upgradeX,upgradeY,vslot = calculateUpgradePosition(index)
+
     love.graphics.rectangle("fill",upgradeX,upgradeY,Ui:scaleDimension(200),Ui:scaleDimension(130))
     if hilighted == 0 then
         love.graphics.setColor(color.rgb(90,90,90))
@@ -103,6 +115,8 @@ local function drawUpgrade(index, hilighted)
     end
 
     --draw sprite here
+
+
     local titleX,titleY = Ui:scaleCoord(colOff,25+150*(vslot))
     local levelX,levelY = Ui:scaleCoord(colOff+3,25+150*(vslot)+95)
     local costX,costY = Ui:scaleCoord(colOff+103,25+150*(vslot)+95)
@@ -129,12 +143,44 @@ function UpgradeScreen:draw()
     drawTank(distancePercent,mouseDistance < Ui:scaleDimension(125))
 
     --platrform
+    love.graphics.setColor(color.hex(0x3b3b4b))
+    local platformX,_ = Ui:scaleCoord(60,0)
+    love.graphics.rectangle("fill",platformX,love.graphics.getHeight()-Ui:scaleDimension(50),Ui:scaleDimension(1160),Ui:scaleDimension(10))
+    --ramp 1
+    love.graphics.push()
+    love.graphics.translate(platformX+Ui:scaleDimension(3),love.graphics.getHeight()-Ui:scaleDimension(45))
+    love.graphics.rotate(math.rad(135))
+    love.graphics.rectangle("fill",0,-Ui:scaleDimension(5),Ui:scaleDimension(100),Ui:scaleDimension(10))
+    love.graphics.pop()
+    --ramp 2
+    love.graphics.push()
+    love.graphics.translate(platformX+Ui:scaleDimension(1157),love.graphics.getHeight()-Ui:scaleDimension(45))
+    love.graphics.rotate(math.rad(45))
+    love.graphics.rectangle("fill",0,-Ui:scaleDimension(5),Ui:scaleDimension(100),Ui:scaleDimension(10))
+    love.graphics.pop()
+
+    love.graphics.rectangle("fill",platformX+Ui:scaleDimension(40),love.graphics.getHeight()-Ui:scaleDimension(50),Ui:scaleDimension(10),Ui:scaleDimension(50))
+    love.graphics.rectangle("fill",platformX+Ui:scaleDimension(310),love.graphics.getHeight()-Ui:scaleDimension(50),Ui:scaleDimension(10),Ui:scaleDimension(50))
+    love.graphics.rectangle("fill",platformX+Ui:scaleDimension(575),love.graphics.getHeight()-Ui:scaleDimension(50),Ui:scaleDimension(10),Ui:scaleDimension(50))
+    love.graphics.rectangle("fill",platformX+Ui:scaleDimension(850),love.graphics.getHeight()-Ui:scaleDimension(50),Ui:scaleDimension(10),Ui:scaleDimension(50))
+    love.graphics.rectangle("fill",platformX+Ui:scaleDimension(1120),love.graphics.getHeight()-Ui:scaleDimension(50),Ui:scaleDimension(10),Ui:scaleDimension(50))
+
+    --draw the guy standing on the platform here
 
     --upgrades
-    drawUpgrade(1,0)
-    drawUpgrade(2,1)
-    drawUpgrade(3,2)
-    drawUpgrade(4,0)
+    for i=1,4 do
+        local upgradeX,upgradeY,_ = calculateUpgradePosition(i)
+        local hilightLevel = 0 -- 0 for not hovering, 1 for hovering but too expensive, 2 for hovering and affordable
+        if mouseX > upgradeX and mouseX < upgradeX + Ui:scaleDimension(200) and mouseY > upgradeY and mouseY < upgradeY + Ui:scaleDimension(130) then
+            hilightLevel = 1
+            --TODO check if affordable here, if so set hilightLevel to 2
+        end
+        drawUpgrade(i,hilightLevel)
+    end
+
+    local moneyDisplayX,moneyDisplayY = Ui:scaleCoord(300,10)
+    love.graphics.setColor(1,1,0)
+    love.graphics.printf("Money: $XXXXX",fonts.impact75,moneyDisplayX,moneyDisplayY,Ui:scaleDimension(680),"center")
 
 end
 
