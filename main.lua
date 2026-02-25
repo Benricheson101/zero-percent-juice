@@ -2,7 +2,6 @@ local Ui = require("util.ui")
 local fonts = require("util.fonts")
 local SceneManager = require("renderer.scenemanager")
 
-local ExampleScene = require("scenes.example")
 local GameScene = require("scenes.game")
 local LoadingScreen = require("scenes.loadingScreen")
 
@@ -11,7 +10,6 @@ local scene_manager
 
 function love.load()
     scene_manager = SceneManager:new {
-        example = ExampleScene:new(),
         game = GameScene:new(),
         loading = LoadingScreen:new()
     }

@@ -1,6 +1,5 @@
 -- Abstract class for a game scene. Each scene can override the love2d callback methods that
--- it needs to use. The function signatures are below. An example scene implementation
--- can be found in `./scenes/example.lua`
+-- it needs to use. The function signatures are below.
 ---@class Scene
 ---@field scene_manager SceneManager
 ---@field new fun(self: Scene): Scene
