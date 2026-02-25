@@ -37,10 +37,10 @@ function LoadingScreen:draw()
 	--calculate the position to display the image
 	local posX, posY = Ui:scaleCoord(280, 0)
 
-	--if we reached the end of the loading, go to the next screen
-	if percent <= -0.1 then
-		self.scene_manager:transition("game")
-	end
+    --if we reached the end of the loading, go to the next screen
+    if percent <= -0.1 then
+        self.scene_manager:transition('upgrade')
+    end
 
 	--draw the background rectanlge that does down
 	love.graphics.setColor(1, 0, 0)
