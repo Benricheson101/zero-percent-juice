@@ -44,7 +44,7 @@ def add_score(entry: ScoreEntry, db: sql.Connection = Depends(get_db)) -> List[d
         raise HTTPException(status_code=400, detail="Name cannot be empty or whitespace")
     cursor = db.cursor()
     cursor.execute(
-        "insert into leaderboard (name, score) values (?, ?)", (entry.name, entry.score))
+        "insert into leaderboard (name, score) values (?, ?)", (entry.name.strip(), entry.score))
     db.commit()
     cursor.execute(
         "select name, score from leaderboard order by score desc limit 10")
