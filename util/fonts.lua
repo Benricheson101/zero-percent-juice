@@ -10,6 +10,7 @@ function fonts:reload()
     local scale = Ui:getScale()
     self.impact75 = love.graphics.newFont("assets/fonts/impact.ttf", 75 * scale)
     self.tahoma30 = love.graphics.newFont("assets/fonts/tahoma.ttf", 30 * scale)
+    self.tahoma14 = love.graphics.newFont("assets/fonts/tahoma.ttf", 14 * scale)
 end
 
 return fonts
