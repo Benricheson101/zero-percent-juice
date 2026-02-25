@@ -23,14 +23,12 @@ function love.load()
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
     love.window.updateMode(w, h, {resizable=true})
-    
+
     --window icon
     love.window.setIcon(love.image.newImageData("assets/logo.png"))
     love.window.setTitle("Zero Percent Juice")
 
     scene_manager:transition('loading')
-
-    scene_manager:transition('example')
 end
 
 function love.keypressed(key, ...)
@@ -45,7 +43,7 @@ end
 function love.resize(w, h)
     --whe the window is resized, update the Ui scaling factor
     Ui:reload()
-    fonts:reload()--re sacle all the fonts 
+    fonts:reload()--re sacle all the fonts
     scene_manager:resize(w, h)
 end
 
