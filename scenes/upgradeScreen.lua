@@ -67,14 +67,20 @@ local function drawTank(pressure, selected)
     local textX,textY = Ui:scaleCoord(440,530)
     love.graphics.setColor(0,0,0)
     love.graphics.printf("Pressure",fonts.tahoma30,textX,textY,Ui:scaleDimension(400),"center")
-
 end
 
 
 function UpgradeScreen:draw()
     love.graphics.clear(color.hex(0xa08170))
-    
-    drawTank(0.5,false)
+    local mouseX,mouseY = love.mouse.getPosition()
+    local guageX,guageY = Ui:scaleCoord(640,500)
+    local mouseDistance = math.sqrt((mouseX-guageX)^2+(mouseY-guageY)^2)
+    local distancePercent = 0.75-(mouseDistance-Ui:scaleDimension(125))/600
+    distancePercent = math.max(0,math.min(1,distancePercent))
+    distancePercent = math.min(0.75,distancePercent)
+    local jitter = math.sin(love.timer.getTime()*50)*0.03 * distancePercent
+    distancePercent = distancePercent + jitter
+    drawTank(distancePercent,mouseDistance < Ui:scaleDimension(125))
 end
 
 return UpgradeScreen
