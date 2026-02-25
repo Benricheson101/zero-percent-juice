@@ -1,8 +1,10 @@
 local Ui = require("util.ui")
+local fonts = require("util.fonts")
 local SceneManager = require("renderer.scenemanager")
 
 local ExampleScene = require("scenes.example")
 local GameScene = require("scenes.game")
+local LoadingScreen = require("scenes.loadingScreen")
 
 ---@type SceneManager
 local scene_manager
@@ -11,14 +13,22 @@ function love.load()
     scene_manager = SceneManager:new {
         example = ExampleScene:new(),
         game = GameScene:new(),
+        loading = LoadingScreen:new()
     }
 
     -- Initialize the Ui scaling factor
     Ui:reload()
+    fonts:reload() -- load the fonts
     --tmp
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
     love.window.updateMode(w, h, {resizable=true})
+    
+    --window icon
+    love.window.setIcon(love.image.newImageData("assets/logo.png"))
+    love.window.setTitle("Zero Percent Juice")
+
+    scene_manager:transition('loading')
 
     scene_manager:transition('example')
 end
@@ -35,6 +45,7 @@ end
 function love.resize(w, h)
     --whe the window is resized, update the Ui scaling factor
     Ui:reload()
+    fonts:reload()--re sacle all the fonts 
     scene_manager:resize(w, h)
 end
 
