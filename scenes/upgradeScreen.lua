@@ -2,6 +2,7 @@ local Ui = require("util.ui")
 local Scene = require("renderer.scene")
 local fonts = require("util.fonts")
 local color = require("util.color")
+local upgrades = require("upgrades")
 
 ---@class upgradeScreen : Scene
 local UpgradeScreen = {}
@@ -115,15 +116,15 @@ local function drawUpgrade(index, hilighted)
     end
 
     --draw sprite here
-
+    upgrades[index]:draw(upgradeX,upgradeY,Ui:getScale())
 
     local titleX,titleY = Ui:scaleCoord(colOff,25+150*(vslot))
     local levelX,levelY = Ui:scaleCoord(colOff+3,25+150*(vslot)+95)
     local costX,costY = Ui:scaleCoord(colOff+103,25+150*(vslot)+95)
     love.graphics.setColor(0,0,0)
-    love.graphics.printf("UPGRADE NAME HERE!",fonts.tahoma14,titleX,titleY,Ui:scaleDimension(200),"center")
-    love.graphics.printf("LEVEL: XXX",fonts.tahoma14,levelX,levelY,Ui:scaleDimension(100),"left")
-    love.graphics.printf("COST: $XXXXX",fonts.tahoma14,costX,costY,Ui:scaleDimension(100),"left")
+    love.graphics.printf(upgrades[index].name,fonts.tahoma14,titleX,titleY,Ui:scaleDimension(200),"center")
+    love.graphics.printf("LEVEL: " .. upgrades[index]:getLevel(),fonts.tahoma14,levelX,levelY,Ui:scaleDimension(100),"left")
+    love.graphics.printf("COST: $" .. upgrades[index]:getPrice(),fonts.tahoma14,costX,costY,Ui:scaleDimension(100),"left")
 
 
 end
@@ -138,7 +139,7 @@ function UpgradeScreen:draw()
     local distancePercent = 0.75-(mouseDistance-Ui:scaleDimension(125))/Ui:scaleDimension(700)
     distancePercent = math.max(0,math.min(1,distancePercent))
     distancePercent = math.min(0.75,distancePercent)
-    local jitter = math.sin(love.timer.getTime()*50)*0.03 * distancePercent
+    local jitter = math.sin(love.timer.getTime()*50*distancePercent)*0.03 * distancePercent
     distancePercent = distancePercent + jitter
     drawTank(distancePercent,mouseDistance < Ui:scaleDimension(125))
 
@@ -168,7 +169,7 @@ function UpgradeScreen:draw()
     --draw the guy standing on the platform here
 
     --upgrades
-    for i=1,4 do
+    for i=1,#upgrades do
         local upgradeX,upgradeY,_ = calculateUpgradePosition(i)
         local hilightLevel = 0 -- 0 for not hovering, 1 for hovering but too expensive, 2 for hovering and affordable
         if mouseX > upgradeX and mouseX < upgradeX + Ui:scaleDimension(200) and mouseY > upgradeY and mouseY < upgradeY + Ui:scaleDimension(130) then
@@ -182,6 +183,25 @@ function UpgradeScreen:draw()
     love.graphics.setColor(1,1,0)
     love.graphics.printf("Money: $XXXXX",fonts.impact75,moneyDisplayX,moneyDisplayY,Ui:scaleDimension(680),"center")
 
+end
+
+function UpgradeScreen:mousepressed(x,y,button)
+    if button == 1 then
+        for i=1,#upgrades do
+            local upgradeX,upgradeY,_ = calculateUpgradePosition(i)
+            if x > upgradeX and x < upgradeX + Ui:scaleDimension(200) and y > upgradeY and y < upgradeY + Ui:scaleDimension(130) then
+                --TODO check if affordable here, if so purchase the upgrade
+                upgrades[i].level = upgrades[i].level + 1
+            end
+        end
+        local guageX,guageY = Ui:scaleCoord(640,500)
+        local mouseDistance = math.sqrt((x-guageX)^2+(y-guageY)^2)
+        if(mouseDistance < Ui:scaleDimension(125)) then
+            --TODO start the next round
+            print("START!!!")
+            --eventualy: start the animation for starting the round
+        end
+    end
 end
 
 return UpgradeScreen
