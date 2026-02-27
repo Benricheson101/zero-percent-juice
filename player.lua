@@ -95,11 +95,12 @@ function Player.updateScale(newScale)
     Player.scale = newScale
     Player.imageScale = Player.scale * designScale
     Player.dim = Player.image:getHeight() * Player.imageScale
+
     Player.offsetX = (love.graphics.getWidth() - (designWidth * Player.scale)) / 2
     Player.offsetY = (love.graphics.getHeight() - (designHeight * Player.scale)) / 2
 
-    Player.posX = (Player.posX * (Player.scale / prevScale)) - prevOffsetX + Player.offsetX
-    Player.posY = (Player.posY * (Player.scale / prevScale)) - prevOffsetY + Player.offsetY
+    Player.posX = ((Player.posX - prevOffsetX) * (Player.scale / prevScale)) + Player.offsetX
+    Player.posY = ((Player.posY - prevOffsetY) * (Player.scale / prevScale)) + Player.offsetY
     Player.velocityY = Player.velocityY * (Player.scale / prevScale)
     Player.accelerationY = Player.accelerationY * (Player.scale / prevScale)
     Player.decelerationY = Player.decelerationY * (Player.scale / prevScale)

@@ -13,8 +13,8 @@ GameScene.__index = GameScene
 function GameScene:new()
     local o = setmetatable({}, self)
 
-    GameScene.scale = 1
-    GameScene:calculateScale()
+    o.scale = 1
+    o:calculateScale()
 
     Player.load(
         love.graphics.getWidth() * 0.2,
@@ -23,9 +23,9 @@ function GameScene:new()
         300,
         50,
         300,
-        GameScene.scale)
+        o.scale)
 
-    Background.load(GameScene.scale)
+    Background.load(o.scale)
 
     return o
 end
@@ -35,6 +35,7 @@ function GameScene:update(dt)
 end
 
 function GameScene:draw()
+    love.graphics.setColor(1, 1, 1)
     Background.draw()
     Player.draw()
 end
@@ -42,10 +43,10 @@ end
 -- Updates GameScene scale and passes new scale to all parts of the game
 function GameScene:reload()
 
-    GameScene:calculateScale()
+    self:calculateScale()
 
-    Player.updateScale(GameScene.scale)
-    Background.updateScale(GameScene.scale)
+    Player.updateScale(self.scale)
+    Background.updateScale(self.scale)
 
 end
 
@@ -56,7 +57,7 @@ function GameScene:calculateScale()
     local scaleX = newWidth / designWidth
     local scaleY = newHeight / designHeight
 
-    GameScene.scale = math.min(scaleX, scaleY)
+    self.scale = math.min(scaleX, scaleY)
 end
 
 return GameScene

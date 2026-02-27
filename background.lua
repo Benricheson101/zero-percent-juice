@@ -19,6 +19,17 @@ function Background.draw()
 
     love.graphics.draw(Background.image, Background.offsetX, Background.offsetY, 0, Background.scale, Background.scale)
 
+    love.graphics.setColor(0, 0, 1)
+    love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), Background.offsetY)
+    love.graphics.setColor(0, 1, 0)
+    love.graphics.rectangle("fill", 0, love.graphics.getHeight() - Background.offsetY, love.graphics.getWidth(), Background.offsetY)
+    love.graphics.setColor(1, 1, 0)
+    love.graphics.rectangle("fill", 0, 0, Background.offsetX, love.graphics.getHeight())
+    love.graphics.setColor(1, 0, 0)
+    love.graphics.rectangle("fill", love.graphics.getWidth() - Background.offsetX, 0, Background.offsetX, love.graphics.getHeight())
+
+    love.graphics.setColor(1, 1, 1)
+
 end
 
 -- Updates background scale
