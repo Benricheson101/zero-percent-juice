@@ -3,6 +3,7 @@ local Scene = require("renderer.scene")
 local fonts = require("util.fonts")
 local color = require("util.color")
 local upgrades = require("upgrades")
+local player = require("player")
 
 ---@class upgradeScreen : Scene
 local UpgradeScreen = {}
@@ -91,9 +92,9 @@ end
 --- @param hilighted number 0 for no hilight, 1 for slight hilight, 2 for full hilight
 local function drawUpgrade(index, hilighted)
     love.graphics.setColor(color.rgb(120,120,120))
-
+    --get the position of this pugrade
     local upgradeX,upgradeY,vslot = calculateUpgradePosition(index)
-
+    --main backgournd for this upgrade
     love.graphics.rectangle("fill",upgradeX,upgradeY,Ui:scaleDimension(200),Ui:scaleDimension(130))
     if hilighted == 0 then
         love.graphics.setColor(color.rgb(90,90,90))
@@ -103,6 +104,7 @@ local function drawUpgrade(index, hilighted)
             love.graphics.setColor(color.rgb(255,255,0))
         end
     end
+    --box lines
     love.graphics.setLineWidth(Ui:scaleDimension(3))
     love.graphics.rectangle("line",upgradeX,upgradeY,Ui:scaleDimension(200),Ui:scaleDimension(80))
     love.graphics.rectangle("line",upgradeX,upgradeY+Ui:scaleDimension(80),Ui:scaleDimension(100),Ui:scaleDimension(50))
@@ -117,7 +119,7 @@ local function drawUpgrade(index, hilighted)
 
     --draw sprite here
     upgrades[index]:draw(upgradeX,upgradeY,Ui:getScale())
-
+    --text for the boxes
     local titleX,titleY = Ui:scaleCoord(colOff,25+150*(vslot))
     local levelX,levelY = Ui:scaleCoord(colOff+3,25+150*(vslot)+95)
     local costX,costY = Ui:scaleCoord(colOff+103,25+150*(vslot)+95)
@@ -159,7 +161,7 @@ function UpgradeScreen:draw()
     love.graphics.rotate(math.rad(45))
     love.graphics.rectangle("fill",0,-Ui:scaleDimension(5),Ui:scaleDimension(100),Ui:scaleDimension(10))
     love.graphics.pop()
-
+    --supports 
     love.graphics.rectangle("fill",platformX+Ui:scaleDimension(40),love.graphics.getHeight()-Ui:scaleDimension(50),Ui:scaleDimension(10),Ui:scaleDimension(50))
     love.graphics.rectangle("fill",platformX+Ui:scaleDimension(310),love.graphics.getHeight()-Ui:scaleDimension(50),Ui:scaleDimension(10),Ui:scaleDimension(50))
     love.graphics.rectangle("fill",platformX+Ui:scaleDimension(575),love.graphics.getHeight()-Ui:scaleDimension(50),Ui:scaleDimension(10),Ui:scaleDimension(50))
@@ -173,32 +175,39 @@ function UpgradeScreen:draw()
         local upgradeX,upgradeY,_ = calculateUpgradePosition(i)
         local hilightLevel = 0 -- 0 for not hovering, 1 for hovering but too expensive, 2 for hovering and affordable
         if mouseX > upgradeX and mouseX < upgradeX + Ui:scaleDimension(200) and mouseY > upgradeY and mouseY < upgradeY + Ui:scaleDimension(130) then
-            hilightLevel = 1
-            --TODO check if affordable here, if so set hilightLevel to 2
+            if player.money >= upgrades[i]:getPrice() then
+                hilightLevel = 2
+            else
+                hilightLevel = 1
+            end
+            
         end
         drawUpgrade(i,hilightLevel)
     end
 
     local moneyDisplayX,moneyDisplayY = Ui:scaleCoord(300,10)
     love.graphics.setColor(1,1,0)
-    love.graphics.printf("Money: $XXXXX",fonts.impact75,moneyDisplayX,moneyDisplayY,Ui:scaleDimension(680),"center")
+    love.graphics.printf("Money: $"..player.money,fonts.impact75,moneyDisplayX,moneyDisplayY,Ui:scaleDimension(680),"center")
 
 end
 
 function UpgradeScreen:mousepressed(x,y,button)
     if button == 1 then
+        --check if an upgrade was clicked
         for i=1,#upgrades do
             local upgradeX,upgradeY,_ = calculateUpgradePosition(i)
             if x > upgradeX and x < upgradeX + Ui:scaleDimension(200) and y > upgradeY and y < upgradeY + Ui:scaleDimension(130) then
-                --TODO check if affordable here, if so purchase the upgrade
-                upgrades[i].level = upgrades[i].level + 1
+                if player.money >= upgrades[i]:getPrice() then
+                    player.money = player.money - upgrades[i]:getPrice()
+                    upgrades[i].level = upgrades[i].level + 1
+                end
             end
         end
+        --check if the pressure guage was clicked
         local guageX,guageY = Ui:scaleCoord(640,500)
         local mouseDistance = math.sqrt((x-guageX)^2+(y-guageY)^2)
         if(mouseDistance < Ui:scaleDimension(125)) then
-            --TODO start the next round
-            print("START!!!")
+            self.scene_manager:transition('game')
             --eventualy: start the animation for starting the round
         end
     end

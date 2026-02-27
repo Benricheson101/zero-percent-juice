@@ -72,4 +72,6 @@ function Player.draw()
     love.graphics.draw(Player.image, Player.posX, Player.posY, Player.rotation, 3, 3, Player.dim / 6, Player.dim / 6)
 end
 
+Player.money = 1000
+
 return Player
