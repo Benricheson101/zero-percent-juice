@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from main import app, get_db
+from leaderboard_api import app, get_db
 import sqlite3 as sql
 import pytest
 
