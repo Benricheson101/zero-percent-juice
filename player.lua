@@ -108,4 +108,6 @@ function Player.updateScale(newScale)
 
 end
 
+Player.money = 1000
+
 return Player
