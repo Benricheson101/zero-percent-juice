@@ -20,5 +20,17 @@ local upgrades = {
     end, function(level) return 250 * (level + 1) end),
 }
 
+---Get an upgrade by name
+---@param name string the name of the upgrade to find
+---@return Upgrade|nil the upgrade with the given name or nil if there is not upgrade with that name
+upgrades.getUpgrade = function(name)
+    for i = 1, #upgrades do
+        if upgrades[i].name == name then
+            return upgrades[i]
+        end
+    end
+    return nil
+end
+
 
 return upgrades
