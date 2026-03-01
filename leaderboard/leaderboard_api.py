@@ -17,12 +17,12 @@ class ScoreEntry(BaseModel):
 
 def get_db():
     # Checks if docker or local db exists
-    db_path = "/app/leaderboard_data.db" if os.path.exists(
-        "/app") else "leaderboard_data.db"
+    db_path = "data/leaderboard_data.db" if os.path.exists(
+        "/app") else "./data/leaderboard_data.db"
     conn = sql.connect(db_path)
     # Creates the table if it does not exist yet
     conn.execute(
-        "CREATE TABLE IF NOT EXISTS leaderboard (id INTEGER PRIMARY KEY, name TEXT, score INTEGER)")
+        "CREATE TABLE IF NOT EXISTS leaderboard (id INTEGER PRIMARY KEY, name TEXT NOT NULL, score INTEGER NOT NULL)")
     try:
         yield conn
     finally:
@@ -41,7 +41,8 @@ def get_leaderboard(db: sql.Connection = Depends(get_db)) -> List[dict]:
 @app.post("/score")
 def add_score(entry: ScoreEntry, db: sql.Connection = Depends(get_db)) -> List[dict]:
     if not entry.name.strip():
-        raise HTTPException(status_code=400, detail="Name cannot be empty or whitespace")
+        raise HTTPException(
+            status_code=400, detail="Name cannot be empty or whitespace")
     cursor = db.cursor()
     cursor.execute(
         "insert into leaderboard (name, score) values (?, ?)", (entry.name.strip(), entry.score))
