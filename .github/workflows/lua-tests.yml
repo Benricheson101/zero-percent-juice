@@ -1,4 +1,4 @@
-name: Tests
+name: Lua Unit Tests
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
     branches: [master]
 
 jobs:
-  test:
+  test-lua:
     runs-on: ubuntu-latest
 
     steps:
