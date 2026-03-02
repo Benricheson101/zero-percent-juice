@@ -1,5 +1,5 @@
 bin/
-*.db
+leaderboard/data
 .vscode
 .DS_STORE
 __pycache__
