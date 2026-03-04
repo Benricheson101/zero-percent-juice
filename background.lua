@@ -3,11 +3,11 @@ local Background = {}
 local designWidth = 1280
 local designHeight = 720
 
-function Background.load(scale)
+function Background.load(scale, offsetX, offsetY)
 
     Background.scale = scale
-    Background.offsetX = (love.graphics.getWidth() - (designWidth * Background.scale)) / 2
-    Background.offsetY = (love.graphics.getHeight() - (designHeight * Background.scale)) / 2
+    Background.offsetX = offsetX
+    Background.offsetY = offsetY
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
     Background.image = love.graphics.newImage("images/Background.png")
@@ -33,11 +33,11 @@ function Background.draw()
 end
 
 -- Updates background scale
-function Background.updateScale(newScale)
+function Background.updateScale(newScale, newOffsetX, newOffsetY)
 
     Background.scale = newScale
-    Background.offsetX = (love.graphics.getWidth() - (designWidth * Background.scale)) / 2
-    Background.offsetY = (love.graphics.getHeight() - (designHeight * Background.scale)) / 2
+    Background.offsetX = newOffsetX
+    Background.offsetY = newOffsetY
 
 end
 
