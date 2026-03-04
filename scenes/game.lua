@@ -20,8 +20,12 @@ function GameScene:new()
         love.graphics.getWidth() * 0.2,
         love.graphics.getHeight() / 2,
         0,
+        0,
+        300,
         300,
         50,
+        50,
+        300,
         300,
         o.scale)
 
@@ -58,6 +62,12 @@ function GameScene:calculateScale()
     local scaleY = newHeight / designHeight
 
     self.scale = math.min(scaleX, scaleY)
+end
+
+function GameScene:keypressed(key)
+
+    Player.keypressed(key)
+
 end
 
 return GameScene
