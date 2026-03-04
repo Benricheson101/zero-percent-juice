@@ -3,11 +3,11 @@ local Background = {}
 local designWidth = 1280
 local designHeight = 720
 
-function Background.load(scale, offsetX, offsetY)
+function Background.load(opts)
 
-    Background.scale = scale
-    Background.offsetX = offsetX
-    Background.offsetY = offsetY
+    Background.scale = opts.scale
+    Background.offsetX = opts.offsetX
+    Background.offsetY = opts.offsetY
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
     Background.image = love.graphics.newImage("images/Background.png")

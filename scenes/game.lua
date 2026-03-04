@@ -18,25 +18,25 @@ function GameScene:new()
     o.offsetY = 0
     o:calculateScale()
 
-    Player.load(
-        love.graphics.getWidth() * 0.2,
-        love.graphics.getHeight() / 2,
-        0,
-        0,
-        300,
-        300,
-        50,
-        50,
-        300,
-        300,
-        o.scale,
-        o.offsetX,
-        o.offsetY)
+    Player.load({
+        posX = love.graphics.getWidth() * 0.2,
+        posY = love.graphics.getHeight() / 2,
+        velocityX = 0,
+        velocityY = 0,
+        accelerationX = 300,
+        accelerationY = 300,
+        decelerationX = 50,
+        decelerationY = 50,
+        maxVelocityX = 300,
+        maxVelocityY = 300,
+        scale = o.scale,
+        offsetX = o.offsetX,
+        offsetY = o.offsetY})
 
-    Background.load(
-        o.scale,
-        o.offsetX,
-        o.offsetY)
+    Background.load({
+        scale = o.scale,
+        offsetX = o.offsetX,
+        offsetY = o.offsetY})
 
     return o
 end

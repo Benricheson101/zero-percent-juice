@@ -4,24 +4,22 @@ local designWidth = 1280
 local designHeight = 720
 local designScale = 5
 
-function Player.load(posX, posY, velocityX, velocityY, accelerationX, accelerationY, 
-                    decelerationX, decelerationY, maxVelocityX, maxVelocityY, scale,
-                    offsetX, offsetY)
+function Player.load(opts)
 
-    Player.posX = posX
-    Player.posY = posY
+    Player.posX = opts.posX
+    Player.posY = opts.posY
 
-    Player.velocityX = velocityX
-    Player.velocityY = velocityY
+    Player.velocityX = opts.velocityX
+    Player.velocityY = opts.velocityY
 
-    Player.accelerationX = accelerationX
-    Player.accelerationY = accelerationY
+    Player.accelerationX = opts.accelerationX
+    Player.accelerationY = opts.accelerationY
 
-    Player.decelerationX = decelerationX
-    Player.decelerationY = decelerationY
+    Player.decelerationX = opts.decelerationX
+    Player.decelerationY = opts.decelerationY
 
-    Player.maxVelocityX = maxVelocityX
-    Player.maxVelocityY = maxVelocityY
+    Player.maxVelocityX = opts.maxVelocityX
+    Player.maxVelocityY = opts.maxVelocityY
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
     Player.image = love.graphics.newImage("images/TempPlayer.png")
@@ -38,7 +36,7 @@ function Player.load(posX, posY, velocityX, velocityY, accelerationX, accelerati
     Player.dx = 0
     Player.dy = 0
 
-    Player.updateScale(scale, offsetX, offsetY)
+    Player.updateScale(opts.scale, opts.offsetX, opts.offsetY)
 
 end
 
