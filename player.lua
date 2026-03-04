@@ -1,3 +1,5 @@
+local Ui = require("util.ui")
+
 local Player = {}
 
 local designWidth = 1280
@@ -25,18 +27,11 @@ function Player.load(opts)
     Player.image = love.graphics.newImage("images/TempPlayer.png")
     love.graphics.setDefaultFilter('linear', 'linear')
 
-    Player.scale = 1
-    Player.imageScale = Player.scale * designScale
-    Player.dim = Player.image:getHeight() * Player.imageScale
+    Player.dim = Player.image:getHeight() * designScale
     Player.rotation = 0
-
-    Player.offsetX = 0
-    Player.offsetY = 0
 
     Player.dx = 0
     Player.dy = 0
-
-    Player.updateScale(opts.scale, opts.offsetX, opts.offsetY)
 
 end
 
@@ -86,6 +81,7 @@ function Player.updateVelocityY(dt)
     -- Changes player velocity when up/down or w/s is pressed
     Player.velocityY = Player.velocityY + (Player.accelerationY * dt * Player.dy)
 
+    -- Slowly decreases their velocity over time
     if Player.velocityY > 0 then
         Player.velocityY = Player.velocityY - Player.decelerationY * dt
         if Player.velocityY < 0 then
@@ -116,12 +112,12 @@ function Player.updatePosY(dt)
     Player.posY = Player.posY + Player.velocityY * dt
 
     -- If player reaches upper or lower bound of the game, they will stop and have their velocity set to 0
-    if Player.posY < ((Player.dim / 2) + Player.offsetY) then
-        Player.posY = (Player.dim / 2) + Player.offsetY
+    if Player.posY < ((Player.dim / 2)) then
+        Player.posY = (Player.dim / 2)
         Player.velocityY = 0
     end
-    if Player.posY > (((designHeight * Player.scale) - (Player.dim / 2)) + Player.offsetY) then
-        Player.posY = (((designHeight * Player.scale) - (Player.dim / 2)) + Player.offsetY)
+    if Player.posY > (((designHeight) - (Player.dim / 2))) then
+        Player.posY = (((designHeight) - (Player.dim / 2)))
         Player.velocityY = 0
     end
 
@@ -129,8 +125,10 @@ end
 
 
 function Player.draw()
-
-    love.graphics.draw(Player.image, Player.posX, Player.posY, Player.rotation, Player.imageScale, Player.imageScale, Player.image:getWidth() /2, Player.image:getHeight() / 2)
+    
+    local posX, posY = Ui:scaleCoord(Player.posX, Player.posY)
+    local scale = Ui:getScale()
+    love.graphics.draw(Player.image, posX, posY, Player.rotation, scale * designScale, scale * designScale, Player.image:getWidth() /2, Player.image:getHeight() / 2)
 
 end
 
@@ -154,34 +152,15 @@ function Player.keypressed(key)
 
 end
 
--- Updates player scale and all attributes that are affected by this new scale
-function Player.updateScale(newScale, newOffsetX, newOffsetY)
+function Player.keyreleased(key)
 
-    local prevScale = Player.scale
-    local prevOffsetX = Player.offsetX
-    local prevOffsetY = Player.offsetY
+    if key == "left" or key == "a" or key == "right" or key == "d" then
+        Player.dx = 0
+    end
 
-    Player.scale = newScale
-    Player.imageScale = Player.scale * designScale
-    Player.dim = Player.image:getHeight() * Player.imageScale
-
-    Player.offsetX = newOffsetX
-    Player.offsetY = newOffsetY
-
-    Player.posX = ((Player.posX - prevOffsetX) * (Player.scale / prevScale)) + Player.offsetX
-    Player.posY = ((Player.posY - prevOffsetY) * (Player.scale / prevScale)) + Player.offsetY
-
-    Player.velocityX = Player.velocityX * (Player.scale / prevScale)
-    Player.velocityY = Player.velocityY * (Player.scale / prevScale)
-
-    Player.accelerationX = Player.accelerationX * (Player.scale / prevScale)
-    Player.accelerationY = Player.accelerationY * (Player.scale / prevScale)
-
-    Player.decelerationX = Player.decelerationX * (Player.scale / prevScale)
-    Player.decelerationY = Player.decelerationY * (Player.scale / prevScale)
-
-    Player.maxVelocityX = Player.maxVelocityX * (Player.scale / prevScale)
-    Player.maxVelocityY = Player.maxVelocityY * (Player.scale / prevScale)
+    if key == "up" or key == "w" or key == "down" or key == "s" then
+        Player.dy = 0
+    end
 
 end
 
