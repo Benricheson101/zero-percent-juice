@@ -14,12 +14,12 @@ function love.load()
         loading = LoadingScreen:new()
     }
 
-    -- Initialize the Ui scaling factor
-    Ui:reload()
-    fonts:reload() -- load the fonts
-    --tmp
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
+
+    Ui:reload(w, h)
+    fonts:reload() -- load the fonts
+    --tmp
     love.window.updateMode(w, h, {resizable=true})
 
     --window icon
@@ -40,7 +40,7 @@ end
 
 function love.resize(w, h)
     --whe the window is resized, update the Ui scaling factor
-    Ui:reload()
+    Ui:reload(w, h)
     GameScene:reload()
     fonts:reload()--re sacle all the fonts
     scene_manager:resize(w, h)
