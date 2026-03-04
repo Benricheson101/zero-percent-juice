@@ -14,6 +14,8 @@ function GameScene:new()
     local o = setmetatable({}, self)
 
     o.scale = 1
+    o.offsetX = 0
+    o.offsetY = 0
     o:calculateScale()
 
     Player.load(
@@ -27,9 +29,14 @@ function GameScene:new()
         50,
         300,
         300,
-        o.scale)
+        o.scale,
+        o.offsetX,
+        o.offsetY)
 
-    Background.load(o.scale)
+    Background.load(
+        o.scale,
+        o.offsetX,
+        o.offsetY)
 
     return o
 end
@@ -49,8 +56,8 @@ function GameScene:reload()
 
     self:calculateScale()
 
-    Player.updateScale(self.scale)
-    Background.updateScale(self.scale)
+    Player.updateScale(self.scale, self.offsetX, self.offsetY)
+    Background.updateScale(self.scale, self.offsetX, self.offsetY)
 
 end
 
@@ -62,6 +69,9 @@ function GameScene:calculateScale()
     local scaleY = newHeight / designHeight
 
     self.scale = math.min(scaleX, scaleY)
+    self.offsetX = (love.graphics.getWidth() - (designWidth * self.scale)) / 2
+    self.offsetY = (love.graphics.getHeight() - (designHeight * self.scale)) / 2
+
 end
 
 function GameScene:keypressed(key)

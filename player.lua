@@ -5,7 +5,8 @@ local designHeight = 720
 local designScale = 5
 
 function Player.load(posX, posY, velocityX, velocityY, accelerationX, accelerationY, 
-                    decelerationX, decelerationY, maxVelocityX, maxVelocityY, scale)
+                    decelerationX, decelerationY, maxVelocityX, maxVelocityY, scale,
+                    offsetX, offsetY)
 
     Player.posX = posX
     Player.posY = posY
@@ -37,7 +38,7 @@ function Player.load(posX, posY, velocityX, velocityY, accelerationX, accelerati
     Player.dx = 0
     Player.dy = 0
 
-    Player.updateScale(scale)
+    Player.updateScale(scale, offsetX, offsetY)
 
 end
 
@@ -156,7 +157,7 @@ function Player.keypressed(key)
 end
 
 -- Updates player scale and all attributes that are affected by this new scale
-function Player.updateScale(newScale)
+function Player.updateScale(newScale, newOffsetX, newOffsetY)
 
     local prevScale = Player.scale
     local prevOffsetX = Player.offsetX
@@ -166,8 +167,8 @@ function Player.updateScale(newScale)
     Player.imageScale = Player.scale * designScale
     Player.dim = Player.image:getHeight() * Player.imageScale
 
-    Player.offsetX = (love.graphics.getWidth() - (designWidth * Player.scale)) / 2
-    Player.offsetY = (love.graphics.getHeight() - (designHeight * Player.scale)) / 2
+    Player.offsetX = newOffsetX
+    Player.offsetY = newOffsetY
 
     Player.posX = ((Player.posX - prevOffsetX) * (Player.scale / prevScale)) + Player.offsetX
     Player.posY = ((Player.posY - prevOffsetY) * (Player.scale / prevScale)) + Player.offsetY
