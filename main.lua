@@ -42,7 +42,7 @@ end
 
 function love.resize(w, h)
     --whe the window is resized, update the Ui scaling factor
-    Ui:reload()
+    Ui:reload(w, h)
     fonts:reload()--re sacle all the fonts
     scene_manager:resize(w, h)
 end
