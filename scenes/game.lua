@@ -13,19 +13,20 @@ GameScene.__index = GameScene
 function GameScene:new()
     local o = setmetatable({}, self)
 
-    o.scale = 1
-    o:calculateScale()
+    Player.load({
+        posX = love.graphics.getWidth() * 0.2,
+        posY = love.graphics.getHeight() / 2,
+        velocityX = 0,
+        velocityY = 0,
+        accelerationX = 300,
+        accelerationY = 300,
+        decelerationX = 50,
+        decelerationY = 50,
+        maxVelocityX = 300,
+        maxVelocityY = 300
+    })
 
-    Player.load(
-        love.graphics.getWidth() * 0.2,
-        love.graphics.getHeight() / 2,
-        0,
-        300,
-        50,
-        300,
-        o.scale)
-
-    Background.load(o.scale)
+    Background.load()
 
     return o
 end
@@ -40,24 +41,16 @@ function GameScene:draw()
     Player.draw()
 end
 
--- Updates GameScene scale and passes new scale to all parts of the game
-function GameScene:reload()
+function GameScene:keypressed(key)
 
-    self:calculateScale()
-
-    Player.updateScale(self.scale)
-    Background.updateScale(self.scale)
+    Player.keypressed(key)
 
 end
 
--- Similar to ui.lua, updates current scale to be as big as possible while still fitting on screen
-function GameScene:calculateScale()
-    local newWidth, newHeight = love.graphics.getDimensions()
+function GameScene:keyreleased(key)
 
-    local scaleX = newWidth / designWidth
-    local scaleY = newHeight / designHeight
+    Player.keyreleased(key)
 
-    self.scale = math.min(scaleX, scaleY)
 end
 
 return GameScene
