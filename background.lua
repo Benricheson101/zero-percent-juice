@@ -15,7 +15,8 @@ end
 
 function Background.draw()
 
-    love.graphics.draw(Background.image, Background.offsetX, Background.offsetY, 0, Background.scale, Background.scale)
+    local x, y = Ui:scaleCoord(0, 0)
+    love.graphics.draw(Background.image, x, y, 0, Ui.scale, Ui.scale)
 
     love.graphics.setColor(0, 0, 1)
     love.graphics.rectangle("fill", 0, 0, Ui:scaleDimension(designWidth), Ui.top)
