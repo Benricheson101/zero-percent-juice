@@ -3,8 +3,8 @@ local Player = require("player")
 local Camera = require("camera")
 local Background = require("background")
 
-local designWidth = 1280
-local designHeight = 720
+-- local designWidth = 1280
+-- local designHeight = 720
 
 ---@class GameScene : Scene
 local GameScene = {}

@@ -45,6 +45,7 @@ function Player.update(dt)
 	Player.rotation = (Player.rotation + (dt * 3)) % (2 * math.pi)
 end
 
+-- NOTE: This probably is a temp function, Camera will handle the x velocity
 function Player.updateVelocityX(dt)
 	-- Changes player velocity when left/right or a/d is pressed
 	Player.velocityX = Player.velocityX + (Player.accelerationX * dt * Player.dx)

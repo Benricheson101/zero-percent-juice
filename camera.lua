@@ -14,7 +14,7 @@ end
 function Camera.updateVelocityX(dt)
 	-- Deceleration
 	if Camera.velocityX > 0 then
-		Camera.velocityX = Camera.velocityX - Camera.decelerationX * dt
+		Camera.velocityX = Camera.velocityX - (Camera.decelerationX * dt)
 		if Camera.velocityX < 0 then
 			Camera.velocityX = 0
 		end
@@ -22,7 +22,7 @@ function Camera.updateVelocityX(dt)
 
 	-- Deceleration backwards
 	if Camera.velocityX < 0 then
-		Camera.velocityX = Camera.velocityX + Camera.decelerationX * dt
+		Camera.velocityX = Camera.velocityX + (Camera.decelerationX * dt)
 		if Camera.velocityX > 0 then
 			Camera.velocityX = 0
 		end
