@@ -41,7 +41,6 @@ local mainMenu = {
 function MainMenuScene:enter()
     for _, elem in ipairs(mainMenu) do
         elem.scene = self.scene_manager.active
-        elem.x = 50
     end
 end
 
@@ -49,18 +48,21 @@ function MainMenuScene:draw()
     love.graphics.clear(constants.colors.menu.bg)
 
     -- draw menu buttons
+    -- TODO: this scaling still feels a little off
 
     local start = 0.5 * Ui:getHeight()
-    local gap = 25
+    local gap = Ui:scaleDimension(25)
 
     for _, elem in ipairs(mainMenu) do
-        elem.x = Ui.centerX - math.floor(elem.canvas:getWidth() / 2)
+        local width, height = Ui:scaleDimension(elem.width, elem.height)
+
+        elem.x = Ui.centerX - math.floor(width / 2)
         elem.y = start
 
         local tlX = elem.x
         local tlY = elem.y
-        local brX = elem.canvas:getWidth() + tlX
-        local brY = elem.canvas:getHeight() + tlY
+        local brX = width + tlX
+        local brY = height + tlY
 
         elem.worldBounds = {
             {tlX, tlY},
@@ -75,7 +77,7 @@ function MainMenuScene:draw()
 
         love.graphics.draw(elem:draw(), tlX, tlY)
 
-        start = start + elem.canvas:getHeight() + gap
+        start = start + height + gap
     end
 end
 
