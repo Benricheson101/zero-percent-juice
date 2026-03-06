@@ -181,4 +181,6 @@ function Player.getVelocityX()
     return Player.velocityX
 end
 
+Player.money = 1000
+
 return Player

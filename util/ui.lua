@@ -1,5 +1,3 @@
--- uiUtill.lua
-
 -- The object that contains Ui scalling infomration
 --- @class Ui
 local Ui = {}
@@ -16,9 +14,9 @@ Ui.top = 0
 Ui.left = 0
 
 --- This function should be called whenever the window is resized to recalculate the scaling and positioning of the UI elements.
-function Ui:reload()
-    --get the current screen dimensions
-    local screenWidth, screenHeight = love.graphics.getDimensions()
+--- @param screenWidth number The current screen width
+--- @param screenHeight number The current screen height
+function Ui:reload(screenWidth, screenHeight)
     -- calculate the scale factor for each axis
     local scaleX = screenWidth / designWidth
     local scaleY = screenHeight / designHeight
@@ -34,7 +32,7 @@ end
 --- @param x number The x coordinate in the design space
 --- @param y number The y coordinate in the design space
 --- @return number,number .The scaled x and y coordinates on the screen
-function Ui:scaleCoord(x,y)
+function Ui:scaleCoord(x, y)
     local scaledX = self.left + x * self.scale
     local scaledY = self.top + y * self.scale
     return scaledX, scaledY

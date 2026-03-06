@@ -4,6 +4,7 @@ local SceneManager = require("renderer.scenemanager")
 
 local GameScene = require("scenes.game")
 local LoadingScreen = require("scenes.loadingScreen")
+local UpgradeScreen = require("scenes.upgradeScreen")
 
 ---@type SceneManager
 local scene_manager
@@ -11,15 +12,16 @@ local scene_manager
 function love.load()
     scene_manager = SceneManager:new {
         game = GameScene:new(),
-        loading = LoadingScreen:new()
+        loading = LoadingScreen:new(),
+        upgrade = UpgradeScreen:new()
     }
 
-    -- Initialize the Ui scaling factor
-    Ui:reload()
-    fonts:reload() -- load the fonts
-    --tmp
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
+
+    Ui:reload(w, h)
+    fonts:reload() -- load the fonts
+    --tmp
     love.window.updateMode(w, h, {resizable=true})
 
     --window icon
