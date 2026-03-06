@@ -5,7 +5,6 @@
 ---@field new fun(self: Scene): Scene
 ---@field enter fun(self: Scene)
 ---@field exit fun(self: Scene)
---
 ---@field update? fun(self: SceneManager, dt: number)
 ---@field draw? fun(self: SceneManager)
 ---@field keypressed? fun(self: SceneManager, key: string, scancode: string, isrepeat: boolean)
