@@ -1,7 +1,8 @@
 local Scene = require('renderer.scene')
 local UIButton = require('ui.button')
 local Ui = require('util.ui')
-local constants = require("util.constants")
+local constants = require('util.constants')
+local fonts = require('util.fonts')
 
 ---@class MainMenuScene : Scene
 local MainMenuScene = {}
@@ -49,6 +50,21 @@ function MainMenuScene:draw()
 
     -- draw menu buttons
     -- TODO: this scaling still feels a little off
+    -- TODO: set worldBounds in update() so it can be tested?
+
+    local titleText = 'Zero Percent Juice'
+    local titleFont = fonts.impact75
+
+    love.graphics.setFont(titleFont)
+    love.graphics.setColor(constants.colors.menu.button_fill)
+
+    love.graphics.printf(
+        titleText,
+        0,
+        math.floor(Ui:getHeight() * 0.25) - math.floor(titleFont:getHeight() / 2),
+        Ui:getWidth(),
+        'center'
+    )
 
     local start = 0.5 * Ui:getHeight()
     local gap = Ui:scaleDimension(25)
