@@ -35,6 +35,8 @@ function Player.load(opts)
 
 end
 
+-- Updates Player's velocity, position, and rotation
+--- @param dt number deltaTime
 function Player.update(dt)
 
     Player.updateVelocityX(dt)
@@ -47,6 +49,8 @@ function Player.update(dt)
 
 end
 
+-- Updates Player's X velocity
+--- @param dt number deltaTime
 function Player.updateVelocityX(dt)
 
     -- Changes player velocity when left/right or a/d is pressed
@@ -76,6 +80,8 @@ function Player.updateVelocityX(dt)
 
 end
 
+-- Updates Player's Y velocity
+--- @param dt number deltaTime
 function Player.updateVelocityY(dt)
 
     -- Changes player velocity when up/down or w/s is pressed
@@ -96,6 +102,7 @@ function Player.updateVelocityY(dt)
         end
     end
 
+    -- Caps player velocity
     if Player.velocityY > Player.maxVelocityY then
             Player.velocityY = Player.maxVelocityY
     end
@@ -106,6 +113,8 @@ function Player.updateVelocityY(dt)
 
 end
 
+-- Updates Player's Y position
+--- @param dt number deltaTime
 function Player.updatePosY(dt)
 
     -- Updates player position based on velocity and time
@@ -123,15 +132,15 @@ function Player.updatePosY(dt)
 
 end
 
-
+-- Scales and draws player sprite
 function Player.draw()
-    
     local posX, posY = Ui:scaleCoord(Player.posX, Player.posY)
     local scale = Ui:getScale()
     love.graphics.draw(Player.image, posX, posY, Player.rotation, scale * designScale, scale * designScale, Player.image:getWidth() /2, Player.image:getHeight() / 2)
-
 end
 
+-- Changes player movement direction when keys are pressed
+---@param key string key that was pressed
 function Player.keypressed(key)
 
     if key == "left" or key == "a" then
@@ -152,6 +161,8 @@ function Player.keypressed(key)
 
 end
 
+-- Sets player movement direction back to 0 when key is released
+---@param key string key that was released
 function Player.keyreleased(key)
 
     if key == "left" or key == "a" or key == "right" or key == "d" then
@@ -164,6 +175,8 @@ function Player.keyreleased(key)
 
 end
 
+-- Returns current x velocity
+--- @return number Player.velocityX current x velocity
 function Player.getVelocityX()
     return Player.velocityX
 end
