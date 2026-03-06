@@ -43,10 +43,17 @@ function Ui:scaleCoord(x, y)
 end
 
 --- Calculate the scaled dimension for a given size
---- @param dim number The dimension in the design space
---- @return number The scaled dimension on the screen
-function Ui:scaleDimension(dim)
-    return dim * self.scale
+--- @param ... number The dimension in the design space
+--- @return ...number The scaled dimension on the screen
+function Ui:scaleDimension(...)
+    local args = {...}
+    local scaled = {}
+
+    for i, dim in ipairs(args) do
+        scaled[i] = math.floor(dim * self.scale + 0.5)
+    end
+
+    return unpack(scaled)
 end
 
 --- Get the current scale factor

@@ -19,19 +19,17 @@ UIButton.__index = UIButton
 function UIButton:new(opts)
     local o = setmetatable({}, self)
 
-    local x, y = Ui:scaleCoord(opts.x or 0, opts.y or 0)
-    o.x = x
-    o.y = y
+    o.x = opts.x or 0
+    o.y = opts.y or 0
 
-    -- FIXME: resizing doesn't resize button canvas
-    local width, height = Ui:scaleCoord(opts.width, opts.height)
-    o.canvas = love.graphics.newCanvas(width, height)
+    o.width = opts.width or 0
+    o.height = opts.height or 0
     o.text = opts.text
     o.state = 'normal'
 
     o.worldBounds = {
         {o.x, o.y},
-        {o.canvas:getWidth() + o.x, o.canvas:getHeight() + o.y},
+        {o.width + o.x, o.height + o.y},
     }
 
     o.clickCallback = opts.onClick
@@ -40,7 +38,12 @@ function UIButton:new(opts)
 end
 
 function UIButton:draw()
-    self.canvas:renderTo(function ()
+    local width, height = Ui:scaleDimension(self.width, self.height)
+    local canvas = love.graphics.newCanvas(width, height)
+
+    canvas:renderTo(function ()
+        local strokeSize = Ui:scaleDimension(10)
+
         love.graphics.clear(
             self.state == 'hover'
             and constants.colors.menu.button_stroke_hover
@@ -50,10 +53,10 @@ function UIButton:draw()
         love.graphics.setColor(constants.colors.menu.button_bg)
         love.graphics.rectangle(
             'fill',
-            10,
-            10,
-            self.canvas:getWidth() - 20,
-            self.canvas:getHeight() - 20
+            strokeSize,
+            strokeSize,
+            width - strokeSize * 2,
+            height - strokeSize * 2
         )
 
         local font = fonts.tahoma30
@@ -63,14 +66,14 @@ function UIButton:draw()
         love.graphics.printf(
             self.text,
             0,
-            math.floor(self.canvas:getHeight() / 2) - math.floor(font:getHeight() / 2),
-            self.canvas:getWidth(),
+            math.floor(height / 2) - math.floor(font:getHeight() / 2),
+            width,
             'center'
         )
 
     end)
 
-    return self.canvas
+    return canvas
 end
 
 function UIButton:onclick(x, y)
