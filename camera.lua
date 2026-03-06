@@ -11,21 +11,7 @@ function Camera.load(Player)
 	Camera.decelerationX = Player.decelerationX
 end
 
-function Camera.update(dt)
-	Camera.xPos = Camera.xPos + Camera.velocityX * dt
-
-	-- NOTE:
-	-- Debug: making it possible to increase and decrease velocity
-	-- normally will be able to do this
-	if love.keyboard.isDown("=") then -- basically '+' without having to hit shift
-		-- print("Increasing vel:", Camera.velocityX)
-		Camera.velocityX = Camera.velocityX + 25
-	end
-	if love.keyboard.isDown("-") then
-		-- print("Decreasing vel:", Camera.velocityX)
-		Camera.velocityX = Camera.velocityX - 25
-	end
-
+function Camera.updateVelocityX(dt)
 	-- Deceleration
 	if Camera.velocityX > 0 then
 		Camera.velocityX = Camera.velocityX - Camera.decelerationX * dt
@@ -41,6 +27,24 @@ function Camera.update(dt)
 			Camera.velocityX = 0
 		end
 	end
+end
+
+function Camera.update(dt)
+	Camera.xPos = Camera.xPos + Camera.velocityX * dt
+
+	-- NOTE:
+	-- Debug: making it possible to increase and decrease velocity
+	-- normally we will be able to do this
+	if love.keyboard.isDown("=") then -- basically '+' without having to hit shift
+		-- print("Increasing vel:", Camera.velocityX)
+		Camera.velocityX = Camera.velocityX + 25
+	end
+	if love.keyboard.isDown("-") then
+		-- print("Decreasing vel:", Camera.velocityX)
+		Camera.velocityX = Camera.velocityX - 25
+	end
+
+	Camera.updateVelocityX(dt)
 
 	-- print("Current vel: ", Camera.velocityX)
 end

@@ -26,7 +26,7 @@ function love.load()
 	love.window.setIcon(love.image.newImageData("assets/logo.png"))
 	love.window.setTitle("Zero Percent Juice")
 
-	scene_manager:transition("loading")
+	scene_manager:transition("game")
 end
 
 function love.keypressed(key, ...)
@@ -41,7 +41,6 @@ end
 function love.resize(w, h)
 	--whe the window is resized, update the Ui scaling factor
 	Ui:reload()
-	GameScene:reload()
 	fonts:reload() --re sacle all the fonts
 	scene_manager:resize(w, h)
 end
