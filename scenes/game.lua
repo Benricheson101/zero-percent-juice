@@ -1,6 +1,7 @@
 local Scene = require("renderer.scene")
 local Player = require('player')
 local Background = require('background')
+local ObstacleSpawner = require('obstacleSpawner')
 
 local designWidth = 1280
 local designHeight = 720
@@ -28,22 +29,41 @@ function GameScene:new()
 
     Background.load()
 
+    ObstacleSpawner.load({
+        baseSpawnDistance = designWidth / 2,
+        baseVelocityX = 50
+    })
+
     return o
 end
 
 function GameScene:update(dt)
     Player.update(dt)
+    ObstacleSpawner.update(dt)
+
+    ObstacleSpawner.updateObstacleVelocityX(Player.getVelocityX())
+    if
+        ObstacleSpawner.checkCollision(
+            Player.posX,
+            Player.posY,
+            Player.dim
+        )
+    then
+        Player.changeVelocityX(-150)
+    end
 end
 
 function GameScene:draw()
     love.graphics.setColor(1, 1, 1)
     Background.draw()
     Player.draw()
+    ObstacleSpawner.draw()
 end
 
 function GameScene:keypressed(key)
 
     Player.keypressed(key)
+    ObstacleSpawner.keypressed(key)
 
 end
 
