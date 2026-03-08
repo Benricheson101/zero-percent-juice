@@ -45,11 +45,15 @@ function GameScene:draw()
 end
 
 function GameScene:keypressed(key)
-	Player.keypressed(key)
+
+    Player.keypressed(key)
+
 end
 
 function GameScene:keyreleased(key)
-	Player.keyreleased(key)
+
+    Player.keyreleased(key)
+
 end
 
 return GameScene

@@ -4,29 +4,31 @@ local SceneManager = require("renderer.scenemanager")
 
 local GameScene = require("scenes.game")
 local LoadingScreen = require("scenes.loadingScreen")
+local UpgradeScreen = require("scenes.upgradeScreen")
 
 ---@type SceneManager
 local scene_manager
 
 function love.load()
-	scene_manager = SceneManager:new({
-		game = GameScene:new(),
-		loading = LoadingScreen:new(),
-	})
+    scene_manager = SceneManager:new {
+        game = GameScene:new(),
+        loading = LoadingScreen:new(),
+        upgrade = UpgradeScreen:new()
+    }
 
-	-- Initialize the Ui scaling factor
-	Ui:reload()
-	fonts:reload() -- load the fonts
-	--tmp
-	local w = love.graphics.getWidth()
-	local h = love.graphics.getHeight()
-	love.window.updateMode(w, h, { resizable = true })
+    local w = love.graphics.getWidth()
+    local h = love.graphics.getHeight()
 
-	--window icon
-	love.window.setIcon(love.image.newImageData("assets/logo.png"))
-	love.window.setTitle("Zero Percent Juice")
+    Ui:reload(w, h)
+    fonts:reload() -- load the fonts
+    --tmp
+    love.window.updateMode(w, h, {resizable=true})
 
-	scene_manager:transition("game")
+    --window icon
+    love.window.setIcon(love.image.newImageData("assets/logo.png"))
+    love.window.setTitle("Zero Percent Juice")
+
+    scene_manager:transition('loading')
 end
 
 function love.keypressed(key, ...)

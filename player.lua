@@ -7,14 +7,21 @@ local designHeight = 720
 local designScale = 5
 
 function Player.load(opts)
-	Player.posX = opts.posX
-	Player.posY = opts.posY
 
-	Player.velocityX = opts.velocityX
-	Player.velocityY = opts.velocityY
+    Player.posX = opts.posX
+    Player.posY = opts.posY
 
-	Player.accelerationX = opts.accelerationX
-	Player.accelerationY = opts.accelerationY
+    Player.velocityX = opts.velocityX
+    Player.velocityY = opts.velocityY
+
+    Player.accelerationX = opts.accelerationX
+    Player.accelerationY = opts.accelerationY
+
+    Player.decelerationX = opts.decelerationX
+    Player.decelerationY = opts.decelerationY
+
+    Player.maxVelocityX = opts.maxVelocityX
+    Player.maxVelocityY = opts.maxVelocityY
 
 	Player.decelerationX = opts.decelerationX
 	Player.decelerationY = opts.decelerationY
@@ -186,5 +193,13 @@ end
 function Player.getVelocityX()
 	return Player.velocityX
 end
+
+-- Returns current x velocity
+--- @return number Player.velocityX current x velocity
+function Player.getVelocityX()
+    return Player.velocityX
+end
+
+Player.money = 1000
 
 return Player
