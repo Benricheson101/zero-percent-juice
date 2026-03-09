@@ -58,7 +58,7 @@ function BaseUIElement:isWithin(x, y)
         and y <= br_y
 end
 
----@param dt integer
+---@param dt number
 function BaseUIElement:update(dt)
 end
 

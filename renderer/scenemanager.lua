@@ -11,6 +11,7 @@
 ---@field mousepressed fun(self: SceneManager, x: number, y: number, button: number, istouch: boolean, presses: number)
 ---@field mousereleased fun(self: SceneManager, x: number, y: number, button: number, istouch: boolean, presses: number)
 ---@field resize fun(self: SceneManager, w: number, h: number)
+---@field textinput fun(self: SceneManager, str: string)
 local SceneManager = {}
 SceneManager.__index = SceneManager
 
@@ -59,6 +60,7 @@ local love_callbacks = {
     'mousepressed',
     'mousereleased',
     'resize',
+    'textinput',
 }
 
 for _, name in ipairs(love_callbacks) do

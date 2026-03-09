@@ -6,6 +6,7 @@ local GameScene = require("scenes.game")
 local LoadingScreen = require("scenes.loadingScreen")
 local UpgradeScreen = require("scenes.upgradeScreen")
 local MainMenuScene = require('scenes.mainmenu')
+local UITestScene = require('scenes.uitest')
 
 local START_SCENE = os.getenv('ZPJ_START_SCREEN') or 'loading'
 
@@ -18,6 +19,7 @@ function love.load()
         loading = LoadingScreen:new(),
         upgrade = UpgradeScreen:new(),
         mainmenu = MainMenuScene:new(),
+        uitest = UITestScene:new(),
     }
 
     local w = love.graphics.getWidth()
@@ -56,3 +58,4 @@ function love.update(...) scene_manager:update(...) end
 function love.keyreleased(...) scene_manager:keyreleased(...) end
 function love.mousepressed(...) scene_manager:mousepressed(...) end
 function love.mousereleased(...) scene_manager:mousereleased(...) end
+function love.textinput(...) scene_manager:textinput(...) end
