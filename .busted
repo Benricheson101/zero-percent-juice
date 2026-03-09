@@ -1,0 +1,7 @@
+return {
+    _all = {
+        helper = './spec/helper.lua'
+    }
+}
+
+-- vim: ft=lua ts=4 sw=4

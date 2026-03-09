@@ -12,6 +12,8 @@ Ui.centerX = designWidth / 2
 Ui.centerY = designHeight / 2
 Ui.top = 0
 Ui.left = 0
+Ui.screenWidth = designWidth
+Ui.screenHeight = designHeight
 
 --- This function should be called whenever the window is resized to recalculate the scaling and positioning of the UI elements.
 --- @param screenWidth number The current screen width
@@ -26,6 +28,8 @@ function Ui:reload(screenWidth, screenHeight)
     self.centerY = screenHeight / 2
     self.top = self.centerY - (designHeight * self.scale) / 2
     self.left = self.centerX - (designWidth * self.scale) / 2
+    self.screenWidth = screenWidth
+    self.screenHeight = screenHeight
 end
 
 --- Calculate the scaled on screen coordinate for a given position
@@ -39,16 +43,35 @@ function Ui:scaleCoord(x, y)
 end
 
 --- Calculate the scaled dimension for a given size
---- @param dim number The dimension in the design space
---- @return number The scaled dimension on the screen
-function Ui:scaleDimension(dim)
-    return dim * self.scale
+--- @param ... number The dimension in the design space
+--- @return ...number The scaled dimension on the screen
+function Ui:scaleDimension(...)
+    local args = {...}
+    local scaled = {}
+
+    for i, dim in ipairs(args) do
+        scaled[i] = math.floor(dim * self.scale + 0.5)
+    end
+
+    return unpack(scaled)
 end
 
 --- Get the current scale factor
 --- @return number The current scale factor
 function Ui:getScale()
     return self.scale
+end
+
+---Get the screen width
+---@return number
+function Ui:getWidth()
+    return self.screenWidth
+end
+
+---Get the screen height
+---@return number
+function Ui:getHeight()
+    return self.screenHeight
 end
 
 return Ui

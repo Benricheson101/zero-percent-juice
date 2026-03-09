@@ -40,6 +40,19 @@ function Player.load(opts)
 	Player.dy = 0
 
 	-- Player.updateScale(scale)
+    Player.showHitboxes = false
+
+    Player.directionKeys = {
+        up = false,
+        down = false,
+        left = false,
+        right = false,
+        w = false,
+        a = false,
+        s = false,
+        d = false
+    }
+
 end
 
 -- Updates Player's velocity, position, and rotation
@@ -48,7 +61,15 @@ function Player.update(dt)
 	-- Player.updateVelocityX(dt)
 	Player.updateVelocityY(dt)
 
-	Player.updatePosY(dt)
+    Player.setDirection()
+
+    Player.updateVelocityX(dt)
+    Player.updateVelocityY(dt)
+
+    Player.updatePosY(dt)
+
+    -- Slowly rotates player
+    Player.rotation = (Player.rotation + (dt * 3)) % (2 * math.pi)
 
 	-- Slowly rotates player
 	Player.rotation = (Player.rotation + (dt * 3)) % (2 * math.pi)
@@ -154,26 +175,26 @@ function Player.draw()
     local posX, posY = Ui:scaleCoord(Player.posX, Player.posY)
     local scale = Ui:getScale()
     love.graphics.draw(Player.image, posX, posY, Player.rotation, scale * designScale, scale * designScale, Player.image:getWidth() /2, Player.image:getHeight() / 2)
+
+    if Player.showHitboxes then
+        love.graphics.setColor(1, 0, 0)
+        love.graphics.circle("fill", posX, posY, Player.image:getWidth() * scale * designScale / 2)
+    end
 end
 
 -- Changes player movement direction when keys are pressed
+-- Also shows player's hitbox when h is pressed
 ---@param key string key that was pressed
 function Player.keypressed(key)
-	if key == "left" or key == "a" then
-		Player.dx = -1
-	elseif key == "right" or key == "d" then
-		Player.dx = 1
-	else
-		Player.dx = 0
-	end
+        
+    if Player.directionKeys[key] ~= nil then
+        Player.directionKeys[key] = true
+    end
 
-	if key == "up" or key == "w" then
-		Player.dy = -1
-	elseif key == "down" or key == "s" then
-		Player.dy = 1
-	else
-		Player.dy = 0
-	end
+    if key == "h" then
+        Player.showHitboxes = not Player.showHitboxes
+    end
+
 end
 
 -- Sets player movement direction back to 0 when key is released
@@ -183,21 +204,63 @@ function Player.keyreleased(key)
 		Player.dx = 0
 	end
 
-	if key == "up" or key == "w" or key == "down" or key == "s" then
-		Player.dy = 0
-	end
+    if Player.directionKeys[key] ~= nil then
+        Player.directionKeys[key] = false
+    end
+
 end
 
--- Returns current x velocity
---- @return number Player.velocityX current x velocity
-function Player.getVelocityX()
-	return Player.velocityX
+function Player.setDirection()
+
+    local dx, dy = 0, 0
+
+    if Player.directionKeys["up"] or Player.directionKeys["w"] then
+        dy = dy - 1
+    end
+    if Player.directionKeys["down"] or Player.directionKeys["s"] then
+        dy = dy + 1
+    end
+
+    if Player.directionKeys["left"] or Player.directionKeys["a"] then
+        dx = dx - 1
+    end
+    if Player.directionKeys["right"] or Player.directionKeys["d"] then
+        dx = dx + 1
+    end
+
+    Player.dx = dx
+    Player.dy = dy
+
 end
+
+
 
 -- Returns current x velocity
 --- @return number Player.velocityX current x velocity
 function Player.getVelocityX()
     return Player.velocityX
+end
+
+function Player.changeVelocityX(changeX)
+
+    local newX = Player.velocityX + changeX
+
+    if newX > Player.maxVelocityX then
+        newX = Player.maxVelocityX
+    end
+    if newX < (-1 * Player.maxVelocityX) then
+        newX = -1 * Player.maxVelocityX
+    end
+
+    if Player.velocityX > 0 and newX < 0 then
+        newX = 0
+    end
+    if Player.velocityX < 0 and newX > 0 then
+        newX = 0
+    end
+
+    Player.velocityX = newX
+
 end
 
 Player.money = 1000

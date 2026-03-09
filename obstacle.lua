@@ -1,0 +1,63 @@
+local Ui = require('util.ui')
+
+Obstacle = {}
+Obstacle.__index = Obstacle
+
+local designWidth = 1280
+local designHeight = 720
+local designScale = 5
+
+function Obstacle.new(opts)
+
+    local self = setmetatable({}, Obstacle)
+
+    self.posX = opts.posX
+    self.posY = opts.posY
+    self.velocityX = opts.velocityX
+
+    love.graphics.setDefaultFilter('nearest', 'nearest')
+    self.image = love.graphics.newImage("images/Obstacle.png")
+    love.graphics.setDefaultFilter('linear', 'linear')
+
+    self.dim = self.image:getHeight() * designScale
+    self.rotation = 0
+
+    self.showHitboxes = false
+
+    return self
+
+end
+
+-- Moves and rotates the obstacle based on the deltaTime
+--- @param dt number deltaTime
+function Obstacle:update(dt)
+
+    self.posX = self.posX - (self.velocityX * dt)
+
+    self.rotation = (self.rotation + (dt * 1.5)) % (2 * math.pi)
+
+end
+
+-- Scales and draws each obstacle
+function Obstacle:draw()
+
+    local posX, posY = Ui:scaleCoord(self.posX, self.posY)
+    local scale = Ui:getScale()
+    love.graphics.draw(self.image, posX, posY, self.rotation, scale * designScale, scale * designScale, self.image:getWidth() /2, self.image:getHeight() / 2)
+
+    if self.showHitboxes then
+        love.graphics.setColor(1, 0, 0)
+        love.graphics.circle("fill", posX, posY, self.image:getWidth() * scale * designScale / 2)
+    end
+
+end
+
+-- Sets the obstacle's Y position
+--- @param newPosY number new Y position
+function Obstacle:setPosY(newPosY)
+
+    self.posY = newPosY
+
+end
+
+return Obstacle
