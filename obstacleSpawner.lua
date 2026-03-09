@@ -16,6 +16,9 @@ function ObstacleSpawner.load(opts)
 
 end
 
+-- Spawns in obstacles at a random position offscreen after the player has traveled a certain distance
+-- Deletes obstacles if they travel to the left offscreen
+--- @param dt number deltaTime
 function ObstacleSpawner.update(dt)
 
     ObstacleSpawner.spawnDistance = ObstacleSpawner.spawnDistance - (ObstacleSpawner.velocityX * dt)
@@ -33,6 +36,7 @@ function ObstacleSpawner.update(dt)
 
 end
 
+-- Draws each obstacle
 function ObstacleSpawner.draw()
 
     for i = #Obstacles, 1, -1 do
@@ -41,6 +45,8 @@ function ObstacleSpawner.draw()
 
 end
 
+-- Shows hitboxes of obstacles when h key is pressed
+--- @param key string key that was pressed
 function ObstacleSpawner.keypressed(key)
 
     if key == "h" then
@@ -52,6 +58,8 @@ function ObstacleSpawner.keypressed(key)
 
 end
 
+-- Spawns an obstacle offscreen at a certain Y position
+--- @param spawnPosY number the y posiiton of the new object
 function ObstacleSpawner.spawn(spawnPosY)
 
     local o = Obstacle.new({
@@ -64,6 +72,13 @@ function ObstacleSpawner.spawn(spawnPosY)
 
 end
 
+-- Checks if any obstacles are colliding with another object
+-- If a collision is detected, remove that obstacle and return true
+-- else, return false
+--- @param posX number the object's X position (center)
+--- @param posY number the object's Y position (center)
+--- @param dim number the distance from the center of the object to the edge
+--- @return boolean collisionDetected whether a collision has been detected or not
 function ObstacleSpawner.checkCollision(posX, posY, dim)
 
     local collisionDetected = false
@@ -81,6 +96,9 @@ function ObstacleSpawner.checkCollision(posX, posY, dim)
 
 end
 
+-- Updates velocityX to be the baseVelocityX plus the newVelocityX
+-- then, updates the velocityX of each obstacle to this new value
+--- @param newVelocityX number how much x velocity the objects should be at above the base x velocity
 function ObstacleSpawner.updateObstacleVelocityX(newVelocityX)
 
     ObstacleSpawner.velocityX = ObstacleSpawner.baseVelocityX + newVelocityX

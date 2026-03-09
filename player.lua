@@ -160,6 +160,7 @@ function Player.draw()
 end
 
 -- Changes player movement direction when keys are pressed
+-- Also shows player's hitbox when h is pressed
 ---@param key string key that was pressed
 function Player.keypressed(key)
         

@@ -28,6 +28,8 @@ function Obstacle.new(opts)
 
 end
 
+-- Moves and rotates the obstacle based on the deltaTime
+--- @param dt number deltaTime
 function Obstacle:update(dt)
 
     self.posX = self.posX - (self.velocityX * dt)
@@ -36,6 +38,7 @@ function Obstacle:update(dt)
 
 end
 
+-- Scales and draws each obstacle
 function Obstacle:draw()
 
     local posX, posY = Ui:scaleCoord(self.posX, self.posY)
@@ -49,6 +52,8 @@ function Obstacle:draw()
 
 end
 
+-- Sets the obstacle's Y position
+--- @param newPosY number new Y position
 function Obstacle:setPosY(newPosY)
 
     self.posY = newPosY
