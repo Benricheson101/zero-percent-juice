@@ -39,7 +39,7 @@ function LoadingScreen:draw()
 
     --if we reached the end of the loading, go to the next screen
     if percent <= -0.1 then
-        self.scene_manager:transition('upgrade')
+        self.scene_manager:transition('mainmenu')
     end
 
 	--draw the background rectanlge that does down
