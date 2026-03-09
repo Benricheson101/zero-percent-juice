@@ -54,6 +54,7 @@ function BaseUIElement:isWithin(x, y)
 end
 
 ---@param dt integer
-function BaseUIElement:update(dt) end
+function BaseUIElement:update(dt)
+end
 
 return BaseUIElement

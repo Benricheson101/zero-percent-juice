@@ -11,6 +11,7 @@ function fonts:reload()
     self.impact75 = love.graphics.newFont('assets/fonts/impact.ttf', 75 * scale)
     self.tahoma30 = love.graphics.newFont('assets/fonts/tahoma.ttf', 30 * scale)
     self.tahoma14 = love.graphics.newFont('assets/fonts/tahoma.ttf', 14 * scale)
+    self.tahoma40 = love.graphics.newFont('assets/fonts/tahoma.ttf', 40 * scale)
 end
 
 return fonts

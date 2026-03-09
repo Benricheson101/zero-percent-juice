@@ -9,5 +9,10 @@ return {
             button_stroke_hover = c.hex(0xF39B64),
             button_fill = c.hex(0xFFFFFF),
         },
+
+        textbox = {
+            bg = c.hex(0xFFFFFF),
+            caret = c.hex(0x212121),
+        },
     },
 }
