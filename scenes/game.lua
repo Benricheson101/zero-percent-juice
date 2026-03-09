@@ -46,7 +46,8 @@ function GameScene:update(dt)
 
 	ObstacleSpawner.updateObstacleVelocityX(Player.getVelocityX())
 	if ObstacleSpawner.checkCollision(Player.posX, Player.posY, Player.dim) then
-		Player.changeVelocityX(-150)
+		-- Camera now to handle x velocity
+		Camera.changeVelocityX(-150)
 	end
 end
 

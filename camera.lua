@@ -9,6 +9,9 @@ function Camera.load(Player)
 	Camera.velocityX = Player.maxVelocityX
 	-- Same thing for deceleration
 	Camera.decelerationX = Player.decelerationX
+
+	Camera.maxVelocityX = Player.maxVelocityX
+	Camera.maxVelocityY = Player.maxVelocityY
 end
 
 function Camera.updateVelocityX(dt)
@@ -51,6 +54,27 @@ end
 
 -- Similar stucture to AS would have the collision loss here but that is
 -- not implemented yet (hence, leaving it out for now)
+
+function Camera.changeVelocityX(changeX)
+	local newX = Camera.velocityX + changeX
+
+	if newX > Camera.maxVelocityX then
+		newX = Camera.maxVelocityX
+	end
+
+	if Camera.velocityX > 0 and newX < 0 then
+		newX = 0
+	end
+
+	if newX < 0 then
+		newX = 0
+	end
+
+	Camera.velocityX = newX
+
+	print("Cam Vel X:", Camera.velocityX)
+	print("newX:", newX)
+end
 
 -- Also would do upgrade stuff here same as above
 -- Would also do similar thing where player has the data and we just
