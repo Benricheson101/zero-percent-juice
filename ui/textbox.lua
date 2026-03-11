@@ -9,6 +9,9 @@ local fonts = require('util.fonts')
 ---@field blinkRate number frequency of blink cycle
 ---@field blinkTime number elapsed time since blink cycle started
 ---@field caretVisible boolean
+---@field onSubmit fun(self: UITextbox, value: string)
+---@field onInput fun(self: UITextbox, value: string)
+---@field placeholder string
 local UITextbox = {}
 setmetatable(UITextbox, {__index = BaseUIElement})
 UITextbox.__index = UITextbox
@@ -18,6 +21,9 @@ UITextbox.__index = UITextbox
 ---@field value? string
 ---@field focused? boolean
 ---@field blinkRate? number frequency of cursor blink (hz)
+---@field onSubmit fun(self: UITextbox, value: string)
+---@field onInput? fun(self: UITextbox, value: string)
+---@field placeholder? string
 
 ---@param opts UITextboxOptions
 function UITextbox:new(opts)
@@ -33,6 +39,11 @@ function UITextbox:new(opts)
     o.caretVisible = true
 
     o.value = opts.value or ""
+    o.onSubmit = opts.onSubmit
+    o.focused = opts.focused
+    o.placeholder = opts.placeholder or ""
+
+    o.onInput = opts.onInput or function() end
 
     return o
 end
@@ -57,9 +68,13 @@ function UITextbox:draw()
         local str = wrapped[1]:reverse()
 
         love.graphics.setFont(font)
-        love.graphics.setColor(0x00, 0x00, 0xff)
+        love.graphics.setColor(
+            #self.value == 0
+                and constants.colors.textbox.placeholder
+                or constants.colors.textbox.caret
+        )
         love.graphics.printf(
-            str,
+            #self.value == 0 and self.placeholder or str,
             padding,
             (math.floor(height / 2) - math.floor(font:getHeight() / 2)),
             width - padding * 2,
@@ -84,12 +99,40 @@ function UITextbox:draw()
 end
 
 function UITextbox:update(dt)
+    if not self.focused then
+        self.caretVisible = false
+        return
+    end
+
     if self.blinkRate ~= 0 then
         self.blinkTime = self.blinkTime + dt
         if self.blinkTime >= self.blinkRate then
             self.caretVisible = not self.caretVisible
             self.blinkTime = 0
         end
+    end
+end
+
+function UITextbox:keypressed(key)
+    if not self.focused then
+        return
+    end
+
+    if key == "backspace" then
+        self.value = self.value:sub(1, -2)
+    elseif key == "return" then
+        self:onSubmit(self.value)
+    else
+        return
+    end
+
+    self:onInput(self.value)
+end
+
+function UITextbox:textinput(str)
+    if self.focused then
+        self.value = self.value .. str
+        self:onInput(self.value)
     end
 end
 

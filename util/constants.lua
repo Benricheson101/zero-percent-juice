@@ -13,6 +13,7 @@ return {
         textbox = {
             bg = c.hex(0xFFFFFF),
             caret = c.hex(0x212121),
+            placeholder = c.hex(0x8c8c8c),
         },
     },
 }
