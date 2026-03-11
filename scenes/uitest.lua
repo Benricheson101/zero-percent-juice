@@ -25,7 +25,7 @@ function UITestScene:enter()
             self.input = value
         end,
 
-        onInput = function (tb, value)
+        onInput = function (_, value)
             self.liveInput = value
         end
     }
