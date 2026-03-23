@@ -2,7 +2,7 @@ local Ui = require("util.ui")
 
 local Player = {}
 
-local designWidth = 1280
+-- local designWidth = 1280
 local designHeight = 720
 local designScale = 5
 
@@ -23,16 +23,23 @@ function Player.load(opts)
     Player.maxVelocityX = opts.maxVelocityX
     Player.maxVelocityY = opts.maxVelocityY
 
-    love.graphics.setDefaultFilter('nearest', 'nearest')
-    Player.image = love.graphics.newImage("images/TempPlayer.png")
-    love.graphics.setDefaultFilter('linear', 'linear')
+	Player.decelerationX = opts.decelerationX
+	Player.decelerationY = opts.decelerationY
 
-    Player.dim = Player.image:getHeight() * designScale
-    Player.rotation = 0
+	Player.maxVelocityX = opts.maxVelocityX
+	Player.maxVelocityY = opts.maxVelocityY
 
-    Player.dx = 0
-    Player.dy = 0
+	love.graphics.setDefaultFilter("nearest", "nearest")
+	Player.image = love.graphics.newImage("images/TempPlayer.png")
+	love.graphics.setDefaultFilter("linear", "linear")
 
+	Player.dim = Player.image:getHeight() * designScale
+	Player.rotation = 0
+
+	Player.dx = 0
+	Player.dy = 0
+
+	-- Player.updateScale(scale)
     Player.showHitboxes = false
 
     Player.directionKeys = {
@@ -51,6 +58,8 @@ end
 -- Updates Player's velocity, position, and rotation
 --- @param dt number deltaTime
 function Player.update(dt)
+	-- Player.updateVelocityX(dt)
+	Player.updateVelocityY(dt)
 
     Player.setDirection()
 
@@ -62,54 +71,64 @@ function Player.update(dt)
     -- Slowly rotates player
     Player.rotation = (Player.rotation + (dt * 3)) % (2 * math.pi)
 
+	-- Slowly rotates player
+	Player.rotation = (Player.rotation + (dt * 3)) % (2 * math.pi)
 end
 
+-- NOTE: This probably is a temp function, Camera will handle the x velocity
 -- Updates Player's X velocity
 --- @param dt number deltaTime
 function Player.updateVelocityX(dt)
+	-- Changes player velocity when left/right or a/d is pressed
+	Player.velocityX = Player.velocityX + (Player.accelerationX * dt * Player.dx)
 
-    -- Changes player velocity when left/right or a/d is pressed
-    Player.velocityX = Player.velocityX + (Player.accelerationX * dt * Player.dx)
+	-- Slowly decreases their velocity over time
+	if Player.velocityX > 0 then
+		Player.velocityX = Player.velocityX - Player.decelerationX * dt
+		if Player.velocityX < 0 then
+			Player.velocityX = 0
+		end
+	end
+	if Player.velocityX < 0 then
+		Player.velocityX = Player.velocityX + Player.decelerationX * dt
+		if Player.velocityX > 0 then
+			Player.velocityX = 0
+		end
+	end
 
-    -- Slowly decreases their velocity over time
-    if Player.velocityX > 0 then
-        Player.velocityX = Player.velocityX - Player.decelerationX * dt
-        if Player.velocityX < 0 then
-            Player.velocityX = 0
-        end
-    end
-    if Player.velocityX < 0 then
-        Player.velocityX = Player.velocityX + Player.decelerationX * dt
-        if Player.velocityX > 0 then
-            Player.velocityX = 0
-        end
-    end
-
-    -- Caps player velocity
-    if Player.velocityX > Player.maxVelocityX then
-            Player.velocityX = Player.maxVelocityX
-    end
-    if Player.velocityX < (Player.maxVelocityX * -1) then
-            Player.velocityX = (Player.maxVelocityX * -1)
-    end
-
+	-- Caps player velocity
+	-- if Player.velocityX > Player.maxVelocityX then
+	--         Player.velocityX = Player.maxVelocityX
+	-- end
+	-- if Player.velocityX < (Player.maxVelocityX * -1) then
+	--         Player.velocityX = (Player.maxVelocityX * -1)
+	-- end
 end
 
 -- Updates Player's Y velocity
 --- @param dt number deltaTime
 function Player.updateVelocityY(dt)
+	-- Changes player velocity when up/down or w/s is pressed
+	Player.velocityY = Player.velocityY + (Player.accelerationY * dt * Player.dy)
 
-    -- Changes player velocity when up/down or w/s is pressed
-    Player.velocityY = Player.velocityY + (Player.accelerationY * dt * Player.dy)
+	-- Slowly decreases their velocity over time
+	if Player.velocityY > 0 then
+		Player.velocityY = Player.velocityY - Player.decelerationY * dt
+		if Player.velocityY < 0 then
+			Player.velocityY = 0
+		end
+	end
 
-    -- Slowly decreases their velocity over time
-    if Player.velocityY > 0 then
-        Player.velocityY = Player.velocityY - Player.decelerationY * dt
-        if Player.velocityY < 0 then
-            Player.velocityY = 0
-        end
-    end
+	if Player.velocityY < 0 then
+		Player.velocityY = Player.velocityY + Player.decelerationY * dt
+		if Player.velocityY > 0 then
+			Player.velocityY = 0
+		end
+	end
 
+	-- if Player.velocityY > Player.maxVelocityY then
+	--         Player.velocityY = Player.maxVelocityY
+	-- end
     if Player.velocityY < 0 then
         Player.velocityY = Player.velocityY + Player.decelerationY * dt
         if Player.velocityY > 0 then
@@ -126,25 +145,29 @@ function Player.updateVelocityY(dt)
             Player.velocityY = (Player.maxVelocityY * -1)
     end
 
+	-- if Player.velocityY < (Player.maxVelocityY * -1) then
+	--         Player.velocityY = (Player.maxVelocityY * -1)
+	-- end
 end
 
 -- Updates Player's Y position
 --- @param dt number deltaTime
 function Player.updatePosY(dt)
+	-- Updates player position based on velocity and time
+	Player.posY = Player.posY + Player.velocityY * dt
 
-    -- Updates player position based on velocity and time
-    Player.posY = Player.posY + Player.velocityY * dt
+	-- If player reaches upper or lower bound of the game, they will stop and have their velocity set to 0
+	if Player.posY < (Player.dim / 2) then
+		Player.posY = (Player.dim / 2)
+		Player.velocityY = 0
+	end
+	if Player.posY > (designHeight - (Player.dim / 2)) then
+		Player.posY = (designHeight - (Player.dim / 2))
+		Player.velocityY = 0
+	end
 
-    -- If player reaches upper or lower bound of the game, they will stop and have their velocity set to 0
-    if Player.posY < ((Player.dim / 2)) then
-        Player.posY = (Player.dim / 2)
-        Player.velocityY = 0
-    end
-    if Player.posY > (((designHeight) - (Player.dim / 2))) then
-        Player.posY = (((designHeight) - (Player.dim / 2)))
-        Player.velocityY = 0
-    end
-
+	-- Slowly rotates player
+	Player.rotation = (Player.rotation + (dt * 3)) % (2 * math.pi)
 end
 
 -- Scales and draws player sprite
@@ -177,6 +200,9 @@ end
 -- Sets player movement direction back to 0 when key is released
 ---@param key string key that was released
 function Player.keyreleased(key)
+	if key == "left" or key == "a" or key == "right" or key == "d" then
+		Player.dx = 0
+	end
 
     if Player.directionKeys[key] ~= nil then
         Player.directionKeys[key] = false
