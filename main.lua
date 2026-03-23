@@ -33,7 +33,7 @@ function love.load()
 	love.window.setIcon(love.image.newImageData("assets/logo.png"))
 	love.window.setTitle("Zero Percent Juice")
 
-	scene_manager:transition("game")
+	scene_manager:transition(START_SCENE)
 end
 
 function love.keypressed(key, ...)
