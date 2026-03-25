@@ -23,8 +23,8 @@ function BaseUIElement:new(opts)
     o.width = opts.width or 0
     o.height = opts.height or 0
     o.worldBounds = {
-        {o.x, o.y},
-        {o.width + o.x, o.height + o.y},
+        { o.x, o.y },
+        { o.width + o.x, o.height + o.y },
     }
 
     return o
@@ -37,13 +37,11 @@ end
 
 ---@param x integer
 ---@param y integer
-function BaseUIElement:hover(x, y)
-end
+function BaseUIElement:hover(x, y) end
 
 ---@param x integer
 ---@param y integer
-function BaseUIElement:onclick(x, y)
-end
+function BaseUIElement:onclick(x, y) end
 
 ---@param x integer
 ---@param y integer
@@ -52,14 +50,10 @@ function BaseUIElement:isWithin(x, y)
     local tl_x, tl_y = unpack(self.worldBounds[1])
     local br_x, br_y = unpack(self.worldBounds[2])
 
-    return x >= tl_x
-        and x <= br_x
-        and y >= tl_y
-        and y <= br_y
+    return x >= tl_x and x <= br_x and y >= tl_y and y <= br_y
 end
 
 ---@param dt integer
-function BaseUIElement:update(dt)
-end
+function BaseUIElement:update(dt) end
 
 return BaseUIElement

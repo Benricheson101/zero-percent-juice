@@ -1,4 +1,3 @@
-
 --- @class Upgrade
 --- @field name string The name of the upgrade
 --- @field drawSprite fun(x: number, y: number, scale: number)
@@ -30,8 +29,8 @@ function Upgrade:getPrice()
     return self.getPriceFunction(self.level)
 end
 
-function Upgrade:draw(x,y,scale)
-    self.drawSprite(x,y,scale)
+function Upgrade:draw(x, y, scale)
+    self.drawSprite(x, y, scale)
 end
 
 -- the specifics of how each upgrade effects the game are implnted by whatever it effects, they should explicity look for the upgreade in question when preforming its funcion

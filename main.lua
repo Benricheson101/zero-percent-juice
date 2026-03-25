@@ -1,69 +1,69 @@
-local Ui = require("util.ui")
-local fonts = require("util.fonts")
-local SceneManager = require("renderer.scenemanager")
+local Ui = require('util.ui')
+local fonts = require('util.fonts')
+local SceneManager = require('renderer.scenemanager')
 
-local GameScene = require("scenes.game")
-local LoadingScreen = require("scenes.loadingScreen")
-local UpgradeScreen = require("scenes.upgradeScreen")
-local MainMenuScene = require("scenes.mainmenu")
+local GameScene = require('scenes.game')
+local LoadingScreen = require('scenes.loadingScreen')
+local UpgradeScreen = require('scenes.upgradeScreen')
+local MainMenuScene = require('scenes.mainmenu')
 
-local START_SCENE = os.getenv("ZPJ_START_SCREEN") or "loading"
+local START_SCENE = os.getenv('ZPJ_START_SCREEN') or 'loading'
 
 ---@type SceneManager
 local scene_manager
 
 function love.load()
-	-- print("START SCENE", START_SCENE)
-	scene_manager = SceneManager:new({
-		game = GameScene:new(),
-		loading = LoadingScreen:new(),
-		upgrade = UpgradeScreen:new(),
-		mainmenu = MainMenuScene:new(),
-	})
+    -- print("START SCENE", START_SCENE)
+    scene_manager = SceneManager:new {
+        game = GameScene:new(),
+        loading = LoadingScreen:new(),
+        upgrade = UpgradeScreen:new(),
+        mainmenu = MainMenuScene:new(),
+    }
 
-	local w = love.graphics.getWidth()
-	local h = love.graphics.getHeight()
+    local w = love.graphics.getWidth()
+    local h = love.graphics.getHeight()
 
-	Ui:reload(w, h)
-	fonts:reload() -- load the fonts
-	--tmp
-	love.window.updateMode(w, h, { resizable = true })
+    Ui:reload(w, h)
+    fonts:reload() -- load the fonts
+    --tmp
+    love.window.updateMode(w, h, { resizable = true })
 
-	--window icon
-	love.window.setIcon(love.image.newImageData("assets/logo.png"))
-	love.window.setTitle("Zero Percent Juice")
+    --window icon
+    love.window.setIcon(love.image.newImageData('assets/logo.png'))
+    love.window.setTitle('Zero Percent Juice')
 
-	scene_manager:transition(START_SCENE)
+    scene_manager:transition(START_SCENE)
 end
 
 function love.keypressed(key, ...)
-	if key == "escape" then
-		love.event.quit()
-		return
-	end
+    if key == 'escape' then
+        love.event.quit()
+        return
+    end
 
-	scene_manager:keypressed(key, ...)
+    scene_manager:keypressed(key, ...)
 end
 
 function love.resize(w, h)
-	--whe the window is resized, update the Ui scaling factor
-	Ui:reload(w, h)
-	fonts:reload() --re sacle all the fonts
-	scene_manager:resize(w, h)
+    --whe the window is resized, update the Ui scaling factor
+    Ui:reload(w, h)
+    fonts:reload() --re sacle all the fonts
+    scene_manager:resize(w, h)
 end
 
 function love.draw()
-	scene_manager:draw()
+    scene_manager:draw()
 end
 function love.update(...)
-	scene_manager:update(...)
+    scene_manager:update(...)
 end
 function love.keyreleased(...)
-	scene_manager:keyreleased(...)
+    scene_manager:keyreleased(...)
 end
 function love.mousepressed(...)
-	scene_manager:mousepressed(...)
+    scene_manager:mousepressed(...)
 end
 function love.mousereleased(...)
-	scene_manager:mousereleased(...)
+    scene_manager:mousereleased(...)
 end

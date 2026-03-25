@@ -23,7 +23,7 @@ describe('MainMenuScene', function()
         end)
 
         it('calls onclick on button within bounds', function()
-            local button = UIButton:new({
+            local button = UIButton:new {
                 x = 0,
                 y = 0,
                 width = 100,
@@ -31,11 +31,11 @@ describe('MainMenuScene', function()
                 onClick = function()
                     clickedButton = true
                 end,
-            })
+            }
 
             button.worldBounds = {
-                {0, 0},
-                {100, 50},
+                { 0, 0 },
+                { 100, 50 },
             }
 
             button:onclick(50, 25)
@@ -43,7 +43,7 @@ describe('MainMenuScene', function()
         end)
 
         it('does not call onclick outside bounds', function()
-            local button = UIButton:new({
+            local button = UIButton:new {
                 x = 0,
                 y = 0,
                 width = 100,
@@ -51,11 +51,11 @@ describe('MainMenuScene', function()
                 onClick = function()
                     clickedButton = true
                 end,
-            })
+            }
 
             button.worldBounds = {
-                {0, 0},
-                {100, 50},
+                { 0, 0 },
+                { 100, 50 },
             }
 
             local isOutside = not button:isWithin(150, 25)
@@ -73,11 +73,11 @@ describe('MainMenuScene', function()
         end)
 
         it('resets button state to normal', function()
-            local button = UIButton:new({
+            local button = UIButton:new {
                 text = 'Test',
                 width = 100,
                 height = 50,
-            })
+            }
 
             button.state = 'hover'
             button:update()
