@@ -1,6 +1,7 @@
 local Scene = require('renderer.scene')
 local UITextbox = require('ui.textbox')
 local Ui = require('util.ui')
+local fonts = require('util.fonts')
 
 ---@class UITestScene : Scene
 local UITestScene = {}
@@ -15,10 +16,11 @@ function UITestScene:new()
 end
 
 function UITestScene:enter()
+    love.keyboard.setKeyRepeat(true)
     self.textbox = UITextbox:new {
         width = 900,
         focused = true,
-        placeholder = "enter your name",
+        placeholder = "Enter your name...",
         onSubmit = function (tb, value)
             tb.focused = false
             print("submitted textbox:", value)
@@ -31,16 +33,37 @@ function UITestScene:enter()
     }
 end
 
+function UITestScene:exit()
+    love.keyboard.setKeyRepeat(false)
+end
+
 function UITestScene:draw()
     love.graphics.clear()
-    local x, y = Ui:scaleCoord(20, 100)
-    love.graphics.draw(self.textbox:draw(), x, y)
 
-    x, y = Ui:scaleCoord(20, 150)
-    love.graphics.print("Input: " .. self.liveInput, x, y)
-    if #self.input then
-        x, y = Ui:scaleCoord(20, 200)
-        love.graphics.print("You typed: " .. self.input, x, y)
+    local titleFont = fonts.impact75
+
+    love.graphics.setFont(titleFont)
+    love.graphics.printf(
+        'Game Over',
+        0,
+        math.floor(Ui:getHeight() * 0.125) - math.floor(titleFont:getHeight() / 2),
+        Ui:getWidth(),
+        'center'
+    )
+
+    local tbcanvas = self.textbox:draw()
+    tbcanvas:getWidth()
+
+    local tbCenterX = Ui.centerX - math.floor(tbcanvas:getWidth() / 2)
+    local tbCenterY = math.floor((Ui:getHeight() * 0.25) - tbcanvas:getHeight() / 2)
+
+    love.graphics.draw(tbcanvas, tbCenterX, tbCenterY)
+
+    local x = Ui:scaleDimension(20)
+    local gap = Ui:scaleDimension(50)
+    love.graphics.print("Input: " .. self.liveInput, x, tbCenterY + gap*2)
+    if #self.input ~= 0 then
+        love.graphics.print("You typed: " .. self.input, x, tbCenterY + gap * 3)
     end
 end
 
