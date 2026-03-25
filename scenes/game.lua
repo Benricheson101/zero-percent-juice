@@ -78,6 +78,7 @@ function GameScene:enter()
     assert(startSpeedUpgrade ~= nil, 'Boiler Pressure upgrade not found')
     local speed = GameScene.calculateStartingSpeed(startSpeedUpgrade:getLevel())
     Camera.velocityX = speed
+    Camera.xPos = 0 -- reset posotion to start
 end
 
 return GameScene
