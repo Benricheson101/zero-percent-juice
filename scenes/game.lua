@@ -3,6 +3,7 @@ local Player = require('player')
 local Camera = require('camera')
 local Background = require('background')
 local ObstacleSpawner = require('obstacleSpawner')
+local Upgrades = require('upgrades')
 
 local designWidth = 1280
 local designHeight = 720
@@ -65,6 +66,18 @@ end
 
 function GameScene:keyreleased(key)
     Player.keyreleased(key)
+end
+
+function GameScene.calculateStartingSpeed(level)
+    return 100+125*level
+end
+
+function GameScene:enter()
+    --when the game starts
+    local startSpeedUpgrade = Upgrades.getUpgrade('Boiler Pressure')
+    assert(startSpeedUpgrade ~= nil, 'Boiler Pressure upgrade not found')
+    local speed = GameScene.calculateStartingSpeed(startSpeedUpgrade:getLevel())
+    Camera.velocityX = speed
 end
 
 return GameScene
