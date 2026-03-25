@@ -4,30 +4,30 @@ local Base = {}
 Base.__index = Base
 
 function Base:new()
-  local o = setmetatable({}, self)
-  o.x = 5
-  return o
+    local o = setmetatable({}, self)
+    o.x = 5
+    return o
 end
 
 function Base:print()
-  print("Base: x =", self.x)
+    print('Base: x =', self.x)
 end
 
 -- extending Base class
 
 ---@class Child : Base
 local Child = {}
-setmetatable(Child, {__index = Base})
+setmetatable(Child, { __index = Base })
 Child.__index = Child
 
 function Child:new()
-  local o = setmetatable({}, self)
-  o.x = 12
-  return o
+    local o = setmetatable({}, self)
+    o.x = 12
+    return o
 end
 
 function Child:print()
-  print("Child: x =", self.x)
+    print('Child: x =', self.x)
 end
 
 local b = Base:new()

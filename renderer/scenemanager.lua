@@ -31,7 +31,10 @@ end
 ---Transitions from one scene to the next and runs lifecycle functions
 ---@param next string the next state to render
 function SceneManager:transition(next)
-    assert(self.scenes[next], 'cannot transition to scene ' .. ', state does not exist')
+    assert(
+        self.scenes[next],
+        'cannot transition to scene ' .. ', state does not exist'
+    )
 
     local next_scene = self.scenes[next]
 
@@ -63,8 +66,13 @@ local love_callbacks = {
 
 for _, name in ipairs(love_callbacks) do
     ---@param self SceneManager
-    SceneManager[name] = function (self, ...)
-        assert(self.active, 'SceneManager is not initialized. Trying to call callback method `' .. name .. '`')
+    SceneManager[name] = function(self, ...)
+        assert(
+            self.active,
+            'SceneManager is not initialized. Trying to call callback method `'
+                .. name
+                .. '`'
+        )
 
         if self.active[name] then
             self.active[name](self.active, ...)

@@ -6,10 +6,10 @@ local Ui = require('util.ui')
 local GameScene = require('scenes.game')
 
 describe('UpgradeScreen', function()
-    UpgradeScreen.scene_manager = SceneManager:new({
+    UpgradeScreen.scene_manager = SceneManager:new {
         upgrade = UpgradeScreen,
         game = GameScene,
-    })
+    }
 
     before_each(function()
         UpgradeScreen.scene_manager:transition('upgrade')

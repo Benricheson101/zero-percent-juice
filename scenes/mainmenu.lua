@@ -6,36 +6,36 @@ local fonts = require('util.fonts')
 
 ---@class MainMenuScene : Scene
 local MainMenuScene = {}
-setmetatable(MainMenuScene, {__index = Scene})
+setmetatable(MainMenuScene, { __index = Scene })
 MainMenuScene.__index = MainMenuScene
 
 ---@type BaseUIElement[]
 local mainMenu = {
     UIButton:new {
-        text = "Start Game",
+        text = 'Start Game',
         width = 200,
-        height = 200/3,
-        onClick = function (self)
+        height = 200 / 3,
+        onClick = function(self)
             print('clicked Start Game')
             self.scene.scene_manager:transition('game')
-        end
+        end,
     },
     UIButton:new {
-        text = "Leaderboard",
+        text = 'Leaderboard',
         width = 200,
-        height = 200/3,
-        onClick = function ()
+        height = 200 / 3,
+        onClick = function()
             print('clicked Leaderboard')
-        end
+        end,
     },
     UIButton:new {
-        text = "Exit",
+        text = 'Exit',
         width = 200,
-        height = 200/3,
-        onClick = function ()
+        height = 200 / 3,
+        onClick = function()
             print('clicked Exit')
             love.event.quit(0)
-        end
+        end,
     },
 }
 
@@ -61,7 +61,8 @@ function MainMenuScene:draw()
     love.graphics.printf(
         titleText,
         0,
-        math.floor(Ui:getHeight() * 0.25) - math.floor(titleFont:getHeight() / 2),
+        math.floor(Ui:getHeight() * 0.25)
+            - math.floor(titleFont:getHeight() / 2),
         Ui:getWidth(),
         'center'
     )
@@ -81,8 +82,8 @@ function MainMenuScene:draw()
         local brY = height + tlY
 
         elem.worldBounds = {
-            {tlX, tlY},
-            {brX, brY},
+            { tlX, tlY },
+            { brX, brY },
         }
 
         local mouseX, mouseY = love.mouse.getPosition()

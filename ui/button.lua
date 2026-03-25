@@ -8,7 +8,7 @@ local fonts = require('util.fonts')
 ---@field state 'hover'|'normal
 ---@field clickCallback fun(self: UIButton)
 local UIButton = {}
-setmetatable(UIButton, {__index = BaseUIElement})
+setmetatable(UIButton, { __index = BaseUIElement })
 UIButton.__index = UIButton
 
 ---@class UIButtonOptions : BaseUIElementOptions
@@ -28,8 +28,8 @@ function UIButton:new(opts)
     o.state = 'normal'
 
     o.worldBounds = {
-        {o.x, o.y},
-        {o.width + o.x, o.height + o.y},
+        { o.x, o.y },
+        { o.width + o.x, o.height + o.y },
     }
 
     o.clickCallback = opts.onClick
@@ -41,13 +41,12 @@ function UIButton:draw()
     local width, height = Ui:scaleDimension(self.width, self.height)
     local canvas = love.graphics.newCanvas(width, height)
 
-    canvas:renderTo(function ()
+    canvas:renderTo(function()
         local strokeSize = Ui:scaleDimension(10)
 
         love.graphics.clear(
-            self.state == 'hover'
-            and constants.colors.menu.button_stroke_hover
-            or constants.colors.menu.button_stroke_normal
+            self.state == 'hover' and constants.colors.menu.button_stroke_hover
+                or constants.colors.menu.button_stroke_normal
         )
 
         love.graphics.setColor(constants.colors.menu.button_bg)
@@ -70,7 +69,6 @@ function UIButton:draw()
             width,
             'center'
         )
-
     end)
 
     return canvas

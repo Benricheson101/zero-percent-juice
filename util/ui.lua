@@ -46,7 +46,7 @@ end
 --- @param ... number The dimension in the design space
 --- @return ...number The scaled dimension on the screen
 function Ui:scaleDimension(...)
-    local args = {...}
+    local args = { ... }
     local scaled = {}
 
     for i, dim in ipairs(args) do

@@ -3,7 +3,7 @@ local BaseUIElement = require('ui.element')
 describe('BaseUIElement', function()
     describe('new', function()
         it('creates element with default values', function()
-            local element = BaseUIElement:new({})
+            local element = BaseUIElement:new {}
 
             assert.are.equal(0, element.x)
             assert.are.equal(0, element.y)
@@ -12,12 +12,12 @@ describe('BaseUIElement', function()
         end)
 
         it('creates element with custom values', function()
-            local element = BaseUIElement:new({
+            local element = BaseUIElement:new {
                 x = 100,
                 y = 200,
                 width = 300,
                 height = 50,
-            })
+            }
 
             assert.are.equal(100, element.x)
             assert.are.equal(200, element.y)
@@ -26,12 +26,12 @@ describe('BaseUIElement', function()
         end)
 
         it('sets worldBounds correctly', function()
-            local element = BaseUIElement:new({
+            local element = BaseUIElement:new {
                 x = 100,
                 y = 200,
                 width = 300,
                 height = 50,
-            })
+            }
 
             assert.are.equal(100, element.worldBounds[1][1])
             assert.are.equal(200, element.worldBounds[1][2])
@@ -44,12 +44,12 @@ describe('BaseUIElement', function()
         local element
 
         before_each(function()
-            element = BaseUIElement:new({
+            element = BaseUIElement:new {
                 x = 100,
                 y = 100,
                 width = 200,
                 height = 100,
-            })
+            }
         end)
 
         it('returns true when point is inside bounds', function()
@@ -75,7 +75,7 @@ describe('BaseUIElement', function()
 
     describe('hover', function()
         it('is a no-op function', function()
-            local element = BaseUIElement:new({ width = 100, height = 50 })
+            local element = BaseUIElement:new { width = 100, height = 50 }
             assert.has_no_errors(function()
                 element:hover(50, 25)
             end)
@@ -84,7 +84,7 @@ describe('BaseUIElement', function()
 
     describe('onclick', function()
         it('is a no-op function', function()
-            local element = BaseUIElement:new({ width = 100, height = 50 })
+            local element = BaseUIElement:new { width = 100, height = 50 }
             assert.has_no_errors(function()
                 element:onclick(50, 25)
             end)
@@ -93,7 +93,7 @@ describe('BaseUIElement', function()
 
     describe('update', function()
         it('is a no-op function', function()
-            local element = BaseUIElement:new({ width = 100, height = 50 })
+            local element = BaseUIElement:new { width = 100, height = 50 }
             assert.has_no_errors(function()
                 element:update(0.016)
             end)
