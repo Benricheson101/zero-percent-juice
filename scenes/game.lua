@@ -74,8 +74,8 @@ end
 
 function GameScene:enter()
     --when the game starts
-    local startSpeedUpgrade = Upgrades.getUpgrade('Boiler Pressure')
-    assert(startSpeedUpgrade ~= nil, 'Boiler Pressure upgrade not found')
+    local startSpeedUpgrade = Upgrades.getUpgrade('Tank Pressure')
+    assert(startSpeedUpgrade ~= nil, 'Tank Pressure upgrade not found')
     local speed = GameScene.calculateStartingSpeed(startSpeedUpgrade:getLevel())
     Camera.velocityX = speed
     Camera.xPos = 0 -- reset posotion to start
