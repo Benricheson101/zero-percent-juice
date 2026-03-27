@@ -12,8 +12,9 @@ local fonts = require('util.fonts')
 ---@field onSubmit fun(self: UITextbox, value: string)
 ---@field onInput fun(self: UITextbox, value: string)
 ---@field placeholder string
+---@field maxLength number
 local UITextbox = {}
-setmetatable(UITextbox, {__index = BaseUIElement})
+setmetatable(UITextbox, { __index = BaseUIElement })
 UITextbox.__index = UITextbox
 
 ---@class UITextboxOptions : BaseUIElementOptions
@@ -24,6 +25,7 @@ UITextbox.__index = UITextbox
 ---@field onSubmit fun(self: UITextbox, value: string)
 ---@field onInput? fun(self: UITextbox, value: string)
 ---@field placeholder? string
+---@field maxLength? number
 
 ---@param opts UITextboxOptions
 function UITextbox:new(opts)
@@ -38,12 +40,13 @@ function UITextbox:new(opts)
     o.blinkTime = 0
     o.caretVisible = true
 
-    o.value = opts.value or ""
+    o.value = opts.value or ''
     o.onSubmit = opts.onSubmit
     o.focused = opts.focused
-    o.placeholder = opts.placeholder or ""
+    o.placeholder = opts.placeholder or ''
 
     o.onInput = opts.onInput or function() end
+    o.maxLength = opts.maxLength or 0
 
     return o
 end
@@ -57,20 +60,20 @@ function UITextbox:draw()
     local maxTextWidth = width - 2 * padding
     local canvas = love.graphics.newCanvas(width, height)
 
-    canvas:renderTo(function ()
+    canvas:renderTo(function()
         love.graphics.clear(constants.colors.textbox.bg)
 
         local fullTextWidth = font:getWidth(self.value)
         local caretSpacing = Ui:scaleDimension(2)
         local caretWidth = Ui:scaleDimension(4)
 
-        local textWidth, wrapped = font:getWrap(self.value:reverse(), maxTextWidth)
+        local textWidth, wrapped =
+            font:getWrap(self.value:reverse(), maxTextWidth)
         local str = wrapped[1]:reverse()
 
         love.graphics.setFont(font)
         love.graphics.setColor(
-            #self.value == 0
-                and constants.colors.textbox.placeholder
+            #self.value == 0 and constants.colors.textbox.placeholder
                 or constants.colors.textbox.caret
         )
         love.graphics.printf(
@@ -118,9 +121,9 @@ function UITextbox:keypressed(key)
         return
     end
 
-    if key == "backspace" then
+    if key == 'backspace' then
         self.value = self.value:sub(1, -2)
-    elseif key == "return" then
+    elseif key == 'return' then
         self:onSubmit(self.value)
     else
         return
@@ -131,8 +134,10 @@ end
 
 function UITextbox:textinput(str)
     if self.focused then
-        self.value = self.value .. str
-        self:onInput(self.value)
+        if #self.value <= self.maxLength then
+            self.value = self.value .. str
+            self:onInput(self.value)
+        end
     end
 end
 

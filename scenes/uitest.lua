@@ -5,13 +5,13 @@ local fonts = require('util.fonts')
 
 ---@class UITestScene : Scene
 local UITestScene = {}
-setmetatable(UITestScene, {__index = Scene})
+setmetatable(UITestScene, { __index = Scene })
 UITestScene.__index = UITestScene
 
 function UITestScene:new()
     local o = setmetatable({}, self)
-    o.input = ""
-    o.liveInput = ""
+    o.input = ''
+    o.liveInput = ''
     return o
 end
 
@@ -20,16 +20,17 @@ function UITestScene:enter()
     self.textbox = UITextbox:new {
         width = 900,
         focused = true,
-        placeholder = "Enter your name...",
-        onSubmit = function (tb, value)
+        placeholder = 'Enter your name for the leaderboard...',
+        maxLength = 32,
+        onSubmit = function(tb, value)
             tb.focused = false
-            print("submitted textbox:", value)
+            print('submitted textbox:', value)
             self.input = value
         end,
 
-        onInput = function (_, value)
+        onInput = function(_, value)
             self.liveInput = value
-        end
+        end,
     }
 end
 
@@ -46,7 +47,18 @@ function UITestScene:draw()
     love.graphics.printf(
         'Game Over',
         0,
-        math.floor(Ui:getHeight() * 0.125) - math.floor(titleFont:getHeight() / 2),
+        math.floor(Ui:getHeight() * 0.125)
+            - math.floor(titleFont:getHeight() / 2),
+        Ui:getWidth(),
+        'center'
+    )
+
+    love.graphics.setFont(fonts.impact50)
+    love.graphics.printf(
+        'Score: 12345',
+        0,
+        math.floor(Ui:getHeight() * 0.25)
+            - math.floor(titleFont:getHeight() / 2),
         Ui:getWidth(),
         'center'
     )
@@ -55,15 +67,16 @@ function UITestScene:draw()
     tbcanvas:getWidth()
 
     local tbCenterX = Ui.centerX - math.floor(tbcanvas:getWidth() / 2)
-    local tbCenterY = math.floor((Ui:getHeight() * 0.25) - tbcanvas:getHeight() / 2)
+    local tbCenterY =
+        math.floor((Ui:getHeight() * 0.375) - tbcanvas:getHeight() / 2)
 
     love.graphics.draw(tbcanvas, tbCenterX, tbCenterY)
 
     local x = Ui:scaleDimension(20)
     local gap = Ui:scaleDimension(50)
-    love.graphics.print("Input: " .. self.liveInput, x, tbCenterY + gap*2)
+    love.graphics.print('Input: ' .. self.liveInput, x, tbCenterY + gap * 2)
     if #self.input ~= 0 then
-        love.graphics.print("You typed: " .. self.input, x, tbCenterY + gap * 3)
+        love.graphics.print('You typed: ' .. self.input, x, tbCenterY + gap * 3)
     end
 end
 
