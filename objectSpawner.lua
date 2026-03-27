@@ -6,20 +6,19 @@ local designWidth = 1280
 local designHeight = 720
 
 --function ObjectSpawner.load(opts)
-    --ObjectSpawner.spawnTimer = opts.spawnTimer
-    --ObjectSpawner.baseSpawnDistance = opts.baseSpawnDistance
-    --ObjectSpawner.spawnDistance = opts.spawnDistance
-    --ObjectSpawner.baseVelocityX = opts.baseVelocityX
-    --ObjectSpawner.velocityX = ObjectSpawner.baseVelocityX
-    --ObjectSpawner.image = opts.image
-    --ObjectSpawner.showHitboxes = false
+--ObjectSpawner.spawnTimer = opts.spawnTimer
+--ObjectSpawner.baseSpawnDistance = opts.baseSpawnDistance
+--ObjectSpawner.spawnDistance = opts.spawnDistance
+--ObjectSpawner.baseVelocityX = opts.baseVelocityX
+--ObjectSpawner.velocityX = ObjectSpawner.baseVelocityX
+--ObjectSpawner.image = opts.image
+--ObjectSpawner.showHitboxes = false
 --end
 
 function ObjectSpawner:new(opts)
-
     local o = {}
 
-    setmetatable(o, {__index = self})
+    setmetatable(o, { __index = self })
 
     o.baseSpawnDistance = opts.baseSpawnDistance
     o.spawnDistance = opts.spawnDistance
@@ -31,21 +30,16 @@ function ObjectSpawner:new(opts)
     o.objects = {}
 
     return o
-
 end
 
 -- Spawns in Objects at a random position offscreen after the player has traveled a certain distance
 -- Deletes Objects if they travel to the left offscreen
 --- @param dt number deltaTime
 function ObjectSpawner:update(dt)
-    self.spawnDistance = self.spawnDistance
-        - (self.velocityX * dt)
+    self.spawnDistance = self.spawnDistance - (self.velocityX * dt)
     if self.spawnDistance < 0 then
-        self.spawnDistance = self.spawnDistance
-            + self.baseSpawnDistance
-        self:spawn(
-            math.random(designHeight * 0.05, designHeight * 0.95)
-        )
+        self.spawnDistance = self.spawnDistance + self.baseSpawnDistance
+        self:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
     end
 
     for i = #self.objects, 1, -1 do
@@ -81,7 +75,7 @@ function ObjectSpawner:spawn(spawnPosY)
         posX = designWidth * 1.5,
         posY = spawnPosY,
         velocityX = self.velocityX,
-        image = self.image
+        image = self.image,
     }
     o:setPosY(spawnPosY)
     table.insert(self.objects, #self.objects + 1, o)
@@ -99,9 +93,10 @@ function ObjectSpawner:checkCollision(posX, posY, dim)
 
     for i = #self.objects, 1, -1 do
         local distance = math.sqrt(
-            (posX - self.objects[i].posX) ^ 2 + (posY - self.objects[i].posY) ^ 2
+            (posX - self.objects[i].posX) ^ 2
+                + (posY - self.objects[i].posY) ^ 2
         )
-        local collided = distance < dim / 2 + self.objects[i].dim / 2
+        local collided = distance < (dim / 2 + self.objects[i].dim / 2)
         if collided then
             collisionDetected = true
             table.remove(self.objects, i)
