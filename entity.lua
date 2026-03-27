@@ -3,8 +3,8 @@ local Ui = require('util.ui')
 Entity = {}
 Entity.__index = Entity
 
-local designWidth = 1280
-local designHeight = 720
+-- local designWidth = 1280
+-- local designHeight = 720
 local designScale = 5
 
 function Entity.new(opts)
