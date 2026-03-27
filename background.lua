@@ -1,17 +1,14 @@
 local Ui = require('util.ui')
+local assets = require('util.assets')
 
 local Background = {}
 
 function Background.load()
-    Background.image = love.graphics.newImage('images/Background.png')
-    Background.imageHeight = Background.image:getHeight()
-    Background.imageWidth = Background.image:getWidth()
-
-    love.graphics.setDefaultFilter('linear', 'linear')
+    Background.image = assets.loadImage('images/Background.png',"linear")
 end
 
 function Background.draw(Camera)
-    local scaledImageWidth = Background.imageWidth * Ui.scale
+    local scaledImageWidth = Background.image:getWidth() * Ui.scale
     local background_cam_offset = Camera.xPos % scaledImageWidth
 
     local x, y = Ui:scaleCoord(0, 0)

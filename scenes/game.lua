@@ -4,6 +4,7 @@ local Camera = require('camera')
 local Background = require('background')
 local ObstacleSpawner = require('obstacleSpawner')
 local Upgrades = require('upgrades')
+local Ui = require('util.ui')
 
 local designWidth = 1280
 local designHeight = 720
@@ -17,8 +18,8 @@ function GameScene:new()
     local o = setmetatable({}, self)
 
     Player.load {
-        posX = love.graphics.getWidth() * 0.2,
-        posY = love.graphics.getHeight() / 2,
+        posX = Ui:getWidth() * 0.2,
+        posY = Ui:getHeight() / 2,
         velocityX = 0,
         velocityY = 0,
         accelerationX = 300,

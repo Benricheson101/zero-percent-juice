@@ -1,4 +1,5 @@
 local Ui = require('util.ui')
+local assets = require('util.assets')
 
 local Player = {}
 
@@ -28,11 +29,9 @@ function Player.load(opts)
     Player.maxVelocityX = opts.maxVelocityX
     Player.maxVelocityY = opts.maxVelocityY
 
-    love.graphics.setDefaultFilter('nearest', 'nearest')
-    Player.image = love.graphics.newImage('images/TempPlayer.png')
-    love.graphics.setDefaultFilter('linear', 'linear')
-
-    Player.dim = Player.image:getHeight() * designScale
+    Player.image = assets.loadImage('images/TempPlayer.png', 'nearest')
+    -- the image height is 16
+    Player.dim = 16 * designScale
     Player.rotation = 0
 
     Player.dx = 0
