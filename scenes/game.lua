@@ -69,16 +69,19 @@ function GameScene:keyreleased(key)
     Player.keyreleased(key)
 end
 
+--- Calucates the inital speed of the player based on the level of the start speed upgreade
+--- @param level number the level of the start speed upgrade
+--- @return number the starting speed of the player
 function GameScene.calculateStartingSpeed(level)
     return 100+125*level
 end
 
 function GameScene:enter()
     --when the game starts
-    local startSpeedUpgrade = Upgrades.getUpgrade('Tank Pressure')
+    local startSpeedUpgrade = Upgrades.getUpgrade('Tank Pressure') -- get the start speed upgrade
     assert(startSpeedUpgrade ~= nil, 'Tank Pressure upgrade not found')
-    local speed = GameScene.calculateStartingSpeed(startSpeedUpgrade:getLevel())
-    Camera.velocityX = speed
+    local speed = GameScene.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the statring speed
+    Camera.velocityX = speed -- apply the starting speed
     Camera.xPos = 0 -- reset posotion to start
 end
 
