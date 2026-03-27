@@ -1,14 +1,14 @@
 local Ui = require('util.ui')
 
-Object = {}
-Object.__index = Object
+Entity = {}
+Entity.__index = Entity
 
 local designWidth = 1280
 local designHeight = 720
 local designScale = 5
 
-function Object.new(opts)
-    local self = setmetatable({}, Object)
+function Entity.new(opts)
+    local self = setmetatable({}, Entity)
 
     self.posX = opts.posX
     self.posY = opts.posY
@@ -26,16 +26,16 @@ function Object.new(opts)
     return self
 end
 
--- Moves and rotates the Object based on the deltaTime
+-- Moves and rotates the Entity based on the deltaTime
 --- @param dt number deltaTime
-function Object:update(dt)
+function Entity:update(dt)
     self.posX = self.posX - (self.velocityX * dt)
 
     self.rotation = (self.rotation + (dt * 1.5)) % (2 * math.pi)
 end
 
--- Scales and draws each Object
-function Object:draw()
+-- Scales and draws each Entity
+function Entity:draw()
     local posX, posY = Ui:scaleCoord(self.posX, self.posY)
     local scale = Ui:getScale()
     love.graphics.draw(
@@ -60,10 +60,10 @@ function Object:draw()
     end
 end
 
--- Sets the Object's Y position
+-- Sets the Entity's Y position
 --- @param newPosY number new Y position
-function Object:setPosY(newPosY)
+function Entity:setPosY(newPosY)
     self.posY = newPosY
 end
 
-return Object
+return Entity

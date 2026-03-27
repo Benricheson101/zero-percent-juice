@@ -2,7 +2,7 @@ local Scene = require('renderer.scene')
 local Player = require('player')
 local Camera = require('camera')
 local Background = require('background')
-local ObjectSpawner = require('objectSpawner')
+local EntitySpawner = require('entitySpawner')
 
 local designWidth = 1280
 local designHeight = 720
@@ -31,14 +31,14 @@ function GameScene:new()
     Camera.load(Player)
     Background.load()
 
-    ObstacleSpawner = ObjectSpawner:new {
+    ObstacleSpawner = EntitySpawner:new {
         baseSpawnDistance = designWidth,
 		spawnDistance = designWidth,
         baseVelocityX = 50,
 		image = 'images/Obstacle.png'
     }
 
-	CoinSpawner = ObjectSpawner:new {
+	CoinSpawner = EntitySpawner:new {
         baseSpawnDistance = designWidth,
 		spawnDistance = designWidth / 2,
         baseVelocityX = 50,
@@ -54,8 +54,8 @@ function GameScene:update(dt)
     ObstacleSpawner:update(dt)
 	CoinSpawner:update(dt)
 
-    ObstacleSpawner:updateObjectVelocityX(Camera.getVelocityX())
-	CoinSpawner:updateObjectVelocityX(Camera.getVelocityX())
+    ObstacleSpawner:updateEntityVelocityX(Camera.getVelocityX())
+	CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
     GameScene:checkCollision(Player.posX, Player.posY, Player.dim)
 end
 
