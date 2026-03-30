@@ -10,7 +10,7 @@ local designWidth = 1280
 -- local designHeight = 720
 
 ---@class GameScene : Scene
----@field obsticaleSpawner EntitySpawner
+---@field ObstacleSpawner EntitySpawner
 ---@field CoinSpawner EntitySpawner
 local GameScene = {}
 setmetatable(GameScene, { __index = Scene })
@@ -36,8 +36,9 @@ function GameScene:new()
     Background.load()
 
     ---@diagnostic disable-next-line: redundant-parameter
-    o.obsticaleSpawner = EntitySpawner:new {
+    o.ObstacleSpawner = EntitySpawner:new {
         spawnUpgradeName = 'Rock Reducer',
+        baseSpawnDistance = designWidth,
         spawnDistance = designWidth,
         baseVelocityX = 50,
         image = 'images/Obstacle.png',
@@ -60,10 +61,10 @@ end
 function GameScene:update(dt)
     Player.update(dt)
     Camera.update(dt)
-    self.obsticaleSpawner:update(dt)
+    self.ObstacleSpawner:update(dt)
     self.CoinSpawner:update(dt)
 
-    self.obsticaleSpawner:updateEntityVelocityX(Camera.getVelocityX())
+    self.ObstacleSpawner:updateEntityVelocityX(Camera.getVelocityX())
     self.CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
     self:checkCollision(Player.posX, Player.posY, Player.dim)
 end
@@ -72,13 +73,13 @@ function GameScene:draw()
     love.graphics.setColor(1, 1, 1)
     Background.draw(Camera)
     Player.draw()
-    self.obsticaleSpawner:draw()
+    self.ObstacleSpawner:draw()
     self.CoinSpawner:draw()
 end
 
 function GameScene:keypressed(key)
     Player.keypressed(key)
-    self.obsticaleSpawner:keypressed(key)
+    self.ObstacleSpawner:keypressed(key)
     self.CoinSpawner:keypressed(key)
 end
 
@@ -111,7 +112,7 @@ function GameScene:checkCollision(posX, posY, dim)
     )
     assert(coinValueUpgrade ~= nil, 'Profit Boost upgrade not found')
     --obstical collision
-    if self.obsticaleSpawner:checkCollision(posX, posY, dim) then
+    if self.ObstacleSpawner:checkCollision(posX, posY, dim) then
         -- Camera now to handle x velocity
         local reduction = GameScene.calculateObsticalSpeedReduction(
             obsticalSpeedReductionUpgrade:getLevel()
