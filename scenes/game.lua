@@ -34,17 +34,19 @@ function GameScene:new()
     Background.load()
 
     EntitySpawner = EntitySpawner:new {
-        baseSpawnDistance = designWidth,
+        spawnUpgradeName = "Rock Buster",
         spawnDistance = designWidth,
         baseVelocityX = 50,
         image = 'images/Obstacle.png',
+        spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation
     }
 
     CoinSpawner = EntitySpawner:new {
-        baseSpawnDistance = designWidth,
+        spawnUpgradeName = "Coin Magnet",
         spawnDistance = designWidth / 2,
         baseVelocityX = 50,
         image = 'images/Coin.png',
+        spawnUpgradeEffectFunc = GameScene.coinSpawnFrequencyCalculation
     }
 
     return o
@@ -104,6 +106,14 @@ function GameScene:checkCollision(posX, posY, dim)
     if CoinSpawner:checkCollision(posX, posY, dim) then
         Player.money = Player.money + 10
     end
+end
+
+function GameScene.obsticaleSpawFrequencyCalculation(level)
+    return 720 + 15*level
+end
+
+function GameScene.coinSpawnFrequencyCalculation(level)
+    return 720 /(1+ 0.1*level)
 end
 
 return GameScene
