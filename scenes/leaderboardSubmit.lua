@@ -6,11 +6,12 @@ local http = require('socket.http')
 local ltn12 = require('ltn12')
 local json = require('JSON')
 local Player = require('player')
+local constants = require('util.constants')
 
----@class UITestScene : Scene
-local UITestScene = {}
-setmetatable(UITestScene, { __index = Scene })
-UITestScene.__index = UITestScene
+---@class LeaderboardSubmitScene : Scene
+local LeaderboardSubmitScene = {}
+setmetatable(LeaderboardSubmitScene, { __index = Scene })
+LeaderboardSubmitScene.__index = LeaderboardSubmitScene
 
 ---@param name string
 ---@param score number
@@ -33,14 +34,14 @@ local function submitScore(name, score)
     })
 end
 
-function UITestScene:new()
+function LeaderboardSubmitScene:new()
     local o = setmetatable({}, self)
     o.input = ''
     o.liveInput = ''
     return o
 end
 
-function UITestScene:enter()
+function LeaderboardSubmitScene:enter()
     love.keyboard.setKeyRepeat(true)
     self.textbox = UITextbox:new {
         width = 900,
@@ -49,7 +50,6 @@ function UITestScene:enter()
         maxLength = 32,
         onSubmit = function(tb, value)
             tb.focused = false
-            print('submitted textbox:', value)
             self.input = value
 
             submitScore(value, Player.score)
@@ -61,12 +61,12 @@ function UITestScene:enter()
     }
 end
 
-function UITestScene:exit()
+function LeaderboardSubmitScene:exit()
     love.keyboard.setKeyRepeat(false)
 end
 
-function UITestScene:draw()
-    love.graphics.clear()
+function LeaderboardSubmitScene:draw()
+    love.graphics.clear(constants.colors.menu.bg)
 
     local titleFont = fonts.impact75
 
@@ -99,26 +99,22 @@ function UITestScene:draw()
 
     love.graphics.draw(tbcanvas, tbCenterX, tbCenterY)
 
-    local x = Ui:scaleDimension(20)
-    local gap = Ui:scaleDimension(50)
-    love.graphics.print('Input: ' .. self.liveInput, x, tbCenterY + gap * 2)
-    if #self.input ~= 0 then
-        love.graphics.print('You typed: ' .. self.input, x, tbCenterY + gap * 3)
-    end
+    -- TODO: switch to leaderboard scene
+    -- TODO: only show this screen if score is in top 10?
 end
 
 ---@param str string
-function UITestScene:textinput(str)
+function LeaderboardSubmitScene:textinput(str)
     self.textbox:textinput(str)
 end
 
 ---@param key string
-function UITestScene:keypressed(key)
+function LeaderboardSubmitScene:keypressed(key)
     self.textbox:keypressed(key)
 end
 
-function UITestScene:update(dt)
+function LeaderboardSubmitScene:update(dt)
     self.textbox:update(dt)
 end
 
-return UITestScene
+return LeaderboardSubmitScene
