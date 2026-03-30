@@ -2,9 +2,9 @@ local Scene = require('renderer.scene')
 local Player = require('player')
 local Camera = require('camera')
 local Background = require('background')
-local ObstacleSpawner = require('obstacleSpawner')
 local Upgrades = require('upgrades')
 local Ui = require('util.ui')
+local EntitySpawner = require('entitySpawner')
 
 local designWidth = 1280
 -- local designHeight = 720
@@ -33,9 +33,18 @@ function GameScene:new()
     Camera.load(Player)
     Background.load()
 
-    ObstacleSpawner.load {
-        baseSpawnDistance = designWidth / 2,
+    EntitySpawner = EntitySpawner:new {
+        baseSpawnDistance = designWidth,
+        spawnDistance = designWidth,
         baseVelocityX = 50,
+        image = 'images/Obstacle.png',
+    }
+
+    CoinSpawner = EntitySpawner:new {
+        baseSpawnDistance = designWidth,
+        spawnDistance = designWidth / 2,
+        baseVelocityX = 50,
+        image = 'images/Coin.png',
     }
 
     return o
@@ -44,25 +53,26 @@ end
 function GameScene:update(dt)
     Player.update(dt)
     Camera.update(dt)
-    ObstacleSpawner.update(dt)
+    EntitySpawner:update(dt)
+    CoinSpawner:update(dt)
 
-    ObstacleSpawner.updateObstacleVelocityX(Camera.getVelocityX())
-    if ObstacleSpawner.checkCollision(Player.posX, Player.posY, Player.dim) then
-        -- Camera now to handle x velocity
-        Camera.changeVelocityX(-150)
-    end
+    EntitySpawner:updateEntityVelocityX(Camera.getVelocityX())
+    CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
+    GameScene:checkCollision(Player.posX, Player.posY, Player.dim)
 end
 
 function GameScene:draw()
     love.graphics.setColor(1, 1, 1)
     Background.draw(Camera)
     Player.draw()
-    ObstacleSpawner.draw()
+    EntitySpawner:draw()
+    CoinSpawner:draw()
 end
 
 function GameScene:keypressed(key)
     Player.keypressed(key)
-    ObstacleSpawner.keypressed(key)
+    EntitySpawner:keypressed(key)
+    CoinSpawner:keypressed(key)
 end
 
 function GameScene:keyreleased(key)
@@ -83,6 +93,17 @@ function GameScene:enter()
     local speed = GameScene.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the statring speed
     Camera.velocityX = speed -- apply the starting speed
     Camera.xPos = 0 -- reset posotion to start
+end
+
+function GameScene:checkCollision(posX, posY, dim)
+    if EntitySpawner:checkCollision(posX, posY, dim) then
+        -- Camera now to handle x velocity
+        Camera.changeVelocityX(-150)
+    end
+
+    if CoinSpawner:checkCollision(posX, posY, dim) then
+        Player.money = Player.money + 10
+    end
 end
 
 return GameScene
