@@ -3,13 +3,11 @@ local assets = require('util.assets')
 
 local Background = {}
 
-function Background.load()
-    
-end
+function Background.load() end
 
 function Background.draw(Camera)
     --only load the image once, during the render pass so testing does not break
-    Background.image = assets.loadImage('images/Background.png',"linear")
+    Background.image = assets.loadImage('images/Background.png', 'linear')
 
     local scaledImageWidth = Background.image:getWidth() * Ui.scale
     local background_cam_offset = Camera.xPos % scaledImageWidth

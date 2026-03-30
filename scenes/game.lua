@@ -73,7 +73,7 @@ end
 --- @param level number the level of the start speed upgrade
 --- @return number the starting speed of the player
 function GameScene.calculateStartingSpeed(level)
-    return 100+125*level
+    return 100 + 125 * level
 end
 
 function GameScene:enter()

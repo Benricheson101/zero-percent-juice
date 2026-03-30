@@ -19,8 +19,6 @@ function assets.loadFont(path, size)
     return font
 end
 
-
-
 --- @overload fun(path: string): love.Image
 function assets.loadImage(path, filter)
     local image = assets.images[path]
@@ -28,7 +26,7 @@ function assets.loadImage(path, filter)
         return image
     end
 
-    if(filter ~= nil) then
+    if filter ~= nil then
         love.graphics.setDefaultFilter(filter, filter)
     else
         love.graphics.setDefaultFilter('linear', 'linear')
