@@ -7,7 +7,7 @@ local Upgrades = require('upgrades')
 local Ui = require('util.ui')
 
 local designWidth = 1280
-local designHeight = 720
+-- local designHeight = 720
 
 ---@class GameScene : Scene
 local GameScene = {}
