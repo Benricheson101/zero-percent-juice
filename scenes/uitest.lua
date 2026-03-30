@@ -2,11 +2,36 @@ local Scene = require('renderer.scene')
 local UITextbox = require('ui.textbox')
 local Ui = require('util.ui')
 local fonts = require('util.fonts')
+local http = require('socket.http')
+local ltn12 = require('ltn12')
+local json = require('JSON')
+local Player = require('player')
 
 ---@class UITestScene : Scene
 local UITestScene = {}
 setmetatable(UITestScene, { __index = Scene })
 UITestScene.__index = UITestScene
+
+---@param name string
+---@param score number
+local function submitScore(name, score)
+    local requestBody = json:encode {
+        name = name,
+        score = score,
+    }
+    local responseBody = {}
+
+    http.request({
+        url = 'http://localhost:8000/score',
+        method = 'POST',
+        headers = {
+            ['Content-Type'] = 'application/json',
+            ['Content-Length'] = tostring(#requestBody)
+        },
+        source = ltn12.source.string(requestBody),
+        sink = ltn12.sink.table(responseBody)
+    })
+end
 
 function UITestScene:new()
     local o = setmetatable({}, self)
@@ -26,6 +51,8 @@ function UITestScene:enter()
             tb.focused = false
             print('submitted textbox:', value)
             self.input = value
+
+            submitScore(value, Player.score)
         end,
 
         onInput = function(_, value)
@@ -55,7 +82,7 @@ function UITestScene:draw()
 
     love.graphics.setFont(fonts.impact50)
     love.graphics.printf(
-        'Score: 12345',
+        'Score: ' .. Player.score,
         0,
         math.floor(Ui:getHeight() * 0.25)
             - math.floor(titleFont:getHeight() / 2),
