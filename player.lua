@@ -124,14 +124,15 @@ function Player.updateVelocityY(dt)
     end
 
     -- This is where I can do the gravity
-    local gravity = Player.getSpeedBasedGravity()
+    local gravity =
+        Player.getSpeedBasedGravity(Camera.getVelocityX(), Player.maxVelocityY)
     Player.velocityY = Player.velocityY + gravity * dt
 end
 
 -- Function to calculate gravity value based on x speed (which is handled by camera)
-function Player.getSpeedBasedGravity()
-    local speed = math.abs(Camera.getVelocityX())
-    local t = math.min(speed / Player.maxVelocityY, 1)
+function Player.getSpeedBasedGravity(velocityX, maxVelocityY)
+    local speed = math.abs(velocityX)
+    local t = math.min(speed / maxVelocityY, 1)
     local curve = t * t
     return HIGH_GRAVITY + (LOW_GRAVITY - HIGH_GRAVITY) * curve
 end
