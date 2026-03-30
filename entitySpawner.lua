@@ -1,4 +1,5 @@
 local Entity = require('entity')
+local upgrades = require('upgrades')
 local EntitySpawner = {}
 
 local designWidth = 1280
@@ -9,12 +10,14 @@ function EntitySpawner:new(opts)
 
     setmetatable(o, { __index = self })
 
-    o.baseSpawnDistance = opts.baseSpawnDistance
+    local upgradeName = opts.spawnUpgradeName
+    o.spawnUpgrade = upgrades.getUpgradeByName(upgradeName) --get the relivant upgrade for the spawn spacing of this entity type
     o.spawnDistance = opts.spawnDistance
     o.baseVelocityX = opts.baseVelocityX
     o.velocityX = o.baseVelocityX
     o.image = opts.image
     o.showHitboxes = false
+    o.spawnUpgradeEffectFunc = opts.spawnUpgradeEffectFunc --the function that determins how the upgrade level effects spawn spacing
 
     o.entities = {}
 
@@ -27,6 +30,12 @@ end
 function EntitySpawner:update(dt)
     self.spawnDistance = self.spawnDistance - (self.velocityX * dt)
     if self.spawnDistance < 0 then
+        local baseSpawnDistance = designWidth
+        if self.spawnUpgrade == nil then
+            baseSpawnDistance = self.spawnUpgradeEffectFunc(0)
+        else
+            baseSpawnDistance = self.spawnUpgradeEffectFunc(self.spawnUpgrade.level)
+        end
         self.spawnDistance = self.spawnDistance + self.baseSpawnDistance
         self:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
     end

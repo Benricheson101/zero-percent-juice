@@ -76,6 +76,18 @@ local upgrades = {
     end, function(level)
         return 7 * (level + 1) * level + 10
     end),
+    Upgrade:new('Rock Buster', function(x, y, scale) --Obstical damage upgrade
+        love.graphics.setColor(colors.hex(0x545454))
+        love.graphics.rectangle(
+            'fill',
+            x + 50 * scale,
+            y + 20 * scale,
+            40 * scale,
+            50 * scale
+        ) --"rectangle"
+    end, function(level)
+        return 8 * (level + 1) * level + 25
+    end),
 }
 
 ---Get an upgrade by name
