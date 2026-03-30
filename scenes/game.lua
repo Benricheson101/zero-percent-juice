@@ -33,7 +33,7 @@ function GameScene:new()
     Camera.load(Player)
     Background.load()
 
-    EntitySpawner = EntitySpawner:new {
+    ObstacleSpawner = EntitySpawner:new {
         baseSpawnDistance = designWidth,
         spawnDistance = designWidth,
         baseVelocityX = 50,
@@ -53,10 +53,10 @@ end
 function GameScene:update(dt)
     Player.update(dt)
     Camera.update(dt)
-    EntitySpawner:update(dt)
+    ObstacleSpawner:update(dt)
     CoinSpawner:update(dt)
 
-    EntitySpawner:updateEntityVelocityX(Camera.getVelocityX())
+    ObstacleSpawner:updateEntityVelocityX(Camera.getVelocityX())
     CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
     GameScene:checkCollision(Player.posX, Player.posY, Player.dim)
 end
@@ -65,13 +65,13 @@ function GameScene:draw()
     love.graphics.setColor(1, 1, 1)
     Background.draw(Camera)
     Player.draw()
-    EntitySpawner:draw()
+    ObstacleSpawner:draw()
     CoinSpawner:draw()
 end
 
 function GameScene:keypressed(key)
     Player.keypressed(key)
-    EntitySpawner:keypressed(key)
+    ObstacleSpawner:keypressed(key)
     CoinSpawner:keypressed(key)
 end
 
@@ -96,7 +96,7 @@ function GameScene:enter()
 end
 
 function GameScene:checkCollision(posX, posY, dim)
-    if EntitySpawner:checkCollision(posX, posY, dim) then
+    if ObstacleSpawner:checkCollision(posX, posY, dim) then
         -- Camera now to handle x velocity
         Camera.changeVelocityX(-150)
     end
