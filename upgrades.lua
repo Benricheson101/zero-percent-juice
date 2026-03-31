@@ -1,5 +1,6 @@
 local Upgrade = require('upgrade')
 local colors = require('util.color')
+local assets = require('util.assets')
 
 local upgrades = {
     Upgrade:new('Tank Pressure', function(x, y, scale) --starting speed
@@ -76,15 +77,62 @@ local upgrades = {
     end, function(level)
         return 7 * (level + 1) * level + 10
     end),
-    Upgrade:new('Rock Buster', function(x, y, scale) --Obstical damage upgrade
-        love.graphics.setColor(colors.hex(0x545454))
-        love.graphics.rectangle(
+    Upgrade:new('Rock Buster', function(x, y, scale) --Obstical damage upgrade 
+    --TODO make this actualy the damaege upgrade and not the spawn frequency upgrade
+        local sprite = assets.loadImage('images/Obstacle.png', 'nearest')
+        love.graphics.setColor(colors.hex(0xFFFFFF))
+        love.graphics.draw(sprite, x + 90 * scale, y + 15 * scale,0,4.5*scale, 4.5*scale)
+        love.graphics.setColor(colors.hex(0x5B537C))
+        -- partilces coming of the rock
+        love.graphics.polygon(
             'fill',
-            x + 50 * scale,
-            y + 20 * scale,
-            40 * scale,
-            50 * scale
-        ) --"rectangle"
+            x + 90 * scale,
+            y + 15 * scale,
+            x + 98 * scale,
+            y + 15 * scale,
+            x + 100 * scale,
+            y + 35 * scale
+        )
+        love.graphics.polygon(
+            'fill',
+            x + 80 * scale,
+            y + 70 * scale,
+            x + 86 * scale,
+            y + 70 * scale,
+            x + 94 * scale,
+            y + 55 * scale
+        )
+
+        --the guy smakshing the rock
+        love.graphics.setColor(colors.hex(0x545454))
+        love.graphics.circle('fill', x + 75 * scale, y + 45 * scale, 7 * scale)
+        love.graphics.setLineWidth(3 * scale)
+        love.graphics.line(
+            x + 75 * scale, y + 45 * scale,
+            x + 45 * scale,
+            y + 45 * scale
+        )
+        love.graphics.line(
+            x + 45 * scale, y + 45 * scale,
+            x + 35 * scale,
+            y + 40 * scale
+        )
+        love.graphics.line(
+            x + 45 * scale, y + 45 * scale,
+            x + 35 * scale,
+            y + 50 * scale
+        )
+
+        love.graphics.line(
+            x + 55 * scale, y + 45 * scale,
+            x + 70 * scale,
+            y + 55 * scale
+        )
+        love.graphics.line(
+            x + 55 * scale, y + 45 * scale,
+            x + 48 * scale,
+            y + 37 * scale
+        )
     end, function(level)
         return 8 * (level + 1) * level + 25
     end),
