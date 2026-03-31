@@ -108,10 +108,16 @@ function GameScene:checkCollision(posX, posY, dim)
     end
 end
 
+--- Calculates how often the rock obstical should spawn based on the level of the rock buster upgrade
+--- @param level number the level of the rock buster upgrade
+--- @return number the distance the player has to travel before the next obstical spawns
 function GameScene.obsticaleSpawFrequencyCalculation(level)
     return 720 + 15*level
 end
 
+--- Calulte how often coins should spawn based on the level of <relavant upgrade name here>
+--- @param level number the level of the <relavant upgrade name here> upgrade
+--- @return number the distance the player has to travel before the next coin spawns
 function GameScene.coinSpawnFrequencyCalculation(level)
     return 720 /(1+ 0.1*level)
 end

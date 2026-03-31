@@ -11,7 +11,7 @@ function EntitySpawner:new(opts)
     setmetatable(o, { __index = self })
 
     local upgradeName = opts.spawnUpgradeName
-    o.spawnUpgrade = upgrades.getUpgradeByName(upgradeName) --get the relivant upgrade for the spawn spacing of this entity type
+    o.spawnUpgrade = upgrades.getUpgrade(upgradeName) --get the relivant upgrade for the spawn spacing of this entity type
     o.spawnDistance = opts.spawnDistance
     o.baseVelocityX = opts.baseVelocityX
     o.velocityX = o.baseVelocityX
@@ -36,7 +36,7 @@ function EntitySpawner:update(dt)
         else
             baseSpawnDistance = self.spawnUpgradeEffectFunc(self.spawnUpgrade.level)
         end
-        self.spawnDistance = self.spawnDistance + self.baseSpawnDistance
+        self.spawnDistance = self.spawnDistance + baseSpawnDistance
         self:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
     end
 
