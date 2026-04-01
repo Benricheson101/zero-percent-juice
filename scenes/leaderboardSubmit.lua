@@ -7,6 +7,7 @@ local ltn12 = require('ltn12')
 local json = require('JSON')
 local Player = require('player')
 local constants = require('util.constants')
+local config = require('util.config')
 
 ---@class LeaderboardSubmitScene : Scene
 local LeaderboardSubmitScene = {}
@@ -23,7 +24,7 @@ local function submitScore(name, score)
     local responseBody = {}
 
     http.request {
-        url = 'http://localhost:8000/score',
+        url = config.leaderboard_api .. '/score',
         method = 'POST',
         headers = {
             ['Content-Type'] = 'application/json',
