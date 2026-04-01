@@ -12,6 +12,7 @@ local designWidth = 1280
 ---@class GameScene : Scene
 ---@field ObstacleSpawner EntitySpawner
 ---@field CoinSpawner EntitySpawner
+---@field PowerUpSpawner EntitySpawner
 local GameScene = {}
 setmetatable(GameScene, { __index = Scene })
 GameScene.__index = GameScene
@@ -28,7 +29,7 @@ function GameScene:new()
         accelerationY = 300,
         decelerationX = 50,
         decelerationY = 50,
-        maxVelocityX = 300,
+        maxVelocityX = 600,
         maxVelocityY = 300,
     }
 
@@ -49,10 +50,20 @@ function GameScene:new()
     ---@diagnostic disable-next-line: redundant-parameter
     o.CoinSpawner = EntitySpawner:new {
         spawnUpgradeName = 'Coin Replictor',
+        baseSpawnDistance = designWidth,
         spawnDistance = 0,
         baseVelocityX = 50,
         image = 'images/Coin.png',
         spawnUpgradeEffectFunc = GameScene.coinSpawnFrequencyCalculation,
+    }
+
+    o.PowerUpSpawner = EntitySpawner:new {
+        spawnUpgradeName = '',
+        baseSpawnDistance = designWidth * 3,
+        spawnDistance = designWidth / 2,
+        baseVelocityX = 50,
+        image = 'images/Powerup.png',
+        spawnUpgradeEffectFunc = nil
     }
 
     return o
@@ -63,9 +74,11 @@ function GameScene:update(dt)
     Camera.update(dt)
     self.ObstacleSpawner:update(dt)
     self.CoinSpawner:update(dt)
+    self.PowerUpSpawner:update(dt)
 
     self.ObstacleSpawner:updateEntityVelocityX(Camera.getVelocityX())
     self.CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
+    self.PowerUpSpawner:updateEntityVelocityX(Camera.getVelocityX())
     self:checkCollision(Player.posX, Player.posY, Player.dim)
 end
 
@@ -75,12 +88,14 @@ function GameScene:draw()
     Player.draw()
     self.ObstacleSpawner:draw()
     self.CoinSpawner:draw()
+    self.PowerUpSpawner:draw()
 end
 
 function GameScene:keypressed(key)
     Player.keypressed(key)
     self.ObstacleSpawner:keypressed(key)
     self.CoinSpawner:keypressed(key)
+    self.PowerUpSpawner:keypressed(key)
 end
 
 function GameScene:keyreleased(key)
@@ -125,6 +140,10 @@ function GameScene:checkCollision(posX, posY, dim)
         Player.money = Player.money
             + GameScene.calculateCoinValue(coinValueUpgrade:getLevel())
         print('Money: ' .. Player.money)
+    end
+
+    if self.PowerUpSpawner:checkCollision(posX, posY, dim) then
+        Camera.changeVelocityX(200)
     end
 end
 
