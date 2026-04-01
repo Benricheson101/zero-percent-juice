@@ -1,7 +1,15 @@
 local Ui = require('util.ui')
+local Camera = require('camera')
 local assets = require('util.assets')
 
 local Player = {}
+
+-- Gravity values
+-- HIGH_GRAVITY is applied when player is moving slow
+-- LOW_GRAVITY is applied when player is moving fast
+-- We can work on these values as we see fit in the future
+local HIGH_GRAVITY = 200
+local LOW_GRAVITY = 0
 
 -- local designWidth = 1280
 local designHeight = 720
@@ -54,12 +62,9 @@ end
 -- Updates Player's velocity, position, and rotation
 --- @param dt number deltaTime
 function Player.update(dt)
-    -- Player.updateVelocityX(dt)
-    Player.updateVelocityY(dt)
-
     Player.setDirection()
 
-    Player.updateVelocityX(dt)
+    -- Player.updateVelocityX(dt)
     Player.updateVelocityY(dt)
 
     Player.updatePosY(dt)
@@ -71,43 +76,16 @@ function Player.update(dt)
     Player.rotation = (Player.rotation + (dt * 3)) % (2 * math.pi)
 end
 
--- NOTE: This probably is a temp function, Camera will handle the x velocity
--- Updates Player's X velocity
---- @param dt number deltaTime
-function Player.updateVelocityX(dt)
-    -- Changes player velocity when left/right or a/d is pressed
-    Player.velocityX = Player.velocityX
-        + (Player.accelerationX * dt * Player.dx)
-
-    -- Slowly decreases their velocity over time
-    if Player.velocityX > 0 then
-        Player.velocityX = Player.velocityX - Player.decelerationX * dt
-        if Player.velocityX < 0 then
-            Player.velocityX = 0
-        end
-    end
-    if Player.velocityX < 0 then
-        Player.velocityX = Player.velocityX + Player.decelerationX * dt
-        if Player.velocityX > 0 then
-            Player.velocityX = 0
-        end
-    end
-
-    -- Caps player velocity
-    -- if Player.velocityX > Player.maxVelocityX then
-    --         Player.velocityX = Player.maxVelocityX
-    -- end
-    -- if Player.velocityX < (Player.maxVelocityX * -1) then
-    --         Player.velocityX = (Player.maxVelocityX * -1)
-    -- end
-end
-
 -- Updates Player's Y velocity
 --- @param dt number deltaTime
 function Player.updateVelocityY(dt)
+    local speed = math.abs(Camera.getVelocityX())
+    local t = math.min(speed / Player.maxVelocityY, 1)
+    local accelFactor = 0.25 + (0.75 * t)
+
     -- Changes player velocity when up/down or w/s is pressed
     Player.velocityY = Player.velocityY
-        + (Player.accelerationY * dt * Player.dy)
+        + (Player.accelerationY * accelFactor * dt * Player.dy)
 
     -- Slowly decreases their velocity over time
     if Player.velocityY > 0 then
@@ -143,9 +121,18 @@ function Player.updateVelocityY(dt)
         Player.velocityY = (Player.maxVelocityY * -1)
     end
 
-    -- if Player.velocityY < (Player.maxVelocityY * -1) then
-    --         Player.velocityY = (Player.maxVelocityY * -1)
-    -- end
+    -- This is where I can do the gravity
+    local gravity =
+        Player.getSpeedBasedGravity(Camera.getVelocityX(), Player.maxVelocityY)
+    Player.velocityY = Player.velocityY + gravity * dt
+end
+
+-- Function to calculate gravity value based on x speed (which is handled by camera)
+function Player.getSpeedBasedGravity(velocityX, maxVelocityY)
+    local speed = math.abs(velocityX)
+    local t = math.min(speed / maxVelocityY, 1)
+    local curve = t * t
+    return HIGH_GRAVITY + (LOW_GRAVITY - HIGH_GRAVITY) * curve
 end
 
 -- Updates Player's Y position
