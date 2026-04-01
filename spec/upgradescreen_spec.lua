@@ -22,8 +22,8 @@ describe('UpgradeScreen', function()
 
     it('decreases player money when buying an upgrade', function()
         local startMoney = player.money
-        local x, y, _ = UpgradeScreen.calculateUpgradePosition(2)
-        local upgrade = upgrades[2]
+        local x, y, _ = UpgradeScreen.calculateUpgradePosition(1)
+        local upgrade = upgrades[1]
 
         assert.is.equal(startMoney, player.money)
 
@@ -39,8 +39,8 @@ describe('UpgradeScreen', function()
     end)
 
     it('increases upgrade level when purchasing', function()
-        local x, y, _ = UpgradeScreen.calculateUpgradePosition(2)
-        local upgrade = upgrades[2]
+        local x, y, _ = UpgradeScreen.calculateUpgradePosition(1)
+        local upgrade = upgrades[1]
 
         assert.is.equal(0, upgrade:getLevel())
 
@@ -52,8 +52,8 @@ describe('UpgradeScreen', function()
     end)
 
     it("doesn't allow buying upgrades that cost more than balance", function()
-        local x, y, _ = UpgradeScreen.calculateUpgradePosition(2)
-        local upgrade = upgrades[2]
+        local x, y, _ = UpgradeScreen.calculateUpgradePosition(1)
+        local upgrade = upgrades[1]
 
         while player.money > upgrade:getPrice() do
             UpgradeScreen:mousepressed(x + 1, y + 1, 1)

@@ -2,6 +2,8 @@ local Scene = require('renderer.scene')
 local Player = require('player')
 local Camera = require('camera')
 local Background = require('background')
+local Upgrades = require('upgrades')
+local Ui = require('util.ui')
 local EntitySpawner = require('entitySpawner')
 
 local designWidth = 1280
@@ -16,8 +18,8 @@ function GameScene:new()
     local o = setmetatable({}, self)
 
     Player.load {
-        posX = love.graphics.getWidth() * 0.2,
-        posY = love.graphics.getHeight() / 2,
+        posX = Ui:getWidth() * 0.2,
+        posY = Ui:getHeight() / 2,
         velocityX = 0,
         velocityY = 0,
         accelerationX = 300,
@@ -75,6 +77,22 @@ end
 
 function GameScene:keyreleased(key)
     Player.keyreleased(key)
+end
+
+--- Calucates the inital speed of the player based on the level of the start speed upgreade
+--- @param level number the level of the start speed upgrade
+--- @return number the starting speed of the player
+function GameScene.calculateStartingSpeed(level)
+    return 100 + 125 * level
+end
+
+function GameScene:enter()
+    --when the game starts
+    local startSpeedUpgrade = Upgrades.getUpgrade('Tank Pressure') -- get the start speed upgrade
+    assert(startSpeedUpgrade ~= nil, 'Tank Pressure upgrade not found')
+    local speed = GameScene.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the statring speed
+    Camera.velocityX = speed -- apply the starting speed
+    Camera.xPos = 0 -- reset posotion to start
 end
 
 function GameScene:checkCollision(posX, posY, dim)

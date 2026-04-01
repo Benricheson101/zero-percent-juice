@@ -1,4 +1,5 @@
 local Ui = require('util.ui')
+local assets = require('util.assets')
 
 local Player = {}
 
@@ -28,11 +29,8 @@ function Player.load(opts)
     Player.maxVelocityX = opts.maxVelocityX
     Player.maxVelocityY = opts.maxVelocityY
 
-    love.graphics.setDefaultFilter('nearest', 'nearest')
-    Player.image = love.graphics.newImage('images/TempPlayer.png')
-    love.graphics.setDefaultFilter('linear', 'linear')
-
-    Player.dim = Player.image:getHeight() * designScale
+    -- the image height is 16
+    Player.dim = 16 * designScale
     Player.rotation = 0
 
     Player.dx = 0
@@ -172,6 +170,8 @@ end
 
 -- Scales and draws player sprite
 function Player.draw()
+    --only load the image once, during the render pass so testing does not break
+    Player.image = assets.loadImage('images/TempPlayer.png', 'nearest')
     local posX, posY = Ui:scaleCoord(Player.posX, Player.posY)
     local scale = Ui:getScale()
     love.graphics.draw(
