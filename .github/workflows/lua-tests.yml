@@ -2,8 +2,12 @@ name: Lua Unit Tests
 
 on:
   push:
+    paths:
+      - '**/*.lua'
   pull_request:
     branches: [master]
+    paths:
+      - '**/*.lua'
 
 jobs:
   test-lua:

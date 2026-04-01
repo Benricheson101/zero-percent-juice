@@ -6,8 +6,12 @@ name: Python application
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - 'leaderboard/**'
   pull_request:
     branches: [ "master" ]
+    paths:
+      - 'leaderboard/**'
 
 permissions:
   contents: read
