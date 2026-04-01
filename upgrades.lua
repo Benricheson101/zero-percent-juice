@@ -77,6 +77,7 @@ local upgrades = {
     end, function(level)
         return 7 * (level + 1) * level + 10
     end),
+    Upgrade:new("Rock Reducer", function(x,y,scale) end , function (level) return 1 end),
     Upgrade:new('Rock Buster', function(x, y, scale) --Obstical damage upgrade 
     --TODO make this actualy the damaege upgrade and not the spawn frequency upgrade
         local sprite = assets.loadImage('images/Obstacle.png', 'nearest')

@@ -34,7 +34,7 @@ function GameScene:new()
     Background.load()
 
     EntitySpawner = EntitySpawner:new {
-        spawnUpgradeName = "Rock Buster",
+        spawnUpgradeName = "Rock Reducer",
         spawnDistance = designWidth,
         baseVelocityX = 50,
         image = 'images/Obstacle.png',
