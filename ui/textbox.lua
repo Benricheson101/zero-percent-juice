@@ -124,7 +124,9 @@ function UITextbox:keypressed(key)
     if key == 'backspace' then
         self.value = self.value:sub(1, -2)
     elseif key == 'return' then
-        self:onSubmit(self.value)
+        if #self.value > 0 then
+            self:onSubmit(self.value)
+        end
     else
         return
     end
