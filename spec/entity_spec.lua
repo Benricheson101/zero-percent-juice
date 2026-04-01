@@ -15,7 +15,7 @@ describe('Entity', function()
             assert.are.equal(1000, entity.posX)
             assert.are.equal(800, entity.posY)
             assert.are.equal(100, entity.velocityX)
-            assert.are.equal('images/Obstacle.png', entity.image)
+            assert.are.equal('images/Obstacle.png', entity.imagePath)
 
         end)
     end)

@@ -26,7 +26,7 @@ function GameScene:new()
         accelerationY = 300,
         decelerationX = 50,
         decelerationY = 50,
-        maxVelocityX = 300,
+        maxVelocityX = 600,
         maxVelocityY = 300,
     }
 
@@ -47,6 +47,13 @@ function GameScene:new()
         image = 'images/Coin.png',
     }
 
+    PowerUpSpawner = EntitySpawner:new {
+        baseSpawnDistance = designWidth * 3,
+        spawnDistance = designWidth / 2,
+        baseVelocityX = 50,
+        image = 'images/Powerup.png',
+    }
+
     return o
 end
 
@@ -55,9 +62,11 @@ function GameScene:update(dt)
     Camera.update(dt)
     ObstacleSpawner:update(dt)
     CoinSpawner:update(dt)
+    PowerUpSpawner:update(dt)
 
     ObstacleSpawner:updateEntityVelocityX(Camera.getVelocityX())
     CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
+    PowerUpSpawner:updateEntityVelocityX(Camera.getVelocityX())
     GameScene:checkCollision(Player.posX, Player.posY, Player.dim)
 end
 
@@ -67,12 +76,22 @@ function GameScene:draw()
     Player.draw()
     ObstacleSpawner:draw()
     CoinSpawner:draw()
+    PowerUpSpawner:draw()
+
+    love.graphics.printf(Camera.velocityX, love.graphics.newFont('assets/fonts/impact.ttf', 75 * 1),
+        0,
+        0,
+        200 * Ui:getScale(),
+        'left'
+    )
+
 end
 
 function GameScene:keypressed(key)
     Player.keypressed(key)
     ObstacleSpawner:keypressed(key)
     CoinSpawner:keypressed(key)
+    PowerUpSpawner:keypressed(key)
 end
 
 function GameScene:keyreleased(key)
@@ -98,11 +117,15 @@ end
 function GameScene:checkCollision(posX, posY, dim)
     if ObstacleSpawner:checkCollision(posX, posY, dim) then
         -- Camera now to handle x velocity
-        Camera.changeVelocityX(-150)
+        Camera.changeVelocityX(-200)
     end
 
     if CoinSpawner:checkCollision(posX, posY, dim) then
         Player.money = Player.money + 10
+    end
+
+    if PowerUpSpawner:checkCollision(posX, posY, dim) then
+        Camera.changeVelocityX(200)
     end
 end
 
