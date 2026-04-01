@@ -3,3 +3,6 @@ leaderboard/data
 .vscode
 .DS_STORE
 __pycache__
+/luarocks
+/lua
+/.luarocks

@@ -1,3 +1,5 @@
+package.path = './vendor/share/lua/5.1/?.lua;' .. package.path
+
 return {
     _all = {
         helper = './spec/helper.lua'
