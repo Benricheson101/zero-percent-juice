@@ -1,54 +1,80 @@
 local Upgrade = require('upgrade')
+local colors = require('util.color')
 
 local upgrades = {
-    Upgrade:new('Upgrade 1', function(x, y, scale)
-        love.graphics.setColor(1, 0, 0)
-        love.graphics.circle(
-            'fill',
-            x + 100 * scale,
-            y + 40 * scale,
-            30 * scale
-        )
-    end, function(level)
-        return 100 * (level + 1)
-    end),
-    Upgrade:new('Upgrade 2', function(x, y, scale)
-        love.graphics.setColor(0, 1, 0)
+    Upgrade:new('Tank Pressure', function(x, y, scale) --starting speed
+        love.graphics.setColor(colors.hex(0x545454))
         love.graphics.rectangle(
             'fill',
             x + 50 * scale,
             y + 20 * scale,
-            100 * scale,
-            40 * scale
-        )
-    end, function(level)
-        return 150 * (level + 1)
-    end),
-    Upgrade:new('Upgrade 3', function(x, y, scale)
-        love.graphics.setColor(0, 0, 1)
-        love.graphics.polygon(
-            'fill',
-            x + 100 * scale,
-            y,
-            x + 143.3 * scale,
-            y + 75 * scale,
-            x + 56.7 * scale,
-            y + 75 * scale
-        )
-    end, function(level)
-        return 200 * (level + 1)
-    end),
-    Upgrade:new('Upgrade 4', function(x, y, scale)
-        love.graphics.setColor(1, 1, 0)
-        love.graphics.ellipse(
-            'fill',
-            x + 100 * scale,
+            40 * scale,
+            50 * scale
+        ) --"tank"
+        love.graphics.setColor(colors.hex(0xFF0000))
+        local verticies = { -- explosion verticies
+            x + 90 * scale,
             y + 40 * scale,
-            30 * scale,
-            20 * scale
+            x + 100 * scale,
+            y + 28 * scale,
+            x + 98 * scale,
+            y + 38 * scale,
+            x + 110 * scale,
+            y + 34 * scale,
+            x + 98 * scale,
+            y + 42 * scale,
+            x + 108 * scale,
+            y + 44 * scale,
+            x + 97 * scale,
+            y + 46 * scale,
+            x + 105 * scale,
+            y + 55 * scale,
+            x + 90 * scale,
+            y + 46 * scale,
+        }
+        local triangles = love.math.triangulate(verticies)
+        for i, triangle in ipairs(triangles) do
+            love.graphics.polygon('fill', triangle) --draw the explosion
+        end
+        love.graphics.setColor(colors.hex(0x545454))
+        love.graphics.setLineWidth(3 * scale)
+        --the guy that is being away
+        love.graphics.arc(
+            'line',
+            'open',
+            x + 102 * scale,
+            y + 41 * scale,
+            23 * scale,
+            math.rad(45),
+            math.rad(-45)
+        )
+        love.graphics.circle('fill', x + 121 * scale, y + 28 * scale, 7 * scale)
+        love.graphics.line(
+            x + 118 * scale,
+            y + 57 * scale,
+            x + 106 * scale,
+            y + 53 * scale
+        )
+        love.graphics.line(
+            x + 118 * scale,
+            y + 57 * scale,
+            x + 108 * scale,
+            y + 63 * scale
+        )
+        love.graphics.line(
+            x + 124 * scale,
+            y + 41 * scale,
+            x + 117 * scale,
+            y + 38 * scale
+        )
+        love.graphics.line(
+            x + 124 * scale,
+            y + 41 * scale,
+            x + 117 * scale,
+            y + 43 * scale
         )
     end, function(level)
-        return 250 * (level + 1)
+        return 7 * (level + 1) * level + 10
     end),
 }
 

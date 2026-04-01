@@ -23,7 +23,7 @@ function Ui:reload(screenWidth, screenHeight)
     local scaleX = screenWidth / designWidth
     local scaleY = screenHeight / designHeight
     --get the minum between them to act as the base scale. This ensures that the UI will be as large as possible while still fitting on the screen while retainting the aspect ratio.
-    self.scale = math.min(scaleX, scaleY)
+    self.scale = math.max(0.1, math.min(scaleX, scaleY))
     self.centerX = screenWidth / 2
     self.centerY = screenHeight / 2
     self.top = self.centerY - (designHeight * self.scale) / 2
