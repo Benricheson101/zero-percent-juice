@@ -24,5 +24,8 @@ jobs:
       - name: Install busted
         run: luarocks install busted
 
+      - name: Install luasocket
+        run: luarocks install luasocket
+
       - name: Run tests
         run: busted spec
