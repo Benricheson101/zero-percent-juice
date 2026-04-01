@@ -139,7 +139,7 @@ function Player.calculateBounce(velY, maxVelX)
     local velX = Camera.getVelocityX()
     local horizontalFactor = 0.5 * (math.abs(velX) / maxVelX)
     local bounceStrength = 100
-    print('bounce:', -velY * bounceStrength * horizontalFactor)
+    -- print('bounce:', -velY * bounceStrength * horizontalFactor)
     return -velY * bounceStrength * horizontalFactor
 end
 
@@ -159,11 +159,9 @@ function Player.updatePosY(dt)
     if Player.posY > (designHeight - (Player.dim / 2)) then
         Player.posY = (designHeight - (Player.dim / 2))
         -- print('Hit the bottom: velY:', Player.velocityY)
-        Player.velocityY = Player.calculateBounce(
-            Player.velocityY,
-            Player.maxVelocityX
-        )
-        print('Player VelY:', Player.velocityY)
+        Player.velocityY =
+            Player.calculateBounce(Player.velocityY, Player.maxVelocityX)
+        -- print('Player VelY:', Player.velocityY)
     end
 
     -- Slowly rotates player
