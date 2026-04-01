@@ -22,16 +22,16 @@ local function submitScore(name, score)
     }
     local responseBody = {}
 
-    http.request({
+    http.request {
         url = 'http://localhost:8000/score',
         method = 'POST',
         headers = {
             ['Content-Type'] = 'application/json',
-            ['Content-Length'] = tostring(#requestBody)
+            ['Content-Length'] = tostring(#requestBody),
         },
         source = ltn12.source.string(requestBody),
-        sink = ltn12.sink.table(responseBody)
-    })
+        sink = ltn12.sink.table(responseBody),
+    }
 end
 
 function LeaderboardSubmitScene:new()
