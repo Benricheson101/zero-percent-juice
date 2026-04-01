@@ -1,17 +1,45 @@
 local Entity = require('entity')
 local upgrades = require('upgrades')
+
+--- @class EntitySpawner
+--- @field spawnUpgrade Upgrade the upgrade that effects the spawn spacing of this entity type
+--- @field spawnDistance number how far the player has to travel before a new entity is spawned
+--- @field baseVelocityX number the base x velocity of the entities that are spawned
+--- @field velocityX number the x velocity of the entities that are spawned
+--- @field image string the file path of the image that the entities that are spawned will use
+--- @field showHitboxes boolean whether the hitboxes of the entities that are spawned should be shown or not
+--- @field spawnUpgradeEffectFunc function the function that determins how the upgrade level effects spawn
+--- @field entities Entity[] the entities that have been spawned and are still on screen
+--- @field new fun(opts: table): EntitySpawner
+--- @field update fun(self: EntitySpawner, dt: number): nil
+--- @field draw fun(self: EntitySpawner): nil
+--- @field keypressed fun(self: EntitySpawner, key: string): nil
+--- @field spawn fun(self: EntitySpawner, spawnPosY: number): nil
+--- @field checkCollision fun(self: EntitySpawner, posX: number, posY: number, dim: number): boolean
+--- @field updateEntityVelocityX fun(self: EntitySpawner, newVelocityX: number): nil
 local EntitySpawner = {}
 
 local designWidth = 1280
 local designHeight = 720
 
+--- @class EntitySpanwerOpts
+--- @field spawnUpgradeName string the name of the upgrade that effects the spawn spacing of this
+--- @field spawnDistance number how far the player has to travel before a new entity is spawned
+--- @field baseVelocityX number the base x velocity of the entities that are spawned
+--- @field image string the file path of the image that the entities that are spawned will use
+--- @field spawnUpgradeEffectFunc function<number, number> the function that determins how the upgrade level effects spawn
+
+--- Ctreaes a new entity spawner
+--- @param self EntitySpawner
+--- @param opts EntitySpanwerOpts the options for the new entity spawner
+--- @return EntitySpawner the new entity spawner
 function EntitySpawner:new(opts)
     local o = {}
 
     setmetatable(o, { __index = self })
 
     local upgradeName = opts.spawnUpgradeName
-    o.spawnUpgrade = upgrades.getUpgrade(upgradeName) --get the relivant upgrade for the spawn spacing of this entity type
+    o.spawnUpgrade = upgrades.getUpgrade(upgradeName)--get the relivant upgrade for the spawn spacing of this entity type
     o.spawnDistance = opts.spawnDistance
     o.baseVelocityX = opts.baseVelocityX
     o.velocityX = o.baseVelocityX

@@ -10,6 +10,8 @@ local designWidth = 1280
 -- local designHeight = 720
 
 ---@class GameScene : Scene
+---@field obsticaleSpawner EntitySpawner
+---@field CoinSpawner EntitySpawner
 local GameScene = {}
 setmetatable(GameScene, { __index = Scene })
 GameScene.__index = GameScene
@@ -33,21 +35,22 @@ function GameScene:new()
     Camera.load(Player)
     Background.load()
 
-    EntitySpawner = EntitySpawner:new {
+    o.obsticaleSpawner = EntitySpawner:new({
         spawnUpgradeName = "Rock Reducer",
         spawnDistance = designWidth,
         baseVelocityX = 50,
         image = 'images/Obstacle.png',
         spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation
-    }
+    })
 
-    CoinSpawner = EntitySpawner:new {
+
+    o.CoinSpawner = EntitySpawner:new({
         spawnUpgradeName = "Coin Magnet",
         spawnDistance = designWidth / 2,
         baseVelocityX = 50,
         image = 'images/Coin.png',
         spawnUpgradeEffectFunc = GameScene.coinSpawnFrequencyCalculation
-    }
+    })
 
     return o
 end
@@ -55,26 +58,26 @@ end
 function GameScene:update(dt)
     Player.update(dt)
     Camera.update(dt)
-    EntitySpawner:update(dt)
-    CoinSpawner:update(dt)
+    self.obsticaleSpawner:update(dt)
+    self.CoinSpawner:update(dt)
 
-    EntitySpawner:updateEntityVelocityX(Camera.getVelocityX())
-    CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
-    GameScene:checkCollision(Player.posX, Player.posY, Player.dim)
+    self.obsticaleSpawner:updateEntityVelocityX(Camera.getVelocityX())
+    self.CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
+    self:checkCollision(Player.posX, Player.posY, Player.dim)
 end
 
 function GameScene:draw()
     love.graphics.setColor(1, 1, 1)
     Background.draw(Camera)
     Player.draw()
-    EntitySpawner:draw()
-    CoinSpawner:draw()
+    self.obsticaleSpawner:draw()
+    self.CoinSpawner:draw()
 end
 
 function GameScene:keypressed(key)
     Player.keypressed(key)
-    EntitySpawner:keypressed(key)
-    CoinSpawner:keypressed(key)
+    self.obsticaleSpawner:keypressed(key)
+    self.CoinSpawner:keypressed(key)
 end
 
 function GameScene:keyreleased(key)
@@ -98,12 +101,12 @@ function GameScene:enter()
 end
 
 function GameScene:checkCollision(posX, posY, dim)
-    if EntitySpawner:checkCollision(posX, posY, dim) then
+    if self.obsticaleSpawner:checkCollision(posX, posY, dim) then
         -- Camera now to handle x velocity
         Camera.changeVelocityX(-150)
     end
 
-    if CoinSpawner:checkCollision(posX, posY, dim) then
+    if self.CoinSpawner:checkCollision(posX, posY, dim) then
         Player.money = Player.money + 10
     end
 end
