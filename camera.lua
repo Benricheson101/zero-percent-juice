@@ -72,8 +72,8 @@ function Camera.changeVelocityX(changeX)
 
     Camera.velocityX = newX
 
-    print('Cam Vel X:', Camera.velocityX)
-    print('newX:', newX)
+    -- print('Cam Vel X:', Camera.velocityX)
+    -- print('newX:', newX)
 end
 
 function Camera.getVelocityX()
