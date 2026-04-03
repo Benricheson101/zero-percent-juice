@@ -29,10 +29,12 @@ local designHeight = 720
 --- @field image string the file path of the image that the entities that are spawned will use
 --- @field spawnUpgradeEffectFunc function<number, number> the function that determins how the upgrade level effects spawn
 
+
 --- Ctreaes a new entity spawner
 --- @param self EntitySpawner
 --- @param opts EntitySpanwerOpts the options for the new entity spawner
 --- @return EntitySpawner the new entity spawner
+---@diagnostic disable-next-line: redundant-parameter
 function EntitySpawner:new(opts)
     local o = {}
 

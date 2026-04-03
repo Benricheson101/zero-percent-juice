@@ -35,6 +35,7 @@ function GameScene:new()
     Camera.load(Player)
     Background.load()
 
+---@diagnostic disable-next-line: redundant-parameter
     o.obsticaleSpawner = EntitySpawner:new({
         spawnUpgradeName = "Rock Reducer",
         spawnDistance = designWidth,
@@ -44,8 +45,9 @@ function GameScene:new()
     })
 
 
+---@diagnostic disable-next-line: redundant-parameter
     o.CoinSpawner = EntitySpawner:new({
-        spawnUpgradeName = "Coin Magnet",
+        spawnUpgradeName = "Coin Replictor",
         spawnDistance = designWidth / 2,
         baseVelocityX = 50,
         image = 'images/Coin.png',

@@ -169,6 +169,43 @@ local upgrades = {
     end, function(level)
         return 8 * (level + 1) * level + 30
     end),
+    Upgrade:new('Coin Replictor', function(x, y, scale) --Coin spawn upgrade
+        local sprite = assets.loadImage('images/Coin.png', 'nearest')
+        love.graphics.setColor(colors.hex(0xFFFFFF))
+        love.graphics.draw(sprite, x + 20 * scale, y + 30 * scale,0,2*scale, 2*scale)
+        love.graphics.draw(sprite, x + 140 * scale, y + 20 * scale,0,2*scale, 2*scale)
+        love.graphics.draw(sprite, x + 150 * scale, y + 40 * scale,0,2*scale, 2*scale)
+        love.graphics.draw(sprite, x + 125 * scale, y + 30 * scale,0,2*scale, 2*scale)
+        love.graphics.setLineWidth(3 * scale)
+        love.graphics.setColor(colors.hex(0x545454))
+        love.graphics.line(
+            x + 60 * scale,
+            y + 45 * scale,
+            x + 110 * scale,
+            y + 45 * scale
+        )
+        love.graphics.polygon(
+            'fill',
+            x + 120 * scale,
+            y + 45 * scale,
+            x + 110 * scale,
+            y + 40 * scale,
+            x + 110 * scale,
+            y + 50 * scale
+        )
+    end , function (level) 
+        return 8 * (level + 1) * level + 40
+    end),
+    Upgrade:new('Profit Boost', function(x, y, scale) --Coin value upgrade
+        local sprite = assets.loadImage('images/Coin.png', 'nearest')
+        love.graphics.setColor(colors.hex(0xFFFFFF))
+        love.graphics.draw(sprite, x + 80 * scale, y + 20 * scale, 0, 3*scale, 3*scale)
+        love.graphics.setColor(colors.hex(0x545454))
+        love.graphics.setLineWidth(3 * scale)
+
+    end , function (level) 
+        return 9 * (level + 1) * level + 45
+    end),
 }
 
 ---Get an upgrade by name
