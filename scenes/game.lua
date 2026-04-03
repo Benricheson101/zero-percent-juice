@@ -44,11 +44,11 @@ function GameScene:new()
         spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation
     })
 
-
+    --TODO: find a way for coins to be able to spawn way eriler
 ---@diagnostic disable-next-line: redundant-parameter
     o.CoinSpawner = EntitySpawner:new({
         spawnUpgradeName = "Coin Replictor",
-        spawnDistance = designWidth / 2,
+        spawnDistance = 0,
         baseVelocityX = 50,
         image = 'images/Coin.png',
         spawnUpgradeEffectFunc = GameScene.coinSpawnFrequencyCalculation
@@ -103,13 +103,21 @@ function GameScene:enter()
 end
 
 function GameScene:checkCollision(posX, posY, dim)
+    local obsticalSpeedReductionUpgrade = Upgrades.getUpgrade('Rock Buster')
+    local coinValueUpgrade = Upgrades.getUpgrade('Profit Boost')
+    assert(obsticalSpeedReductionUpgrade ~= nil, 'Rock Buster upgrade not found')
+    assert(coinValueUpgrade ~= nil, 'Profit Boost upgrade not found')
+    --obstical collision
     if self.obsticaleSpawner:checkCollision(posX, posY, dim) then
         -- Camera now to handle x velocity
-        Camera.changeVelocityX(-150)
+        local reduction = GameScene.calculateObsticalSpeedReduction(obsticalSpeedReductionUpgrade:getLevel())
+        Camera.changeVelocityX(reduction)
     end
 
+    --coin collision
     if self.CoinSpawner:checkCollision(posX, posY, dim) then
-        Player.money = Player.money + 10
+        Player.money = Player.money + GameScene.calculateCoinValue(coinValueUpgrade:getLevel())
+        print('Money: ' .. Player.money)
     end
 end
 
@@ -125,6 +133,20 @@ end
 --- @return number the distance the player has to travel before the next coin spawns
 function GameScene.coinSpawnFrequencyCalculation(level)
     return 720 /(1+ 0.1*level)
+end
+
+--- Calculate how much speed to remove from the player when they hit an obstical
+--- @param level number the level of the rock reducer upgrade
+--- @return number the amount of speed to remove
+function GameScene.calculateObsticalSpeedReduction(level)
+    return -150 * math.pow(0.96, level)
+end
+
+--- Calculae how much each coin is worth
+--- @param level number the level of the profit boost upgrade
+--- @return number the value of each coin
+function GameScene.calculateCoinValue(level)
+    return 10 + math.floor(math.pow(level,1.15))
 end
 
 return GameScene
