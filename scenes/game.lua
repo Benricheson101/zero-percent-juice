@@ -78,13 +78,6 @@ function GameScene:draw()
     CoinSpawner:draw()
     PowerUpSpawner:draw()
 
-    love.graphics.printf(Camera.velocityX, love.graphics.newFont('assets/fonts/impact.ttf', 75 * 1),
-        0,
-        0,
-        200 * Ui:getScale(),
-        'left'
-    )
-
 end
 
 function GameScene:keypressed(key)
