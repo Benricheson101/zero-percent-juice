@@ -77,9 +77,41 @@ local upgrades = {
     end, function(level)
         return 7 * (level + 1) * level + 10
     end),
-    Upgrade:new("Rock Reducer", function(x,y,scale) end , function (level) return 1 end),
+    Upgrade:new("Rock Reducer", function(x,y,scale) --Obstical spacing upgrade
+        local sprite = assets.loadImage('images/Obstacle.png', 'nearest')
+        love.graphics.setColor(colors.hex(0xFFFFFF))
+        love.graphics.draw(sprite, x + 20 * scale, y + 20 * scale,0,3*scale, 3*scale)
+        love.graphics.draw(sprite, x + 140 * scale, y + 20 * scale,0,3*scale, 3*scale)
+        love.graphics.setLineWidth(3 * scale)
+        love.graphics.setColor(colors.hex(0x545454))
+        love.graphics.line(
+            x + 80 * scale,
+            y + 45 * scale,
+            x + 130 * scale,
+            y + 45 * scale
+        )
+        love.graphics.polygon(
+            'fill',
+            x + 70 * scale,
+            y + 45 * scale,
+            x + 80 * scale,
+            y + 40 * scale,
+            x + 80 * scale,
+            y + 50 * scale
+        )
+        love.graphics.polygon(
+            'fill',
+            x + 140 * scale,
+            y + 45 * scale,
+            x + 130 * scale,
+            y + 40 * scale,
+            x + 130 * scale,
+            y + 50 * scale
+        )
+    end , function (level) 
+        return 8 * (level + 1) * level + 25
+    end),
     Upgrade:new('Rock Buster', function(x, y, scale) --Obstical damage upgrade 
-    --TODO make this actualy the damaege upgrade and not the spawn frequency upgrade
         local sprite = assets.loadImage('images/Obstacle.png', 'nearest')
         love.graphics.setColor(colors.hex(0xFFFFFF))
         love.graphics.draw(sprite, x + 90 * scale, y + 15 * scale,0,4.5*scale, 4.5*scale)
@@ -135,7 +167,7 @@ local upgrades = {
             y + 37 * scale
         )
     end, function(level)
-        return 8 * (level + 1) * level + 25
+        return 8 * (level + 1) * level + 30
     end),
 }
 
