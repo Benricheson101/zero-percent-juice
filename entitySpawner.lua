@@ -29,7 +29,6 @@ local designHeight = 720
 --- @field image string the file path of the image that the entities that are spawned will use
 --- @field spawnUpgradeEffectFunc function<number, number> the function that determins how the upgrade level effects spawn
 
-
 --- Ctreaes a new entity spawner
 --- @param self EntitySpawner
 --- @param opts EntitySpanwerOpts the options for the new entity spawner
@@ -41,7 +40,7 @@ function EntitySpawner:new(opts)
     setmetatable(o, { __index = self })
 
     local upgradeName = opts.spawnUpgradeName
-    o.spawnUpgrade = upgrades.getUpgrade(upgradeName)--get the relivant upgrade for the spawn spacing of this entity type
+    o.spawnUpgrade = upgrades.getUpgrade(upgradeName) --get the relivant upgrade for the spawn spacing of this entity type
     o.spawnDistance = opts.spawnDistance
     o.baseVelocityX = opts.baseVelocityX
     o.velocityX = o.baseVelocityX
@@ -64,7 +63,8 @@ function EntitySpawner:update(dt)
         if self.spawnUpgrade == nil then
             baseSpawnDistance = self.spawnUpgradeEffectFunc(0)
         else
-            baseSpawnDistance = self.spawnUpgradeEffectFunc(self.spawnUpgrade.level)
+            baseSpawnDistance =
+                self.spawnUpgradeEffectFunc(self.spawnUpgrade.level)
         end
         self.spawnDistance = self.spawnDistance + baseSpawnDistance
         self:spawn(math.random(designHeight * 0.05, designHeight * 0.95))

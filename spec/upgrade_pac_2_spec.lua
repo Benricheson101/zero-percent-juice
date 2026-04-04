@@ -17,11 +17,20 @@ describe('Rock Reducer Upgrade', function()
     end)
     it('spawn frequency function applied', function()
         local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(2)
-        assert.is_true(expectedSpawnFrequency == game.obsticaleSpawner.spawnUpgradeEffectFunc(2))
+        assert.is_true(
+            expectedSpawnFrequency
+                == game.obsticaleSpawner.spawnUpgradeEffectFunc(2)
+        )
         local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(3)
-        assert.is_true(expectedSpawnFrequency == game.obsticaleSpawner.spawnUpgradeEffectFunc(3))
+        assert.is_true(
+            expectedSpawnFrequency
+                == game.obsticaleSpawner.spawnUpgradeEffectFunc(3)
+        )
         local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(4)
-        assert.is_true(expectedSpawnFrequency == game.obsticaleSpawner.spawnUpgradeEffectFunc(4))
+        assert.is_true(
+            expectedSpawnFrequency
+                == game.obsticaleSpawner.spawnUpgradeEffectFunc(4)
+        )
     end)
     it('spawner gets upgrade', function()
         local rockReducerUpgrade = upgrades.getUpgrade('Rock Reducer')
@@ -29,10 +38,9 @@ describe('Rock Reducer Upgrade', function()
         assert.is_true(game.obsticaleSpawner.spawnUpgrade == rockReducerUpgrade)
     end)
     --the funcility of the varible spawn disrance should be tested with the entity spawner class tests
-    
 end)
 
-describe("Rock Buster Upgrade", function()
+describe('Rock Buster Upgrade', function()
     local game = gameScene:new()
     it('damage reduction calculation', function()
         --test that the spawn frequency goes up
@@ -49,7 +57,6 @@ describe("Rock Buster Upgrade", function()
 
     --prbly should have a behavior test to check that when the player hits an obstical they take damege, not currently sure how to implment this
     -- this would also check that the upgrade is being used
-    
 end)
 
 describe('Coin Spawn Frequency Upgrade', function()
@@ -68,11 +75,17 @@ describe('Coin Spawn Frequency Upgrade', function()
     end)
     it('spawn frequency function applied', function()
         local expectedSpawnFrequency = game.coinSpawnFrequencyCalculation(2)
-        assert.is_true(expectedSpawnFrequency == game.CoinSpawner.spawnUpgradeEffectFunc(2))
+        assert.is_true(
+            expectedSpawnFrequency == game.CoinSpawner.spawnUpgradeEffectFunc(2)
+        )
         local expectedSpawnFrequency = game.coinSpawnFrequencyCalculation(3)
-        assert.is_true(expectedSpawnFrequency == game.CoinSpawner.spawnUpgradeEffectFunc(3))
+        assert.is_true(
+            expectedSpawnFrequency == game.CoinSpawner.spawnUpgradeEffectFunc(3)
+        )
         local expectedSpawnFrequency = game.coinSpawnFrequencyCalculation(4)
-        assert.is_true(expectedSpawnFrequency == game.CoinSpawner.spawnUpgradeEffectFunc(4))
+        assert.is_true(
+            expectedSpawnFrequency == game.CoinSpawner.spawnUpgradeEffectFunc(4)
+        )
     end)
     it('spawner gets upgrade', function()
         local coinSpawnUpgrade = upgrades.getUpgrade('Coin Replictor')
@@ -83,19 +96,19 @@ describe('Coin Spawn Frequency Upgrade', function()
 end)
 
 describe('Coin Value Upgrade', function()
-        local game = gameScene:new()
-        it('value calculation', function()
-            --test that the value goes up
-            local initalValue = game.calculateCoinValue(0)
-            local value1 = game.calculateCoinValue(1)
-            local value2 = game.calculateCoinValue(2)
-            assert.is_true(value1 > initalValue)
-            assert.is_true(value2 > value1)
-        end)
-        it('upgrade exists', function()
-            local coinValueUpgrade = upgrades.getUpgrade('Profit Boost')
-            assert.is_not_nil(coinValueUpgrade)
-        end)
-        --prbly should have a behavior test to check that when the player collects a coin they get points, not currently sure how to implment this
-        -- this would also check that the upgrade is being used
+    local game = gameScene:new()
+    it('value calculation', function()
+        --test that the value goes up
+        local initalValue = game.calculateCoinValue(0)
+        local value1 = game.calculateCoinValue(1)
+        local value2 = game.calculateCoinValue(2)
+        assert.is_true(value1 > initalValue)
+        assert.is_true(value2 > value1)
+    end)
+    it('upgrade exists', function()
+        local coinValueUpgrade = upgrades.getUpgrade('Profit Boost')
+        assert.is_not_nil(coinValueUpgrade)
+    end)
+    --prbly should have a behavior test to check that when the player collects a coin they get points, not currently sure how to implment this
+    -- this would also check that the upgrade is being used
 end)
