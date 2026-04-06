@@ -2,6 +2,8 @@ local Player = require('player')
 local Camera = require('camera')
 
 describe('Bounce_Test_Suite', function()
+    -- A lot of the velocity are float values
+    -- just had to add a tolerance to compare float values
     local tolerance = 0.001
 
     local function approxEqual(actual, expected)
@@ -9,12 +11,15 @@ describe('Bounce_Test_Suite', function()
     end
 
     describe('calculateBounce', function()
-        it('calculates bounce with positive velocity and positive camera velocity', function()
-            Camera.velocityX = 100
-            local bounce = Player.calculateBounce(-50, 300)
-            local expected = 50 * 100 * (0.5 * math.abs(100) / 300)
-            assert.is_true(approxEqual(bounce, expected))
-        end)
+        it(
+            'calculates bounce with positive velocity and positive camera velocity',
+            function()
+                Camera.velocityX = 100
+                local bounce = Player.calculateBounce(-50, 300)
+                local expected = 50 * 100 * (0.5 * math.abs(100) / 300)
+                assert.is_true(approxEqual(bounce, expected))
+            end
+        )
 
         it('calculates bounce with negative camera velocity', function()
             Camera.velocityX = -100
@@ -53,3 +58,4 @@ describe('Bounce_Test_Suite', function()
         end)
     end)
 end)
+
