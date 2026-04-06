@@ -23,7 +23,7 @@ local function submitScore(name, score)
     }
     local responseBody = {}
 
-    http.request {
+    local body = http.request {
         url = config.leaderboard_api .. '/score',
         method = 'POST',
         headers = {
@@ -33,17 +33,24 @@ local function submitScore(name, score)
         source = ltn12.source.string(requestBody),
         sink = ltn12.sink.table(responseBody),
     }
+
+    return body ~= nil
 end
 
 function LeaderboardSubmitScene:new()
     local o = setmetatable({}, self)
     o.input = ''
     o.liveInput = ''
+    o.failed = false
+    o.waitTime = 0
     return o
 end
 
 function LeaderboardSubmitScene:enter()
     love.keyboard.setKeyRepeat(true)
+    self.failed = false
+    self.waitTime = 0
+
     self.textbox = UITextbox:new {
         width = 900,
         focused = true,
@@ -53,7 +60,12 @@ function LeaderboardSubmitScene:enter()
             tb.focused = false
             self.input = value
 
-            submitScore(value, Player.score)
+            local success = submitScore(value, Player.score)
+            if success then
+                self.scene_manager:transition('upgrade')
+            else
+                self.failed = true
+            end
         end,
 
         onInput = function(_, value)
@@ -71,6 +83,7 @@ function LeaderboardSubmitScene:draw()
 
     local titleFont = fonts.impact75
 
+    love.graphics.setColor(constants.colors.title)
     love.graphics.setFont(titleFont)
     love.graphics.printf(
         'Game Over',
@@ -100,6 +113,19 @@ function LeaderboardSubmitScene:draw()
 
     love.graphics.draw(tbcanvas, tbCenterX, tbCenterY)
 
+    if self.failed then
+        local errorFont = fonts.tahoma25
+        love.graphics.setColor(constants.colors.error)
+        love.graphics.setFont(errorFont)
+        love.graphics.printf(
+            'Failed to submit score to leaderboard',
+            0,
+            Ui:getHeight() * 0.375 + tbcanvas:getHeight() / 2,
+            Ui:getWidth(),
+            'center'
+        )
+    end
+
     -- TODO: switch to leaderboard scene
     -- TODO: only show this screen if score is in top 10?
 end
@@ -116,6 +142,16 @@ end
 
 function LeaderboardSubmitScene:update(dt)
     self.textbox:update(dt)
+
+    if not self.failed then
+        return
+    end
+
+    if self.waitTime >= 2.0 then
+        self.scene_manager:transition('upgrade')
+    else
+        self.waitTime = self.waitTime + dt
+    end
 end
 
 return LeaderboardSubmitScene
