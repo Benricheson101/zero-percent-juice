@@ -22,7 +22,7 @@ describe('GameScene', function ()
             local game = GameScene:new()
 
             game.ObstacleSpawner:spawn(200)
-            game.ObstacleSpawner.entities[0].posX = 300
+            game.ObstacleSpawner.entities[1].posX = 300
 
             game:checkCollision(300, 200, 10)
 
