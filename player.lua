@@ -135,6 +135,14 @@ function Player.getSpeedBasedGravity(velocityX, maxVelocityY)
     return HIGH_GRAVITY + (LOW_GRAVITY - HIGH_GRAVITY) * curve
 end
 
+function Player.calculateBounce(velY, maxVelX)
+    local velX = Camera.getVelocityX()
+    local horizontalFactor = 0.5 * (math.abs(velX) / maxVelX)
+    local bounceStrength = 100
+    -- print('bounce:', -velY * bounceStrength * horizontalFactor)
+    return -velY * bounceStrength * horizontalFactor
+end
+
 -- Updates Player's Y position
 --- @param dt number deltaTime
 function Player.updatePosY(dt)
@@ -146,9 +154,14 @@ function Player.updatePosY(dt)
         Player.posY = (Player.dim / 2)
         Player.velocityY = 0
     end
+
+    -- This section is where we do logic for hitting the bottom
     if Player.posY > (designHeight - (Player.dim / 2)) then
         Player.posY = (designHeight - (Player.dim / 2))
-        Player.velocityY = 0
+        -- print('Hit the bottom: velY:', Player.velocityY)
+        Player.velocityY =
+            Player.calculateBounce(Player.velocityY, Player.maxVelocityX)
+        -- print('Player VelY:', Player.velocityY)
     end
 
     -- Slowly rotates player
