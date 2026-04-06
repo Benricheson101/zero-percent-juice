@@ -3,6 +3,7 @@ local upgrades = require('upgrades')
 
 --- @class EntitySpawner
 --- @field spawnUpgrade Upgrade the upgrade that effects the spawn spacing of this entity type
+--- @field baseSpawnDistance number the base distance the player has to travel before a new entity is spawned
 --- @field spawnDistance number how far the player has to travel before a new entity is spawned
 --- @field baseVelocityX number the base x velocity of the entities that are spawned
 --- @field velocityX number the x velocity of the entities that are spawned
@@ -24,12 +25,13 @@ local designHeight = 720
 
 --- @class EntitySpanwerOpts
 --- @field spawnUpgradeName string the name of the upgrade that effects the spawn spacing of this
+--- @field baseSpawnDistance number the base distance the player has to travel before a new entity is spawned
 --- @field spawnDistance number how far the player has to travel before a new entity is spawned
 --- @field baseVelocityX number the base x velocity of the entities that are spawned
 --- @field image string the file path of the image that the entities that are spawned will use
 --- @field spawnUpgradeEffectFunc function<number, number> the function that determins how the upgrade level effects spawn
 
---- Ctreaes a new entity spawner
+--- Creates a new entity spawner
 --- @param self EntitySpawner
 --- @param opts EntitySpanwerOpts the options for the new entity spawner
 --- @return EntitySpawner the new entity spawner

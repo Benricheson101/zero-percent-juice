@@ -57,6 +57,7 @@ function GameScene:new()
         spawnUpgradeEffectFunc = GameScene.coinSpawnFrequencyCalculation,
     }
 
+    ---@diagnostic disable-next-line: redundant-parameter
     o.PowerUpSpawner = EntitySpawner:new {
         spawnUpgradeName = '',
         baseSpawnDistance = designWidth * 3,
@@ -113,7 +114,7 @@ function GameScene:enter()
     --when the game starts
     local startSpeedUpgrade = Upgrades.getUpgrade('Tank Pressure') -- get the start speed upgrade
     assert(startSpeedUpgrade ~= nil, 'Tank Pressure upgrade not found')
-    local speed = GameScene.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the statring speed
+    local speed = self.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the statring speed
     Camera.velocityX = speed -- apply the starting speed
     Camera.xPos = 0 -- reset posotion to start
 end
