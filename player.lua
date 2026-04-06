@@ -44,6 +44,9 @@ function Player.load(opts)
     Player.dx = 0
     Player.dy = 0
 
+    -- TODO: how does score work?
+    Player.score = 0
+
     -- Player.updateScale(scale)
     Player.showHitboxes = false
 

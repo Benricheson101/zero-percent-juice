@@ -1,11 +1,15 @@
+package.path = './vendor/share/lua/5.1/?.lua;' .. package.path
+
 local Ui = require('util.ui')
 local fonts = require('util.fonts')
 local SceneManager = require('renderer.scenemanager')
+local config = require('util.config')
 
 local GameScene = require('scenes.game')
 local LoadingScreen = require('scenes.loadingScreen')
 local UpgradeScreen = require('scenes.upgradeScreen')
 local MainMenuScene = require('scenes.mainmenu')
+local LeaderboardSubmitScene = require('scenes.leaderboardSubmit')
 
 local START_SCENE = os.getenv('ZPJ_START_SCREEN') or 'loading'
 
@@ -13,12 +17,15 @@ local START_SCENE = os.getenv('ZPJ_START_SCREEN') or 'loading'
 local scene_manager
 
 function love.load()
+    config:loadConfig('config.json')
+
     -- print("START SCENE", START_SCENE)
     scene_manager = SceneManager:new {
         game = GameScene:new(),
         loading = LoadingScreen:new(),
         upgrade = UpgradeScreen:new(),
         mainmenu = MainMenuScene:new(),
+        leaderboardsubmit = LeaderboardSubmitScene:new(),
     }
 
     local w = love.graphics.getWidth()
@@ -66,4 +73,7 @@ function love.mousepressed(...)
 end
 function love.mousereleased(...)
     scene_manager:mousereleased(...)
+end
+function love.textinput(...)
+    scene_manager:textinput(...)
 end
