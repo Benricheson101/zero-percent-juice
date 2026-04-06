@@ -2,8 +2,12 @@ name: Lua Unit Tests
 
 on:
   push:
+    paths:
+      - '**/*.lua'
   pull_request:
     branches: [master]
+    paths:
+      - '**/*.lua'
 
 jobs:
   test-lua:
@@ -23,6 +27,9 @@ jobs:
 
       - name: Install busted
         run: luarocks install busted
+
+      - name: Install luasocket
+        run: luarocks install luasocket
 
       - name: Run tests
         run: busted spec
