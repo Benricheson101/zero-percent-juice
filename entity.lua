@@ -1,5 +1,17 @@
 local Ui = require('util.ui')
 
+--- @class Entity
+--- @field posX number the x position of the Entity
+--- @field posY number the y position of the Entity
+--- @field velocityX number the x velocity of the Entity
+--- @field image love.Image the image of the Entity
+--- @field dim number the distance from the center of the Entity to the edge
+--- @field rotation number the rotation of the Entity in radians
+--- @field showHitboxes boolean whether the hitboxes of the Entity should be shown or not
+--- @field new fun(opts: {posX: number, posY: number, velocityX: number, image: string}): Entity
+--- @field update fun(self: Entity, dt: number): nil
+--- @field draw fun(self: Entity): nil
+--- @field setPosY fun(self: Entity, newPosY: number): nil
 Entity = {}
 Entity.__index = Entity
 
