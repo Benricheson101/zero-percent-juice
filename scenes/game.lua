@@ -10,6 +10,9 @@ local designWidth = 1280
 -- local designHeight = 720
 
 ---@class GameScene : Scene
+---@field ObstacleSpawner EntitySpawner
+---@field CoinSpawner EntitySpawner
+---@field PowerUpSpawner EntitySpawner
 local GameScene = {}
 setmetatable(GameScene, { __index = Scene })
 GameScene.__index = GameScene
@@ -33,21 +36,24 @@ function GameScene:new()
     Camera.load(Player)
     Background.load()
 
-    ObstacleSpawner = EntitySpawner:new {
+    -- ---@diagnostic disable-next-line: redundant-parameter
+    o.ObstacleSpawner = EntitySpawner:new {
         baseSpawnDistance = designWidth,
         spawnDistance = designWidth,
         baseVelocityX = 50,
         image = 'images/Obstacle.png',
     }
 
-    CoinSpawner = EntitySpawner:new {
+    -- ---@diagnostic disable-next-line: redundant-parameter
+    o.CoinSpawner = EntitySpawner:new {
         baseSpawnDistance = designWidth,
         spawnDistance = designWidth / 2,
         baseVelocityX = 50,
         image = 'images/Coin.png',
     }
 
-    PowerUpSpawner = EntitySpawner:new {
+    -- ---@diagnostic disable-next-line: redundant-parameter
+    o.PowerUpSpawner = EntitySpawner:new {
         baseSpawnDistance = designWidth * 3,
         spawnDistance = designWidth / 2,
         baseVelocityX = 50,
@@ -60,31 +66,31 @@ end
 function GameScene:update(dt)
     Player.update(dt)
     Camera.update(dt)
-    ObstacleSpawner:update(dt)
-    CoinSpawner:update(dt)
-    PowerUpSpawner:update(dt)
+    self.ObstacleSpawner:update(dt)
+    self.CoinSpawner:update(dt)
+    self.PowerUpSpawner:update(dt)
 
-    ObstacleSpawner:updateEntityVelocityX(Camera.getVelocityX())
-    CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
-    PowerUpSpawner:updateEntityVelocityX(Camera.getVelocityX())
-    GameScene:checkCollision(Player.posX, Player.posY, Player.dim)
+    self.ObstacleSpawner:updateEntityVelocityX(Camera.getVelocityX())
+    self.CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
+    self.PowerUpSpawner:updateEntityVelocityX(Camera.getVelocityX())
+    self:checkCollision(Player.posX, Player.posY, Player.dim)
 end
 
 function GameScene:draw()
     love.graphics.setColor(1, 1, 1)
     Background.draw(Camera)
     Player.draw()
-    ObstacleSpawner:draw()
-    CoinSpawner:draw()
-    PowerUpSpawner:draw()
+    self.ObstacleSpawner:draw()
+    self.CoinSpawner:draw()
+    self.PowerUpSpawner:draw()
 
 end
 
 function GameScene:keypressed(key)
     Player.keypressed(key)
-    ObstacleSpawner:keypressed(key)
-    CoinSpawner:keypressed(key)
-    PowerUpSpawner:keypressed(key)
+    self.ObstacleSpawner:keypressed(key)
+    self.CoinSpawner:keypressed(key)
+    self.PowerUpSpawner:keypressed(key)
 end
 
 function GameScene:keyreleased(key)
@@ -102,22 +108,22 @@ function GameScene:enter()
     --when the game starts
     local startSpeedUpgrade = Upgrades.getUpgrade('Tank Pressure') -- get the start speed upgrade
     assert(startSpeedUpgrade ~= nil, 'Tank Pressure upgrade not found')
-    local speed = GameScene.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the statring speed
+    local speed = self.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the statring speed
     Camera.velocityX = speed -- apply the starting speed
     Camera.xPos = 0 -- reset posotion to start
 end
 
 function GameScene:checkCollision(posX, posY, dim)
-    if ObstacleSpawner:checkCollision(posX, posY, dim) then
+    if self.ObstacleSpawner:checkCollision(posX, posY, dim) then
         -- Camera now to handle x velocity
         Camera.changeVelocityX(-200)
     end
 
-    if CoinSpawner:checkCollision(posX, posY, dim) then
+    if self.CoinSpawner:checkCollision(posX, posY, dim) then
         Player.money = Player.money + 10
     end
 
-    if PowerUpSpawner:checkCollision(posX, posY, dim) then
+    if self.PowerUpSpawner:checkCollision(posX, posY, dim) then
         Camera.changeVelocityX(200)
     end
 end

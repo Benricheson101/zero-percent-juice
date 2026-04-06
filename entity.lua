@@ -1,6 +1,19 @@
 local Ui = require('util.ui')
 local Assets = require('util.assets')
 
+--- @class Entity
+--- @field posX number the x position of the entity
+--- @field posY number the y position of the entity
+--- @field velocityX number the x velocity of the entity
+--- @field image love.Image the image of the entity
+--- @field dim number the distance from the center of the entity to the edge
+--- @field rotation number the rotation of the entity in radians
+--- @field showHitboxes boolean whether the hitboxes of the entity should be shown or not
+--- @field new fun(opts: {posX: number, posY: number, velocityX: number, image: string}): Entity
+--- @field update fun(self: Entity, dt: number): nil
+--- @field draw fun(self: Entity): nil
+--- @field setPosY fun(self: Entity, newPosY: number): nil
+
 Entity = {}
 Entity.__index = Entity
 
