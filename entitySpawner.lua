@@ -105,4 +105,13 @@ function EntitySpawner:updateEntityVelocityX(newVelocityX)
     end
 end
 
+-- Clears all entities from this EntitySpawner
+function EntitySpawner:clearEntities()
+
+    for i = #self.entities, 1, -1 do
+        table.remove(self.entities, i)
+    end
+
+end
+
 return EntitySpawner

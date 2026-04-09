@@ -62,7 +62,7 @@ function LeaderboardSubmitScene:enter()
 
             local success = submitScore(value, Player.score)
             if success then
-                self.scene_manager:transition('upgrade')
+                self.scene_manager:transition('gameover')
             else
                 self.failed = true
             end
@@ -148,7 +148,7 @@ function LeaderboardSubmitScene:update(dt)
     end
 
     if self.waitTime >= 2.0 then
-        self.scene_manager:transition('upgrade')
+        self.scene_manager:transition('gameover')
     else
         self.waitTime = self.waitTime + dt
     end
