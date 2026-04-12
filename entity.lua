@@ -1,4 +1,5 @@
 local Ui = require('util.ui')
+local Assets = require('util.assets')
 
 --- @class Entity
 --- @field posX number the x position of the Entity
@@ -26,11 +27,10 @@ function Entity.new(opts)
     self.posY = opts.posY
     self.velocityX = opts.velocityX
 
-    love.graphics.setDefaultFilter('nearest', 'nearest')
-    self.image = love.graphics.newImage(opts.image)
-    love.graphics.setDefaultFilter('linear', 'linear')
+    self.image = nil
+    self.imagePath = opts.image
 
-    self.dim = self.image:getHeight() * designScale
+    self.dim = 16 * designScale
     self.rotation = 0
 
     self.showHitboxes = false
@@ -48,6 +48,9 @@ end
 
 -- Scales and draws each Entity
 function Entity:draw()
+
+    self.image = Assets.loadImage(self.imagePath, 'nearest')
+
     local posX, posY = Ui:scaleCoord(self.posX, self.posY)
     local scale = Ui:getScale()
     love.graphics.draw(

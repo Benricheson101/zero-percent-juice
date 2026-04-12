@@ -31,11 +31,6 @@ function Player.load(opts)
     Player.maxVelocityX = opts.maxVelocityX
     Player.maxVelocityY = opts.maxVelocityY
 
-    Player.decelerationX = opts.decelerationX
-    Player.decelerationY = opts.decelerationY
-
-    Player.maxVelocityX = opts.maxVelocityX
-    Player.maxVelocityY = opts.maxVelocityY
 
     -- the image height is 16
     Player.dim = 16 * designScale
