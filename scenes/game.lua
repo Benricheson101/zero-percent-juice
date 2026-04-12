@@ -67,14 +67,6 @@ function GameScene:new()
         spawnUpgradeEffectFunc = GameScene.powerUpSpawnerFrequencyCalcilation,
     }
 
-    -- ---@diagnostic disable-next-line: redundant-parameter
-    o.PowerUpSpawner = EntitySpawner:new {
-        baseSpawnDistance = designWidth * 3,
-        spawnDistance = designWidth / 2,
-        baseVelocityX = 50,
-        image = 'images/Powerup.png',
-    }
-
     return o
 end
 
