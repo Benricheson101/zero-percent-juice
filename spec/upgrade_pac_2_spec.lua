@@ -19,23 +19,23 @@ describe('Rock Reducer Upgrade', function()
         local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(2)
         assert.is_true(
             expectedSpawnFrequency
-                == game.obsticaleSpawner.spawnUpgradeEffectFunc(2)
+                == game.ObstacleSpawner.spawnUpgradeEffectFunc(2)
         )
         local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(3)
         assert.is_true(
             expectedSpawnFrequency
-                == game.obsticaleSpawner.spawnUpgradeEffectFunc(3)
+                == game.ObstacleSpawner.spawnUpgradeEffectFunc(3)
         )
         local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(4)
         assert.is_true(
             expectedSpawnFrequency
-                == game.obsticaleSpawner.spawnUpgradeEffectFunc(4)
+                == game.ObstacleSpawner.spawnUpgradeEffectFunc(4)
         )
     end)
     it('spawner gets upgrade', function()
         local rockReducerUpgrade = upgrades.getUpgrade('Rock Reducer')
         assert.is_not_nil(rockReducerUpgrade)
-        assert.is_true(game.obsticaleSpawner.spawnUpgrade == rockReducerUpgrade)
+        assert.is_true(game.ObstacleSpawner.spawnUpgrade == rockReducerUpgrade)
     end)
     --the funcility of the varible spawn disrance should be tested with the entity spawner class tests
 end)

@@ -6,6 +6,7 @@ describe('EntitySpawner', function ()
 
         it('creates a new instance of entitySpawner with the correct parameters', function ()
 
+            ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
                 baseSpawnDistance = 1500,
                 spawnDistance = 1000,
@@ -26,6 +27,7 @@ describe('EntitySpawner', function ()
 
         it('Updates entities and determines if a new entity should be spawned in', function ()
         
+            ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
                 baseSpawnDistance = 1500,
                 spawnDistance = 1000,
@@ -45,6 +47,7 @@ describe('EntitySpawner', function ()
 
         it('creates a new entity at a specific position', function ()
 
+            ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
                 baseSpawnDistance = 1500,
                 spawnDistance = 1000,
@@ -64,6 +67,7 @@ describe('EntitySpawner', function ()
 
         it('Checks if any entities are colliding with another object at the given dimensions', function ()
 
+            ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
                 baseSpawnDistance = 1500,
                 spawnDistance = 1000,
