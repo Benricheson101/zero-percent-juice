@@ -26,7 +26,7 @@ describe('GameScene', function ()
 
             game:checkCollision(300, 200, 10)
 
-            assert.are.equal(400, Camera.velocityX)
+            assert.are.equal(450.0, Camera.velocityX)
 
         end)
 

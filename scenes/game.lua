@@ -146,10 +146,6 @@ function GameScene:checkCollision(posX, posY, dim)
     if self.PowerUpSpawner:checkCollision(posX, posY, dim) then
         Camera.changeVelocityX(200)
     end
-
-    if self.PowerUpSpawner:checkCollision(posX, posY, dim) then
-        Camera.changeVelocityX(200)
-    end
 end
 
 --- Calculates how often the rock obstical should spawn based on the level of the rock buster upgrade

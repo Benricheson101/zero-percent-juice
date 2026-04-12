@@ -1,4 +1,5 @@
 local EntitySpawner = require('entitySpawner')
+local GameScene = require('scenes.game')
 
 describe('EntitySpawner', function ()
 
@@ -8,10 +9,13 @@ describe('EntitySpawner', function ()
 
             ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
+                spawnUpgradeName = 'Rock Reducer',
                 baseSpawnDistance = 1500,
                 spawnDistance = 1000,
                 baseVelocityX = 50,
                 image = 'images/Obstacle.png',
+                spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation,
+
             }
             
             assert.are.equal(1500, entitySpawner.baseSpawnDistance)
@@ -29,10 +33,12 @@ describe('EntitySpawner', function ()
         
             ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
+                spawnUpgradeName = 'Rock Reducer',
                 baseSpawnDistance = 1500,
                 spawnDistance = 1000,
                 baseVelocityX = 50,
                 image = 'images/Obstacle.png',
+                spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation,
             }
 
             entitySpawner:update(1)
@@ -49,10 +55,12 @@ describe('EntitySpawner', function ()
 
             ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
+                spawnUpgradeName = 'Rock Reducer',
                 baseSpawnDistance = 1500,
                 spawnDistance = 1000,
                 baseVelocityX = 50,
                 image = 'images/Obstacle.png',
+                spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation,
             }
 
             entitySpawner:spawn(200)
@@ -69,10 +77,12 @@ describe('EntitySpawner', function ()
 
             ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
+                spawnUpgradeName = 'Rock Reducer',
                 baseSpawnDistance = 1500,
                 spawnDistance = 1000,
                 baseVelocityX = 50,
                 image = 'images/Obstacle.png',
+                spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation,
             }
 
             entitySpawner:spawn(200)
