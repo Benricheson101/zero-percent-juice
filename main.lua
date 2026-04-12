@@ -10,6 +10,7 @@ local LoadingScreen = require('scenes.loadingScreen')
 local UpgradeScreen = require('scenes.upgradeScreen')
 local MainMenuScene = require('scenes.mainmenu')
 local LeaderboardSubmitScene = require('scenes.leaderboardSubmit')
+local GameOverScene = require('scenes.gameOver')
 
 local START_SCENE = os.getenv('ZPJ_START_SCREEN') or 'loading'
 
@@ -26,6 +27,7 @@ function love.load()
         upgrade = UpgradeScreen:new(),
         mainmenu = MainMenuScene:new(),
         leaderboardsubmit = LeaderboardSubmitScene:new(),
+        gameover = GameOverScene:new(),
     }
 
     local w = love.graphics.getWidth()
