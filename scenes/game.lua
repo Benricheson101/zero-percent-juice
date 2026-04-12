@@ -39,7 +39,6 @@ function GameScene:new()
     ---@diagnostic disable-next-line: redundant-parameter
     o.ObstacleSpawner = EntitySpawner:new {
         spawnUpgradeName = 'Rock Reducer',
-        baseSpawnDistance = designWidth,
         spawnDistance = designWidth,
         baseVelocityX = 50,
         image = 'images/Obstacle.png',
@@ -50,7 +49,6 @@ function GameScene:new()
     ---@diagnostic disable-next-line: redundant-parameter
     o.CoinSpawner = EntitySpawner:new {
         spawnUpgradeName = 'Coin Replictor',
-        baseSpawnDistance = designWidth,
         spawnDistance = 0,
         baseVelocityX = 50,
         image = 'images/Coin.png',
@@ -60,7 +58,6 @@ function GameScene:new()
     ---@diagnostic disable-next-line: redundant-parameter
     o.PowerUpSpawner = EntitySpawner:new {
         spawnUpgradeName = '',
-        baseSpawnDistance = designWidth * 3,
         spawnDistance = designWidth / 2,
         baseVelocityX = 50,
         image = 'images/Powerup.png',

@@ -10,7 +10,6 @@ describe('EntitySpawner', function ()
             ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
                 spawnUpgradeName = 'Rock Reducer',
-                baseSpawnDistance = 1500,
                 spawnDistance = 1000,
                 baseVelocityX = 50,
                 image = 'images/Obstacle.png',
@@ -18,7 +17,6 @@ describe('EntitySpawner', function ()
 
             }
             
-            assert.are.equal(1500, entitySpawner.baseSpawnDistance)
             assert.are.equal(1000, entitySpawner.spawnDistance)
             assert.are.equal(50, entitySpawner.baseVelocityX)
             assert.are.equal('images/Obstacle.png', entitySpawner.image)
@@ -34,7 +32,6 @@ describe('EntitySpawner', function ()
             ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
                 spawnUpgradeName = 'Rock Reducer',
-                baseSpawnDistance = 1500,
                 spawnDistance = 1000,
                 baseVelocityX = 50,
                 image = 'images/Obstacle.png',
@@ -56,7 +53,6 @@ describe('EntitySpawner', function ()
             ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
                 spawnUpgradeName = 'Rock Reducer',
-                baseSpawnDistance = 1500,
                 spawnDistance = 1000,
                 baseVelocityX = 50,
                 image = 'images/Obstacle.png',
@@ -78,7 +74,6 @@ describe('EntitySpawner', function ()
             ---@diagnostic disable-next-line: redundant-parameter
             local entitySpawner = EntitySpawner:new {
                 spawnUpgradeName = 'Rock Reducer',
-                baseSpawnDistance = 1500,
                 spawnDistance = 1000,
                 baseVelocityX = 50,
                 image = 'images/Obstacle.png',
