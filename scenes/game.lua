@@ -36,20 +36,35 @@ function GameScene:new()
     Camera.load(Player)
     Background.load()
 
-    -- ---@diagnostic disable-next-line: redundant-parameter
+    ---@diagnostic disable-next-line: redundant-parameter
     o.ObstacleSpawner = EntitySpawner:new {
+        spawnUpgradeName = 'Rock Reducer',
         baseSpawnDistance = designWidth,
         spawnDistance = designWidth,
         baseVelocityX = 50,
         image = 'images/Obstacle.png',
+        spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation,
     }
 
-    -- ---@diagnostic disable-next-line: redundant-parameter
+    --TODO: find a way for coins to be able to spawn way eriler
+    ---@diagnostic disable-next-line: redundant-parameter
     o.CoinSpawner = EntitySpawner:new {
+        spawnUpgradeName = 'Coin Replictor',
         baseSpawnDistance = designWidth,
-        spawnDistance = designWidth / 2,
+        spawnDistance = 0,
         baseVelocityX = 50,
         image = 'images/Coin.png',
+        spawnUpgradeEffectFunc = GameScene.coinSpawnFrequencyCalculation,
+    }
+
+    ---@diagnostic disable-next-line: redundant-parameter
+    o.PowerUpSpawner = EntitySpawner:new {
+        spawnUpgradeName = '',
+        baseSpawnDistance = designWidth * 3,
+        spawnDistance = designWidth / 2,
+        baseVelocityX = 50,
+        image = 'images/Powerup.png',
+        spawnUpgradeEffectFunc = GameScene.powerUpSpawnerFrequencyCalcilation,
     }
 
     -- ---@diagnostic disable-next-line: redundant-parameter
@@ -83,7 +98,6 @@ function GameScene:draw()
     self.ObstacleSpawner:draw()
     self.CoinSpawner:draw()
     self.PowerUpSpawner:draw()
-
 end
 
 function GameScene:keypressed(key)
@@ -114,18 +128,71 @@ function GameScene:enter()
 end
 
 function GameScene:checkCollision(posX, posY, dim)
+    local obsticalSpeedReductionUpgrade = Upgrades.getUpgrade('Rock Buster')
+    local coinValueUpgrade = Upgrades.getUpgrade('Profit Boost')
+    assert(
+        obsticalSpeedReductionUpgrade ~= nil,
+        'Rock Buster upgrade not found'
+    )
+    assert(coinValueUpgrade ~= nil, 'Profit Boost upgrade not found')
+    --obstical collision
     if self.ObstacleSpawner:checkCollision(posX, posY, dim) then
         -- Camera now to handle x velocity
-        Camera.changeVelocityX(-200)
+        local reduction = GameScene.calculateObsticalSpeedReduction(
+            obsticalSpeedReductionUpgrade:getLevel()
+        )
+        Camera.changeVelocityX(reduction)
     end
 
+    --coin collision
     if self.CoinSpawner:checkCollision(posX, posY, dim) then
-        Player.money = Player.money + 10
+        Player.money = Player.money
+            + GameScene.calculateCoinValue(coinValueUpgrade:getLevel())
+        print('Money: ' .. Player.money)
     end
 
     if self.PowerUpSpawner:checkCollision(posX, posY, dim) then
         Camera.changeVelocityX(200)
     end
+
+    if self.PowerUpSpawner:checkCollision(posX, posY, dim) then
+        Camera.changeVelocityX(200)
+    end
+end
+
+--- Calculates how often the rock obstical should spawn based on the level of the rock buster upgrade
+--- @param level number the level of the rock buster upgrade
+--- @return number the distance the player has to travel before the next obstical spawns
+function GameScene.obsticaleSpawFrequencyCalculation(level)
+    return 720 + 15 * level
+end
+
+--- Calulte how often coins should spawn based on the level of <relavant upgrade name here>
+--- @param level number the level of the <relavant upgrade name here> upgrade
+--- @return number the distance the player has to travel before the next coin spawns
+function GameScene.coinSpawnFrequencyCalculation(level)
+    return 720 / (1 + 0.1 * level)
+end
+
+--- TEMPORARY FUNCTION, CHANGE ONCE POWER UP UPGRADES ARE IMPLEMENTED
+--- @param level number the level of the <relavant upgrade name here> upgrade
+--- @return number the distance the player has to travel before the next power up spawns
+function GameScene.powerUpSpawnerFrequencyCalcilation(level)
+    return 3840
+end
+
+--- Calculate how much speed to remove from the player when they hit an obstical
+--- @param level number the level of the rock reducer upgrade
+--- @return number the amount of speed to remove
+function GameScene.calculateObsticalSpeedReduction(level)
+    return -150 * math.pow(0.96, level)
+end
+
+--- Calculae how much each coin is worth
+--- @param level number the level of the profit boost upgrade
+--- @return number the value of each coin
+function GameScene.calculateCoinValue(level)
+    return 10 + math.floor(math.pow(level, 1.15))
 end
 
 return GameScene
