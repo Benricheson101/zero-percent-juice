@@ -64,7 +64,7 @@ function GameScene:new()
         spawnDistance = designWidth / 2,
         baseVelocityX = 50,
         image = 'images/Powerup.png',
-        spawnUpgradeEffectFunc = nil
+        spawnUpgradeEffectFunc = GameScene.powerUpSpawnerFrequencyCalcilation,
     }
 
     return o
@@ -160,6 +160,13 @@ end
 --- @return number the distance the player has to travel before the next coin spawns
 function GameScene.coinSpawnFrequencyCalculation(level)
     return 720 / (1 + 0.1 * level)
+end
+
+--- TEMPORARY FUNCTION, CHANGE ONCE POWER UP UPGRADES ARE IMPLEMENTED
+--- @param level number the level of the <relavant upgrade name here> upgrade
+--- @return number the distance the player has to travel before the next power up spawns
+function GameScene.powerUpSpawnerFrequencyCalcilation(level)
+    return 3840
 end
 
 --- Calculate how much speed to remove from the player when they hit an obstical
