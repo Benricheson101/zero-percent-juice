@@ -5,13 +5,15 @@ local Background = require('background')
 local Upgrades = require('upgrades')
 local Ui = require('util.ui')
 local EntitySpawner = require('entitySpawner')
+local Fonts = require('util.fonts')
 
 local designWidth = 1280
--- local designHeight = 720
+local designHeight = 720
 
 ---@class GameScene : Scene
 ---@field ObstacleSpawner EntitySpawner
 ---@field CoinSpawner EntitySpawner
+---@field baseGameOverTimer number
 ---@field PowerUpSpawner EntitySpawner
 local GameScene = {}
 setmetatable(GameScene, { __index = Scene })
@@ -55,6 +57,8 @@ function GameScene:new()
         spawnUpgradeEffectFunc = GameScene.coinSpawnFrequencyCalculation,
     }
 
+    o.baseGameOverTimer = 3
+    o.currentGameOverTimer = o.baseGameOverTimer
     ---@diagnostic disable-next-line: redundant-parameter
     o.PowerUpSpawner = EntitySpawner:new {
         spawnUpgradeName = '',
@@ -78,6 +82,7 @@ function GameScene:update(dt)
     self.CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
     self.PowerUpSpawner:updateEntityVelocityX(Camera.getVelocityX())
     self:checkCollision(Player.posX, Player.posY, Player.dim)
+    self:checkGameOver(dt)
 end
 
 function GameScene:draw()
@@ -86,6 +91,7 @@ function GameScene:draw()
     Player.draw()
     self.ObstacleSpawner:draw()
     self.CoinSpawner:draw()
+    self:gameOverTimerText()
     self.PowerUpSpawner:draw()
 end
 
@@ -178,6 +184,62 @@ end
 --- @return number the value of each coin
 function GameScene.calculateCoinValue(level)
     return 10 + math.floor(math.pow(level, 1.15))
+end
+
+function GameScene:checkGameOver(dt)
+
+    if Camera.velocityX == 0 and Player.posY >= (designHeight - (Player.dim / 2)) then
+        self.currentGameOverTimer = self.currentGameOverTimer - dt
+        if self.currentGameOverTimer < 0 then
+            self:reset()
+            self.scene_manager:transition('leaderboardsubmit')
+        end
+    else
+        self.currentGameOverTimer = self.baseGameOverTimer
+    end
+
+end
+
+function GameScene:gameOverTimerText()
+
+    local x, y = Ui:scaleCoord(designWidth * 0.25, designHeight * 0.3)
+
+    if Camera.velocityX == 0 and Player.posY >= (designHeight - (Player.dim / 2)) then
+
+        love.graphics.setColor(1, 0, 0)
+        love.graphics.setDefaultFilter('nearest', 'nearest')
+        love.graphics.setFont(Fonts.impact75)
+
+        love.graphics.printf(
+            math.ceil(self.currentGameOverTimer),
+            0,
+            math.floor(Ui:getHeight() * 0.5)
+                - math.floor(Fonts.impact75:getHeight() / 2),
+            Ui:getWidth(),
+            'center'
+        )
+
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setDefaultFilter('linear', 'linear')
+    end
+
+end
+
+function GameScene:reset()
+    Player.posX = Ui:getWidth() * 0.2
+    Player.posY = Ui:getHeight() / 2
+
+    Player.velocityX = 0
+    Player.velocityY = 0
+
+    Camera.velocityX = Player.maxVelocityX
+
+    self.ObstacleSpawner:clearEntities()
+    self.CoinSpawner:clearEntities()
+
+    -- FIXME: can we just make a new instance of these? or add a reset() function to them?
+    self.ObstacleSpawner.spawnDistance = designWidth
+    self.CoinSpawner.spawnDistance = designWidth / 2
 end
 
 return GameScene

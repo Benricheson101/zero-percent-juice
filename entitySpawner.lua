@@ -109,6 +109,13 @@ function EntitySpawner:spawn(spawnPosY)
     table.insert(self.entities, #self.entities + 1, e)
 end
 
+--- Clears all entities from this EntitySpawner
+function EntitySpawner:clearEntities()
+    for i = #self.entities, 1, -1 do
+        table.remove(self.entities, i)
+    end
+end
+
 -- Checks if any Entities are colliding with another entity
 -- If a collision is detected, remove that Entity and return true
 -- else, return false
@@ -142,6 +149,15 @@ function EntitySpawner:updateEntityVelocityX(newVelocityX)
     for i = #self.entities, 1, -1 do
         self.entities[i].velocityX = self.velocityX
     end
+end
+
+-- Clears all entities from this EntitySpawner
+function EntitySpawner:clearEntities()
+
+    for i = #self.entities, 1, -1 do
+        table.remove(self.entities, i)
+    end
+
 end
 
 return EntitySpawner
