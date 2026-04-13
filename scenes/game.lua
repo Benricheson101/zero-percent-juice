@@ -11,9 +11,10 @@ local designWidth = 1280
 local designHeight = 720
 
 ---@class GameScene : Scene
----@field obsticaleSpawner EntitySpawner
+---@field ObstacleSpawner EntitySpawner
 ---@field CoinSpawner EntitySpawner
 ---@field baseGameOverTimer number
+---@field PowerUpSpawner EntitySpawner
 local GameScene = {}
 setmetatable(GameScene, { __index = Scene })
 GameScene.__index = GameScene
@@ -30,7 +31,7 @@ function GameScene:new()
         accelerationY = 300,
         decelerationX = 50,
         decelerationY = 50,
-        maxVelocityX = 300,
+        maxVelocityX = 600,
         maxVelocityY = 300,
     }
 
@@ -38,7 +39,7 @@ function GameScene:new()
     Background.load()
 
     ---@diagnostic disable-next-line: redundant-parameter
-    o.obsticaleSpawner = EntitySpawner:new {
+    o.ObstacleSpawner = EntitySpawner:new {
         spawnUpgradeName = 'Rock Reducer',
         spawnDistance = designWidth,
         baseVelocityX = 50,
@@ -58,6 +59,14 @@ function GameScene:new()
 
     o.baseGameOverTimer = 3
     o.currentGameOverTimer = o.baseGameOverTimer
+    ---@diagnostic disable-next-line: redundant-parameter
+    o.PowerUpSpawner = EntitySpawner:new {
+        spawnUpgradeName = '',
+        spawnDistance = designWidth / 2,
+        baseVelocityX = 50,
+        image = 'images/Powerup.png',
+        spawnUpgradeEffectFunc = GameScene.powerUpSpawnerFrequencyCalcilation,
+    }
 
     return o
 end
@@ -65,11 +74,13 @@ end
 function GameScene:update(dt)
     Player.update(dt)
     Camera.update(dt)
-    self.obsticaleSpawner:update(dt)
+    self.ObstacleSpawner:update(dt)
     self.CoinSpawner:update(dt)
+    self.PowerUpSpawner:update(dt)
 
-    self.obsticaleSpawner:updateEntityVelocityX(Camera.getVelocityX())
+    self.ObstacleSpawner:updateEntityVelocityX(Camera.getVelocityX())
     self.CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
+    self.PowerUpSpawner:updateEntityVelocityX(Camera.getVelocityX())
     self:checkCollision(Player.posX, Player.posY, Player.dim)
     self:checkGameOver(dt)
 end
@@ -78,15 +89,17 @@ function GameScene:draw()
     love.graphics.setColor(1, 1, 1)
     Background.draw(Camera)
     Player.draw()
-    self.obsticaleSpawner:draw()
+    self.ObstacleSpawner:draw()
     self.CoinSpawner:draw()
     self:gameOverTimerText()
+    self.PowerUpSpawner:draw()
 end
 
 function GameScene:keypressed(key)
     Player.keypressed(key)
-    self.obsticaleSpawner:keypressed(key)
+    self.ObstacleSpawner:keypressed(key)
     self.CoinSpawner:keypressed(key)
+    self.PowerUpSpawner:keypressed(key)
 end
 
 function GameScene:keyreleased(key)
@@ -118,7 +131,7 @@ function GameScene:checkCollision(posX, posY, dim)
     )
     assert(coinValueUpgrade ~= nil, 'Profit Boost upgrade not found')
     --obstical collision
-    if self.obsticaleSpawner:checkCollision(posX, posY, dim) then
+    if self.ObstacleSpawner:checkCollision(posX, posY, dim) then
         -- Camera now to handle x velocity
         local reduction = GameScene.calculateObsticalSpeedReduction(
             obsticalSpeedReductionUpgrade:getLevel()
@@ -131,6 +144,10 @@ function GameScene:checkCollision(posX, posY, dim)
         Player.money = Player.money
             + GameScene.calculateCoinValue(coinValueUpgrade:getLevel())
         print('Money: ' .. Player.money)
+    end
+
+    if self.PowerUpSpawner:checkCollision(posX, posY, dim) then
+        Camera.changeVelocityX(200)
     end
 end
 
@@ -146,6 +163,13 @@ end
 --- @return number the distance the player has to travel before the next coin spawns
 function GameScene.coinSpawnFrequencyCalculation(level)
     return 720 / (1 + 0.1 * level)
+end
+
+--- TEMPORARY FUNCTION, CHANGE ONCE POWER UP UPGRADES ARE IMPLEMENTED
+--- @param level number the level of the <relavant upgrade name here> upgrade
+--- @return number the distance the player has to travel before the next power up spawns
+function GameScene.powerUpSpawnerFrequencyCalcilation(level)
+    return 3840
 end
 
 --- Calculate how much speed to remove from the player when they hit an obstical
@@ -210,11 +234,11 @@ function GameScene:reset()
 
     Camera.velocityX = Player.maxVelocityX
 
-    self.obsticaleSpawner:clearEntities()
+    self.ObstacleSpawner:clearEntities()
     self.CoinSpawner:clearEntities()
 
     -- FIXME: can we just make a new instance of these? or add a reset() function to them?
-    self.obsticaleSpawner.spawnDistance = designWidth
+    self.ObstacleSpawner.spawnDistance = designWidth
     self.CoinSpawner.spawnDistance = designWidth / 2
 end
 
