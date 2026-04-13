@@ -53,7 +53,7 @@ function GameOverScene:draw()
     love.graphics.setColor(1, 1, 1)
 
     love.graphics.printf(
-        "Game Over!",
+        'Game Over!',
         0,
         math.floor(Ui:getHeight() * 0.25)
             - math.floor(Fonts.impact75:getHeight() / 2),
@@ -90,18 +90,15 @@ function GameOverScene:draw()
 
         start = start + height + gap
     end
-
 end
 
 function GameOverScene:mousepressed(x, y)
-
     for _, elem in ipairs(gameOverMenu) do
         if elem:isWithin(x, y) then
             elem:onclick(x, y)
             break
         end
     end
-
 end
 
 function GameOverScene:update(dt)

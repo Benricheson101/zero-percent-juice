@@ -31,7 +31,6 @@ function Player.load(opts)
     Player.maxVelocityX = opts.maxVelocityX
     Player.maxVelocityY = opts.maxVelocityY
 
-
     -- the image height is 16
     Player.dim = 16 * designScale
     Player.rotation = 0

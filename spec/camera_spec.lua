@@ -12,7 +12,7 @@ describe('Camera_Suite', function()
             local mockPlayer = {
                 maxVelocityX = 500,
                 maxVelocityY = 400,
-                decelerationX = 50
+                decelerationX = 50,
             }
             Camera.load(mockPlayer)
 

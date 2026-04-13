@@ -10,7 +10,7 @@ describe('Player_Suite', function()
 
     describe('load', function()
         it('initializes player with all properties', function()
-            Player.load({
+            Player.load {
                 posX = 100,
                 posY = 200,
                 velocityX = 10,
@@ -21,7 +21,7 @@ describe('Player_Suite', function()
                 decelerationY = 60,
                 maxVelocityX = 500,
                 maxVelocityY = 600,
-            })
+            }
 
             assert.is_true(Player.posX == 100)
             assert.is_true(Player.posY == 200)
@@ -36,7 +36,7 @@ describe('Player_Suite', function()
         end)
 
         it('sets default values', function()
-            Player.load({
+            Player.load {
                 posX = 0,
                 posY = 0,
                 velocityX = 0,
@@ -47,7 +47,7 @@ describe('Player_Suite', function()
                 decelerationY = 1,
                 maxVelocityX = 1,
                 maxVelocityY = 1,
-            })
+            }
 
             assert.is_true(Player.dim == 80)
             assert.is_true(Player.rotation == 0)
@@ -60,7 +60,7 @@ describe('Player_Suite', function()
 
     describe('changeVelocityX', function()
         before_each(function()
-            Player.load({
+            Player.load {
                 posX = 100,
                 posY = 200,
                 velocityX = 0,
@@ -71,7 +71,7 @@ describe('Player_Suite', function()
                 decelerationY = 50,
                 maxVelocityX = 500,
                 maxVelocityY = 600,
-            })
+            }
         end)
 
         it('adds positive change within bounds', function()
@@ -119,7 +119,7 @@ describe('Player_Suite', function()
 
     describe('keypressed', function()
         before_each(function()
-            Player.load({
+            Player.load {
                 posX = 100,
                 posY = 200,
                 velocityX = 0,
@@ -130,7 +130,7 @@ describe('Player_Suite', function()
                 decelerationY = 50,
                 maxVelocityX = 500,
                 maxVelocityY = 600,
-            })
+            }
         end)
 
         it('sets direction key up', function()
@@ -195,7 +195,7 @@ describe('Player_Suite', function()
 
     describe('keyreleased', function()
         before_each(function()
-            Player.load({
+            Player.load {
                 posX = 100,
                 posY = 200,
                 velocityX = 0,
@@ -206,7 +206,7 @@ describe('Player_Suite', function()
                 decelerationY = 50,
                 maxVelocityX = 500,
                 maxVelocityY = 600,
-            })
+            }
         end)
 
         it('clears direction key on release', function()
@@ -251,7 +251,7 @@ describe('Player_Suite', function()
 
     describe('setDirection', function()
         before_each(function()
-            Player.load({
+            Player.load {
                 posX = 100,
                 posY = 200,
                 velocityX = 0,
@@ -262,7 +262,7 @@ describe('Player_Suite', function()
                 decelerationY = 50,
                 maxVelocityX = 500,
                 maxVelocityY = 600,
-            })
+            }
         end)
 
         it('sets dy to -1 when up is pressed', function()

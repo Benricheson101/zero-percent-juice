@@ -187,8 +187,10 @@ function GameScene.calculateCoinValue(level)
 end
 
 function GameScene:checkGameOver(dt)
-
-    if Camera.velocityX == 0 and Player.posY >= (designHeight - (Player.dim / 2)) then
+    if
+        Camera.velocityX == 0
+        and Player.posY >= (designHeight - (Player.dim / 2))
+    then
         self.currentGameOverTimer = self.currentGameOverTimer - dt
         if self.currentGameOverTimer < 0 then
             self:reset()
@@ -197,15 +199,15 @@ function GameScene:checkGameOver(dt)
     else
         self.currentGameOverTimer = self.baseGameOverTimer
     end
-
 end
 
 function GameScene:gameOverTimerText()
-
     local x, y = Ui:scaleCoord(designWidth * 0.25, designHeight * 0.3)
 
-    if Camera.velocityX == 0 and Player.posY >= (designHeight - (Player.dim / 2)) then
-
+    if
+        Camera.velocityX == 0
+        and Player.posY >= (designHeight - (Player.dim / 2))
+    then
         love.graphics.setColor(1, 0, 0)
         love.graphics.setDefaultFilter('nearest', 'nearest')
         love.graphics.setFont(Fonts.impact75)
@@ -222,7 +224,6 @@ function GameScene:gameOverTimerText()
         love.graphics.setColor(1, 1, 1)
         love.graphics.setDefaultFilter('linear', 'linear')
     end
-
 end
 
 function GameScene:reset()

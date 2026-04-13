@@ -48,7 +48,6 @@ end
 
 -- Scales and draws each Entity
 function Entity:draw()
-
     self.image = Assets.loadImage(self.imagePath, 'nearest')
 
     local posX, posY = Ui:scaleCoord(self.posX, self.posY)
