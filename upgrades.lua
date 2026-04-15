@@ -79,7 +79,7 @@ local upgrades = {
     end),
     Upgrade:new(
         'Rock Reducer',
-        function(x, y, scale) --Obstical spacing upgrade
+        function(x, y, scale) --Obstacle spacing upgrade
             local sprite = assets.loadImage('images/Obstacle.png', 'nearest')
             love.graphics.setColor(colors.hex(0xFFFFFF))
             love.graphics.draw(
@@ -129,7 +129,7 @@ local upgrades = {
             return 8 * (level + 1) * level + 25
         end
     ),
-    Upgrade:new('Rock Buster', function(x, y, scale) --Obstical damage upgrade
+    Upgrade:new('Rock Buster', function(x, y, scale) --Obstacle damage upgrade
         local sprite = assets.loadImage('images/Obstacle.png', 'nearest')
         love.graphics.setColor(colors.hex(0xFFFFFF))
         love.graphics.draw(

@@ -44,7 +44,7 @@ function GameScene:new()
         spawnDistance = designWidth,
         baseVelocityX = 50,
         image = 'images/Obstacle.png',
-        spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation,
+        spawnUpgradeEffectFunc = GameScene.obstacleSpawnFrequencyCalculation,
     }
 
     --TODO: find a way for coins to be able to spawn way eriler
@@ -120,21 +120,22 @@ function GameScene:enter()
     local speed = self.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the statring speed
     Camera.velocityX = speed -- apply the starting speed
     Camera.xPos = 0 -- reset posotion to start
+    self:reset()
 end
 
 function GameScene:checkCollision(posX, posY, dim)
-    local obsticalSpeedReductionUpgrade = Upgrades.getUpgrade('Rock Buster')
+    local obstacleSpeedReductionUpgrade = Upgrades.getUpgrade('Rock Buster')
     local coinValueUpgrade = Upgrades.getUpgrade('Profit Boost')
     assert(
-        obsticalSpeedReductionUpgrade ~= nil,
+        obstacleSpeedReductionUpgrade ~= nil,
         'Rock Buster upgrade not found'
     )
     assert(coinValueUpgrade ~= nil, 'Profit Boost upgrade not found')
-    --obstical collision
+    --obstacle collision
     if self.ObstacleSpawner:checkCollision(posX, posY, dim) then
         -- Camera now to handle x velocity
-        local reduction = GameScene.calculateObsticalSpeedReduction(
-            obsticalSpeedReductionUpgrade:getLevel()
+        local reduction = GameScene.calculateObstacleSpeedReduction(
+            obstacleSpeedReductionUpgrade:getLevel()
         )
         Camera.changeVelocityX(reduction)
     end
@@ -151,10 +152,10 @@ function GameScene:checkCollision(posX, posY, dim)
     end
 end
 
---- Calculates how often the rock obstical should spawn based on the level of the rock buster upgrade
+--- Calculates how often the rock obstacle should spawn based on the level of the rock buster upgrade
 --- @param level number the level of the rock buster upgrade
---- @return number the distance the player has to travel before the next obstical spawns
-function GameScene.obsticaleSpawFrequencyCalculation(level)
+--- @return number the distance the player has to travel before the next obstacle spawns
+function GameScene.obstacleSpawnFrequencyCalculation(level)
     return 720 + 15 * level
 end
 
@@ -172,10 +173,10 @@ function GameScene.powerUpSpawnerFrequencyCalcilation(level)
     return 3840
 end
 
---- Calculate how much speed to remove from the player when they hit an obstical
+--- Calculate how much speed to remove from the player when they hit an obstacle
 --- @param level number the level of the rock reducer upgrade
 --- @return number the amount of speed to remove
-function GameScene.calculateObsticalSpeedReduction(level)
+function GameScene.calculateObstacleSpeedReduction(level)
     return -150 * math.pow(0.96, level)
 end
 
@@ -193,7 +194,6 @@ function GameScene:checkGameOver(dt)
     then
         self.currentGameOverTimer = self.currentGameOverTimer - dt
         if self.currentGameOverTimer < 0 then
-            self:reset()
             self.scene_manager:transition('leaderboardsubmit')
         end
     else

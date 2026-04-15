@@ -5,9 +5,9 @@ describe('Rock Reducer Upgrade', function()
     local game = gameScene:new()
     it('spawn frequency calculation', function()
         --test that the spawn frequency goes up
-        local initalSpawnFrequency = game.obsticaleSpawFrequencyCalculation(0)
-        local spawnFrequency1 = game.obsticaleSpawFrequencyCalculation(1)
-        local spawnFrequency2 = game.obsticaleSpawFrequencyCalculation(2)
+        local initalSpawnFrequency = game.obstacleSpawnFrequencyCalculation(0)
+        local spawnFrequency1 = game.obstacleSpawnFrequencyCalculation(1)
+        local spawnFrequency2 = game.obstacleSpawnFrequencyCalculation(2)
         assert.is_true(spawnFrequency1 > initalSpawnFrequency)
         assert.is_true(spawnFrequency2 > spawnFrequency1)
     end)
@@ -16,17 +16,17 @@ describe('Rock Reducer Upgrade', function()
         assert.is_not_nil(rockReducerUpgrade)
     end)
     it('spawn frequency function applied', function()
-        local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(2)
+        local expectedSpawnFrequency = game.obstacleSpawnFrequencyCalculation(2)
         assert.is_true(
             expectedSpawnFrequency
                 == game.ObstacleSpawner.spawnUpgradeEffectFunc(2)
         )
-        local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(3)
+        local expectedSpawnFrequency = game.obstacleSpawnFrequencyCalculation(3)
         assert.is_true(
             expectedSpawnFrequency
                 == game.ObstacleSpawner.spawnUpgradeEffectFunc(3)
         )
-        local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(4)
+        local expectedSpawnFrequency = game.obstacleSpawnFrequencyCalculation(4)
         assert.is_true(
             expectedSpawnFrequency
                 == game.ObstacleSpawner.spawnUpgradeEffectFunc(4)
@@ -44,9 +44,9 @@ describe('Rock Buster Upgrade', function()
     local game = gameScene:new()
     it('damage reduction calculation', function()
         --test that the spawn frequency goes up
-        local initaldamage = game.calculateObsticalSpeedReduction(0)
-        local damage1 = game.calculateObsticalSpeedReduction(1)
-        local damage2 = game.calculateObsticalSpeedReduction(2)
+        local initaldamage = game.calculateObstacleSpeedReduction(0)
+        local damage1 = game.calculateObstacleSpeedReduction(1)
+        local damage2 = game.calculateObstacleSpeedReduction(2)
         --number are negative
         assert.is_true(damage1 > initaldamage)
         assert.is_true(damage2 > damage1)
@@ -56,7 +56,7 @@ describe('Rock Buster Upgrade', function()
         assert.is_not_nil(rockBusterUpgrade)
     end)
 
-    --prbly should have a behavior test to check that when the player hits an obstical they take damege, not currently sure how to implment this
+    --prbly should have a behavior test to check that when the player hits an obstacle they take damege, not currently sure how to implment this
     -- this would also check that the upgrade is being used
 end)
 
