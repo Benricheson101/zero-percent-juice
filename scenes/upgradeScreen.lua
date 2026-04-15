@@ -255,7 +255,7 @@ function UpgradeScreen:draw()
     distancePercent = distancePercent + jitter
     drawTank(distancePercent, mouseDistance < Ui:scaleDimension(125))
 
-    --platrform
+    --platform
     love.graphics.setColor(color.hex(0x3b3b4b))
     local platformX, _ = Ui:scaleCoord(60, 0)
     love.graphics.rectangle(

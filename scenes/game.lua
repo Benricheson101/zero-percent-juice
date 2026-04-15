@@ -233,14 +233,15 @@ function GameScene:reset()
     Player.velocityX = 0
     Player.velocityY = 0
 
-    Camera.velocityX = Player.maxVelocityX
-
     self.ObstacleSpawner:clearEntities()
     self.CoinSpawner:clearEntities()
+    self.PowerUpSpawner:clearEntities()
 
     -- FIXME: can we just make a new instance of these? or add a reset() function to them?
     self.ObstacleSpawner.spawnDistance = designWidth
-    self.CoinSpawner.spawnDistance = designWidth / 2
+    self.CoinSpawner.spawnDistance = 0
+    self.PowerUpSpawner.spawnDistance = designWidth / 2
+    
 end
 
 return GameScene

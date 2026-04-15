@@ -111,8 +111,10 @@ end
 
 --- Clears all entities from this EntitySpawner
 function EntitySpawner:clearEntities()
-    for i = #self.entities, 1, -1 do
-        table.remove(self.entities, i)
+    if #self.entities >= 1 then
+        for i = #self.entities, 1, -1 do
+            table.remove(self.entities, i)
+        end
     end
 end
 
