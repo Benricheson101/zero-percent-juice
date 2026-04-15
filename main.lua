@@ -9,6 +9,7 @@ local UpgradeScreen = require('scenes.upgradeScreen')
 local MainMenuScene = require('scenes.mainmenu')
 local LeaderboardSubmitScene = require('scenes.leaderboardSubmit')
 local GameOverScene = require('scenes.gameOver')
+local modLoader = require('modloader')
 
 local START_SCENE = os.getenv('ZPJ_START_SCREEN') or 'loading'
 
@@ -17,16 +18,9 @@ local scene_manager
 
 function love.load()
     config:loadConfig('config.json')
+    modLoader:loadMods() -- attmpt to load mods
 
     -- print("START SCENE", START_SCENE)
-    scene_manager = SceneManager:new {
-        game = GameScene:new(),
-        loading = LoadingScreen:new(),
-        upgrade = UpgradeScreen:new(),
-        mainmenu = MainMenuScene:new(),
-        leaderboardsubmit = LeaderboardSubmitScene:new(),
-        gameover = GameOverScene:new(),
-    }
 
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
@@ -39,6 +33,17 @@ function love.load()
     --window icon
     love.window.setIcon(love.image.newImageData('assets/logo.png'))
     love.window.setTitle('Zero Percent Juice')
+
+    scene_manager = SceneManager:new {
+        game = GameScene:new(),
+        loading = LoadingScreen:new(),
+        upgrade = UpgradeScreen:new(),
+        mainmenu = MainMenuScene:new(),
+        leaderboardsubmit = LeaderboardSubmitScene:new(),
+        gameover = GameOverScene:new(),
+    }
+
+    modLoader:gameLoaded(scene_manager)
 
     scene_manager:transition(START_SCENE)
 end
