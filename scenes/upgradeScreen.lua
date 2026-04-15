@@ -11,9 +11,9 @@ local UpgradeScreen = {}
 setmetatable(UpgradeScreen, { __index = Scene })
 UpgradeScreen.__index = UpgradeScreen
 
---- Draws the juice tank witht the pressure valve at the inptut position
+--- Draws the juice tank with the pressure valve at the input position
 --- @param pressure number the pressure of the juice in the tank, between 0 and 1
---- @param selected boolean wether theguage should be hilighted yellow
+--- @param selected boolean whether the gauge should be highlighted yellow
 local function drawTank(pressure, selected)
     local tankBody = assets.loadImage('assets/upgradeScreen/tank_gradient.png')
     local tankTop = assets.loadImage('assets/upgradeScreen/tank_top.png')
@@ -28,7 +28,7 @@ local function drawTank(pressure, selected)
         Ui:scaleDimension(20),
         love.graphics.getHeight() / 2
     )
-    --the tank its self
+    --the tank itself
     local topTankX, topTankY = Ui:scaleCoord(640 - 250, 100)
     local tankWidth = Ui:scaleDimension(500)
     local topHeight = Ui:scaleDimension(187.5)
@@ -65,24 +65,24 @@ local function drawTank(pressure, selected)
         'center'
     )
 
-    --pressure guage
-    local guageX, guageY = Ui:scaleCoord(640, 500)
-    local guageRadius = Ui:scaleDimension(125)
-    local guageInnerRadius = Ui:scaleDimension(120)
+    --pressure gauge
+    local gaugeX, gaugeY = Ui:scaleCoord(640, 500)
+    local gaugeRadius = Ui:scaleDimension(125)
+    local gaugeInnerRadius = Ui:scaleDimension(120)
     if selected then
         love.graphics.setColor(1, 1, 0)
     else
         love.graphics.setColor(0.3, 0.3, 0.3)
     end
-    love.graphics.circle('fill', guageX, guageY, guageRadius)
+    love.graphics.circle('fill', gaugeX, gaugeY, gaugeRadius)
     love.graphics.setColor(1, 1, 1)
-    love.graphics.circle('fill', guageX, guageY, guageInnerRadius)
+    love.graphics.circle('fill', gaugeX, gaugeY, gaugeInnerRadius)
     local labelRadius = Ui:scaleDimension(110)
     love.graphics.setColor(0, 1, 0)
     love.graphics.arc(
         'fill',
-        guageX,
-        guageY,
+        gaugeX,
+        gaugeY,
         labelRadius,
         math.rad(-100),
         math.rad(-180)
@@ -90,8 +90,8 @@ local function drawTank(pressure, selected)
     love.graphics.setColor(1, 1, 0)
     love.graphics.arc(
         'fill',
-        guageX,
-        guageY,
+        gaugeX,
+        gaugeY,
         labelRadius,
         math.rad(-100),
         math.rad(-45)
@@ -99,17 +99,17 @@ local function drawTank(pressure, selected)
     love.graphics.setColor(1, 0, 0)
     love.graphics.arc(
         'fill',
-        guageX,
-        guageY,
+        gaugeX,
+        gaugeY,
         labelRadius,
         math.rad(-45),
         math.rad(0)
     )
     local labelInnerRadius = Ui:scaleDimension(100)
     love.graphics.setColor(1, 1, 1)
-    love.graphics.circle('fill', guageX, guageY, labelInnerRadius)
+    love.graphics.circle('fill', gaugeX, gaugeY, labelInnerRadius)
     love.graphics.push() --push a new matrix onto the stack
-    love.graphics.translate(guageX, guageY) --translate the matrix to the center of the guage
+    love.graphics.translate(gaugeX, gaugeY) --translate the matrix to the center of the gauge
     love.graphics.rotate(math.pi * pressure - math.pi) --rotate the matrix by the angle of the pressure
     love.graphics.setColor(0.3, 0.3, 0.3)
     love.graphics.rectangle(
@@ -151,13 +151,13 @@ end
 
 --- Draws a specific upgrade and the upgrade clicker
 --- @param index number the index of the upgrade to draw, between 1 and 4
---- @param hilighted number 0 for no hilight, 1 for slight hilight, 2 for full hilight
+--- @param hilighted number 0 for no highlight, 1 for slight highlight, 2 for full highlight
 local function drawUpgrade(index, hilighted)
     love.graphics.setColor(color.rgb(120, 120, 120))
     --get the position of this pugrade
     local upgradeX, upgradeY, vslot =
         UpgradeScreen.calculateUpgradePosition(index)
-    --main backgournd for this upgrade
+    --main background for this upgrade
     love.graphics.rectangle(
         'fill',
         upgradeX,
@@ -242,9 +242,9 @@ function UpgradeScreen:draw()
     --tank
     love.graphics.clear(color.hex(0xa08170))
     local mouseX, mouseY = love.mouse.getPosition()
-    local guageX, guageY = Ui:scaleCoord(640, 500)
+    local gaugeX, gaugeY = Ui:scaleCoord(640, 500)
     local mouseDistance =
-        math.sqrt((mouseX - guageX) ^ 2 + (mouseY - guageY) ^ 2)
+        math.sqrt((mouseX - gaugeX) ^ 2 + (mouseY - gaugeY) ^ 2)
     local distancePercent = 0.75
         - (mouseDistance - Ui:scaleDimension(125)) / Ui:scaleDimension(700)
     distancePercent = math.max(0, math.min(1, distancePercent))
@@ -383,12 +383,12 @@ function UpgradeScreen:mousepressed(x, y, button)
                 end
             end
         end
-        --check if the pressure guage was clicked
-        local guageX, guageY = Ui:scaleCoord(640, 500)
-        local mouseDistance = math.sqrt((x - guageX) ^ 2 + (y - guageY) ^ 2)
+        --check if the pressure gauge was clicked
+        local gaugeX, gaugeY = Ui:scaleCoord(640, 500)
+        local mouseDistance = math.sqrt((x - gaugeX) ^ 2 + (y - gaugeY) ^ 2)
         if mouseDistance < Ui:scaleDimension(125) then
             self.scene_manager:transition('game')
-            --eventualy: start the animation for starting the round
+            --eventually: start the animation for starting the round
         end
     end
 end

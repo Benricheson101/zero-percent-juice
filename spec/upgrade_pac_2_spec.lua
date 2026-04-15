@@ -37,7 +37,7 @@ describe('Rock Reducer Upgrade', function()
         assert.is_not_nil(rockReducerUpgrade)
         assert.is_true(game.ObstacleSpawner.spawnUpgrade == rockReducerUpgrade)
     end)
-    --the funcility of the varible spawn disrance should be tested with the entity spawner class tests
+    --the functionality of the varible spawn disrance should be tested with the entity spawner class tests
 end)
 
 describe('Rock Buster Upgrade', function()
@@ -56,7 +56,7 @@ describe('Rock Buster Upgrade', function()
         assert.is_not_nil(rockBusterUpgrade)
     end)
 
-    --prbly should have a behavior test to check that when the player hits an obstacle they take damege, not currently sure how to implment this
+    --probably should have a behavior test to check that when the player hits an obstacle they take damege, not currently sure how to implement this
     -- this would also check that the upgrade is being used
 end)
 
@@ -93,7 +93,7 @@ describe('Coin Spawn Frequency Upgrade', function()
         assert.is_not_nil(coinSpawnUpgrade)
         assert.is_true(game.CoinSpawner.spawnUpgrade == coinSpawnUpgrade)
     end)
-    --the funcility of the variable spawn distance should be tested with the entity spawner class tests
+    --the functionality of the variable spawn distance should be tested with the entity spawner class tests
 end)
 
 describe('Coin Value Upgrade', function()
@@ -110,6 +110,6 @@ describe('Coin Value Upgrade', function()
         local coinValueUpgrade = upgrades.getUpgrade('Profit Boost')
         assert.is_not_nil(coinValueUpgrade)
     end)
-    --prbly should have a behavior test to check that when the player collects a coin they get points, not currently sure how to implment this
+    --probably should have a behavior test to check that when the player collects a coin they get points, not currently sure how to implement this
     -- this would also check that the upgrade is being used
 end)

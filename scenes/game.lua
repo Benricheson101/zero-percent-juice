@@ -47,7 +47,7 @@ function GameScene:new()
         spawnUpgradeEffectFunc = GameScene.obstacleSpawnFrequencyCalculation,
     }
 
-    --TODO: find a way for coins to be able to spawn way eriler
+    --TODO: find a way for coins to be able to spawn way earlier
     ---@diagnostic disable-next-line: redundant-parameter
     o.CoinSpawner = EntitySpawner:new {
         spawnUpgradeName = 'Coin Replictor',
@@ -65,7 +65,7 @@ function GameScene:new()
         spawnDistance = designWidth / 2,
         baseVelocityX = 50,
         image = 'images/Powerup.png',
-        spawnUpgradeEffectFunc = GameScene.powerUpSpawnerFrequencyCalcilation,
+        spawnUpgradeEffectFunc = GameScene.powerUpSpawnerFrequencyCalculation,
     }
 
     return o
@@ -106,7 +106,7 @@ function GameScene:keyreleased(key)
     Player.keyreleased(key)
 end
 
---- Calucates the inital speed of the player based on the level of the start speed upgreade
+--- Calculates the inital speed of the player based on the level of the start speed upgrade
 --- @param level number the level of the start speed upgrade
 --- @return number the starting speed of the player
 function GameScene.calculateStartingSpeed(level)
@@ -117,9 +117,9 @@ function GameScene:enter()
     --when the game starts
     local startSpeedUpgrade = Upgrades.getUpgrade('Tank Pressure') -- get the start speed upgrade
     assert(startSpeedUpgrade ~= nil, 'Tank Pressure upgrade not found')
-    local speed = self.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the statring speed
+    local speed = self.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the starting speed
     Camera.velocityX = speed -- apply the starting speed
-    Camera.xPos = 0 -- reset posotion to start
+    Camera.xPos = 0 -- reset position to start
     self:reset()
 end
 
@@ -159,17 +159,17 @@ function GameScene.obstacleSpawnFrequencyCalculation(level)
     return 720 + 15 * level
 end
 
---- Calulte how often coins should spawn based on the level of <relavant upgrade name here>
---- @param level number the level of the <relavant upgrade name here> upgrade
+--- Calculate how often coins should spawn based on the level of <relavant upgrade name here>
+--- @param level number the level of the <relevant upgrade name here> upgrade
 --- @return number the distance the player has to travel before the next coin spawns
 function GameScene.coinSpawnFrequencyCalculation(level)
     return 720 / (1 + 0.1 * level)
 end
 
 --- TEMPORARY FUNCTION, CHANGE ONCE POWER UP UPGRADES ARE IMPLEMENTED
---- @param level number the level of the <relavant upgrade name here> upgrade
+--- @param level number the level of the <relevant upgrade name here> upgrade
 --- @return number the distance the player has to travel before the next power up spawns
-function GameScene.powerUpSpawnerFrequencyCalcilation(level)
+function GameScene.powerUpSpawnerFrequencyCalculation(level)
     return 3840
 end
 

@@ -161,7 +161,7 @@ local upgrades = {
             y + 55 * scale
         )
 
-        --the guy smakshing the rock
+        --the guy smashing the rock
         love.graphics.setColor(colors.hex(0x545454))
         love.graphics.circle('fill', x + 75 * scale, y + 45 * scale, 7 * scale)
         love.graphics.setLineWidth(3 * scale)
