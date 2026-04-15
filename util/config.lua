@@ -1,3 +1,4 @@
+package.path = package.path .. ';./vendor/share/lua/5.1/?.lua'
 local json = require('JSON')
 
 ---@class GameConfig
