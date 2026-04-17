@@ -1,0 +1,21 @@
+name: Build AppImage
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build
+        run: chmod +x build.sh && ./build.sh
+        
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/Zero_Percent_Juice.AppImage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
