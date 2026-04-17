@@ -65,7 +65,7 @@ function GameScene:new()
         spawnDistance = designWidth / 2,
         baseVelocityX = 50,
         image = 'images/Powerup.png',
-        spawnUpgradeEffectFunc = GameScene.powerUpSpawnerFrequencyCalcilation,
+        spawnUpgradeEffectFunc = GameScene.powerUpSpawnerFrequencyCalculation,
     }
 
     return o
