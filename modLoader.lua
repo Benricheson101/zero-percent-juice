@@ -1,4 +1,4 @@
-
+--- The object responacbel for loading and managing mods 
 local modloader = {}
 
 modloader.mods = {}
@@ -29,6 +29,52 @@ function modloader.gameLoaded(sceneManager)
         local mod = modloader.mods[i]
         if mod.gameLoaded ~= nil then --check if the mod has decleained a game laoded function
             mod.gameLoaded(sceneManager) --- run that function
+        end
+    end
+end
+
+--- Pass any keypressed events to the mods
+--- @param key string the key that was pressed
+--- @param ... any other arguments that love.keypressed passes
+function modloader.keypressed(key, ...)
+    for i = 1, #modloader.mods, 1 do --for each mod
+        local mod = modloader.mods[i]
+        if mod.keypressed ~= nil then --check if the mod has decleained a keypressed function
+            mod.keypressed(key, ...) --- run that function
+        end
+    end
+end
+
+--- Pass any keyreleased events to the mods
+--- @param key string the key that was released
+--- @param ... any other arguments that love.keyreleased passes
+function modloader.keyreleased(key, ... )
+    for i = 1, #modloader.mods, 1 do --for each mod
+        local mod = modloader.mods[i]
+        if mod.keyreleased ~= nil then --check if the mod has decleained a keyreleased function
+            mod.keyreleased(key, ...) --- run that function
+        end
+    end
+end
+
+--- Pass any mousepressed events to the mods
+--- @param ... any arguments that love.mousepressed passes
+function modloader.mousepressed(...)
+    for i = 1, #modloader.mods, 1 do --for each mod
+        local mod = modloader.mods[i]
+        if mod.mousepressed ~= nil then --check if the mod has decleained a mousepressed function
+            mod.mousepressed(...) --- run that function
+        end
+    end
+end
+
+--- Pass any mousereleased events to the mods
+--- @param ... any arguments that love.mousereleased passes
+function modloader.mousereleased(...)
+    for i = 1, #modloader.mods, 1 do --for each mod
+        local mod = modloader.mods[i]
+        if mod.mousereleased ~= nil then --check if the mod has decleained a mousereleased function
+            mod.mousereleased(...) --- run that function
         end
     end
 end

@@ -43,7 +43,7 @@ function love.load()
         gameover = GameOverScene:new(),
     }
 
-    modLoader:gameLoaded(scene_manager)
+    modLoader.gameLoaded(scene_manager)
 
     scene_manager:transition(START_SCENE)
 end
@@ -55,6 +55,7 @@ function love.keypressed(key, ...)
     end
 
     scene_manager:keypressed(key, ...)
+    modLoader.keypressed(key, ...)
 end
 
 function love.resize(w, h)
@@ -72,12 +73,15 @@ function love.update(...)
 end
 function love.keyreleased(...)
     scene_manager:keyreleased(...)
+    modLoader.keyreleased(...)
 end
 function love.mousepressed(...)
     scene_manager:mousepressed(...)
+    modLoader.mousepressed(...)
 end
 function love.mousereleased(...)
     scene_manager:mousereleased(...)
+    modLoader.mousereleased(...)
 end
 function love.textinput(...)
     scene_manager:textinput(...)
