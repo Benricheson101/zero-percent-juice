@@ -174,7 +174,7 @@ end
 --- TEMPORARY FUNCTION, CHANGE ONCE POWER UP UPGRADES ARE IMPLEMENTED
 --- @param level number the level of the <relavant upgrade name here> upgrade
 --- @return number the distance the player has to travel before the next power up spawns
-function GameScene.powerUpSpawnerFrequencyCalcilation(level)
+function GameScene.powerUpSpawnerFrequencyCalculation(level)
     if level == 0 then
         return 2147483648 -- basically never
     end
