@@ -27,12 +27,16 @@ if [ ! -f "$BIN_PATH/$APPIMAGE_TOOL_NAME" ]; then
 	chmod +x $BIN_PATH/$APPIMAGE_TOOL_NAME
 fi
 
-# Checking if the build directory doesn't exist. If it does creating it
-if [ ! -d "build" ]; then
-	mkdir build
-else
-	rm -rf $PWD/build/squashfs-root/
+# Clean build directory if it exists
+if [ -d "build" ]; then
+	rm -rf build
 fi
+
+rm -f build/Zero_Percent_Juice.AppImage
+
+rm -f Zero_Percent_Juice.love
+
+mkdir build
 
 # At this point if we have installed the tools we can begin to build the game AppImage
 
@@ -47,9 +51,11 @@ chmod +x $PWD/build/squashfs-root/bin/Zero_Percent_Juice
 
 rm $PWD/build/squashfs-root/bin/love
 
+# Copy JSON.lua to location in LUA_PATH
+cp $PWD/vendor/share/lua/5.1/JSON.lua $PWD/build/squashfs-root/share/lua/5.1/JSON.lua
+
 # rm $PWD/build/squashfs-root/love.desktop $PWD/build/squashfs-root/love.svg $PWD/build/squashfs-root/AppRun
 cp $PWD/linux_appimage_files/love.desktop $PWD/linux_appimage_files/love.svg $PWD/linux_appimage_files/AppRun $PWD/build/squashfs-root
 
 # Final AppImage Build (hopefully)
 $BIN_PATH/$APPIMAGE_TOOL_NAME $PWD/build/squashfs-root $PWD/build/Zero_Percent_Juice.AppImage
-
