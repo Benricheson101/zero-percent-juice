@@ -31,6 +31,10 @@ function Player.load(opts)
     Player.maxVelocityX = opts.maxVelocityX
     Player.maxVelocityY = opts.maxVelocityY
 
+    Player.sound = nil
+    Player.soundPath = opts.soundPath
+    Player.playSound = false
+
     -- the image height is 16
     Player.dim = 16 * designScale
     Player.rotation = 0
@@ -69,8 +73,11 @@ function Player.update(dt)
     -- Slowly rotates player
     Player.rotation = (Player.rotation + (dt * 3)) % (2 * math.pi)
 
-    -- Slowly rotates player
-    Player.rotation = (Player.rotation + (dt * 3)) % (2 * math.pi)
+    if Player.playSound == true and Player.velocityY ~= 0 then
+        Player.sound = assets.loadSound(Player.soundPath)
+        Player.sound:play()
+    end
+    Player.playSound = false
 end
 
 -- Updates Player's Y velocity
@@ -158,6 +165,7 @@ function Player.updatePosY(dt)
         -- print('Hit the bottom: velY:', Player.velocityY)
         Player.velocityY =
             Player.calculateBounce(Player.velocityY, Player.maxVelocityX)
+        Player.playSound = true
         -- print('Player VelY:', Player.velocityY)
     end
 
