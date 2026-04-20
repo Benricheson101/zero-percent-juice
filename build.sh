@@ -7,7 +7,7 @@ APPIMAGE_TOOL_NAME=appimagetool-x86_64.AppImage
 
 # Checking if the love AppImage doesn't exist. If now, installing it
 if [ ! -f "$BIN_PATH/$LOVE_APPIMAGE_FILE" ]; then
-	echo "Could not fild love AppImage."
+	echo "Could not find love AppImage."
 	echo "Downloading love-11.5 AppImage."
 	# Downloading the love AppImage
 	wget -O "$BIN_PATH/$LOVE_APPIMAGE_FILE" "https://github.com/love2d/love/releases/download/11.5/love-11.5-x86_64.AppImage"
