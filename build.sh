@@ -2,6 +2,8 @@
 
 BIN_PATH=$PWD/bin/
 
+mkdir -p "$BIN_PATH"
+
 LOVE_APPIMAGE_FILE=love-11.5-x86_64.AppImage
 APPIMAGE_TOOL_NAME=appimagetool-x86_64.AppImage
 
