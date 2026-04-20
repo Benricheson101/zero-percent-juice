@@ -1,5 +1,3 @@
-package.path = './vendor/share/lua/5.1/?.lua;' .. package.path
-
 local Ui = require('util.ui')
 local fonts = require('util.fonts')
 local SceneManager = require('renderer.scenemanager')

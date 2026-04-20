@@ -1,0 +1,191 @@
+#!/usr/bin/env bash
+
+# build script for packaging executables. packaged executables are put into ./build
+#
+# build configuration (LOVE version, name, package, build directory) can be changed below
+#
+# USAGE:
+#     ./scripts/build <clean|platform...>
+
+set -e
+
+LOVE_VERSION=11.5
+RELEASE_NAME="Zero Percent Juice"
+PACKAGE_NAME="edu.sunypoly.cs371.zpj"
+OUTPUT_DIRECTORY="$(git rev-parse --show-toplevel)/build"
+
+GAME_FILES="$(git ls-files -- . :\!:{.gitignore,\*.md,scripts/,linux_appimage_files/})"
+
+mkdir -p "$OUTPUT_DIRECTORY"
+
+err() {
+  echo "$@" >&2
+}
+
+__setup() {
+  local PLATFORM="$1"
+  local EXT="${2:-zip}"
+
+  local DL_PATH="${TMPDIR:-/tmp}/love-${LOVE_VERSION}-${PLATFORM}.${EXT}"
+
+  if [[ ! -f "$DL_PATH" ]] ; then
+    curl -L -o "$DL_PATH" "https://github.com/love2d/love/releases/download/${LOVE_VERSION}/love-${LOVE_VERSION}-${PLATFORM}.${EXT}"
+  fi
+
+  builddir="$(mktemp -d "${TMPDIR:-/tmp}/zpj_build_${PLATFORM}.XXXXXX")"
+  err "  => building in $builddir"
+
+  case "$EXT" in
+    zip)
+      unzip -q "$DL_PATH" -d "$builddir"
+      ;;
+
+    AppImage)
+      chmod +x "$DL_PATH"
+
+      APPIMAGE_TOOL="${TMPDIR:-/tmp}/appimagetool-${PLATFORM}.AppImage"
+
+      if [[ ! -f "$APPIMAGE_TOOL" ]] ; then
+        curl -L -o "$APPIMAGE_TOOL" "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-${PLATFORM}.AppImage"
+      fi
+      chmod +x "$APPIMAGE_TOOL"
+      (cd "$builddir" && $DL_PATH --appimage-extract)
+      ;;
+  esac
+}
+
+__cleanup() {
+  [[ -v builddir ]] && rm -rf "$builddir"
+}
+
+trap '__cleanup' EXIT
+
+build_darwin() {
+  err "building for macos"
+
+  __setup macos
+
+  app="$builddir/love.app"
+
+  zip -q -9 -r "$app/Contents/Resources/zpj.love" $GAME_FILES
+
+  plist="$app/Contents/Info.plist"
+
+  if [[ $(uname -s) == Darwin ]] ; then
+    plutil -replace CFBundleIdentifier -string "$PACKAGE_NAME" "$plist"
+    plutil -replace CFBundleName -string "$RELEASE_NAME" "$plist"
+    plutil -remove UTExportedTypeDeclarations "$plist"
+  else
+    ./scripts/update-plist.sed -i "$plist"
+  fi
+
+  mv "$app" "$builddir/${RELEASE_NAME}.app"
+  app="${app%love.app}${RELEASE_NAME}.app"
+
+  zip_out="${OUTPUT_DIRECTORY}/$(basename "${app%.app}" | tr ' ' '_')-darwin.zip"
+  [[ -f "$zip_out" ]] && rm -f "$zip_out"
+  (cd "$builddir" && zip -y -q -9 -r "$zip_out" "$(basename "$app")")
+
+  err "  => macos build succeeded"
+}
+
+build_windows() {
+  local PLATFORM=${1:-win64}
+
+  err "building for $PLATFORM"
+
+  __setup $PLATFORM
+  app="$builddir/love-${LOVE_VERSION}-${PLATFORM}"
+
+  finaloutput="$builddir/build"
+  mkdir -p "$finaloutput"
+
+  mv "$app"/*.{dll,ico} "$app/license.txt" "$finaloutput"
+  cat "$app/love.exe" <(zip -q -9 -r - $GAME_FILES) > "${finaloutput}/${RELEASE_NAME}.exe"
+
+  zip_out="${OUTPUT_DIRECTORY}/${RELEASE_NAME// /_}-${PLATFORM}.zip"
+  [[ -f "$zip_out" ]] && rm -f "$zip_out"
+  (cd "$finaloutput" && zip -y -q -9 -r "$zip_out" .)
+
+  err "  => $PLATFORM build succeeded"
+}
+
+build_linux() {
+  local PLATFORM=${1:-x86_64}
+
+  err "building for linux ${PLATFORM}"
+
+  __setup x86_64 AppImage
+
+  appimage="$builddir/squashfs-root"
+  zip -q -9 -r "$builddir/zpj.love" $GAME_FILES
+
+  exefile="$appimage/bin/${RELEASE_NAME// /_}"
+  cat "$appimage/bin/love" "$builddir/zpj.love" > "$exefile"
+  chmod +x "$exefile"
+  rm "$appimage/bin/love"
+
+  cp $(git ls-files -- linux_appimage_files) "$appimage"
+
+  appimageout="$builddir/${RELEASE_NAME// /_}.AppImage"
+  $APPIMAGE_TOOL "$appimage" "$appimageout"
+
+  zip_out="${OUTPUT_DIRECTORY}/${RELEASE_NAME// /_}-linux.zip"
+  [[ -f "$zip_out" ]] && rm -f "$zip_out"
+  (cd "$builddir" && zip -y -q -9 -r "$zip_out" "$(basename "$appimageout")")
+
+  err "  => linux ${PLATFORM} build succeeded"
+}
+
+targets=("$@")
+if [[ $# == 0 ]] ; then
+  targets+="build"
+fi
+
+for target in ${targets[@]} ; do
+  shopt -s nocasematch
+  case "$target" in
+    darwin)
+      build_darwin
+      ;;
+
+    windows | win64)
+      build_windows win64
+      ;;
+
+    win32)
+      build_windows win32
+      ;;
+
+    linux)
+      build_linux x86_64
+      ;;
+
+    all | build)
+      build_darwin
+      err
+      build_windows win64
+      err
+      build_windows win32
+      err
+      build_linux x86_64
+      ;;
+
+    clean)
+      find \
+        "${TMPDIR:-/tmp}" \
+        -maxdepth 1 \
+        \( \
+        -type f -iname 'love-*.*-*.zip' \
+        -o -type d -iname 'zpj_build.*' \
+        \) \
+        -print0 \
+        | xargs -0 rm -r
+      ;;
+
+    *)
+      err "unknown target $platform"
+      exit 1
+      ;;
+  esac
+done

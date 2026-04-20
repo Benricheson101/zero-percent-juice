@@ -3,17 +3,37 @@ name: Build AppImage
 on:
   release:
     types: [created]
+  workflow_dispatch:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        platform: [darwin, win32, win64, linux]
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Build
-        run: chmod +x build.sh && ./build.sh
-        
-      - name: Upload Release
-        uses: softprops/action-gh-release@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt update -y
+          sudo apt install -y sed
+
+      - name: Build ${{matrix.platform}}
+        run: ./scripts/build ${{matrix.platform}}
+
+      - name: Upload artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Zero_Percent_Juice-${{matrix.platform}}
+          path: ./build/Zero_Percent_Juice-${{matrix.platform}}.zip
+
+      - name: Upload release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v1
         with:
           files: build/Zero_Percent_Juice.AppImage
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
