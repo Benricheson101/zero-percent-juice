@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Zero Percent Juice
+Comment=Tsunami Game TEMP!
+MimeType=application/x-love-game;
+Exec=love %f
+Type=Application
+Categories=Development;Game;
+Terminal=false
+Icon=love
+NoDisplay=true

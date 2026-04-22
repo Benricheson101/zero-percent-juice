@@ -1,4 +1,7 @@
 bin/
+build/
+*.love
+*.AppImage
 leaderboard/data
 .vscode
 .DS_STORE
