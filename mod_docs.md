@@ -54,3 +54,5 @@ The game provides various 'classes' and funcions to assist in developemnt.
 5. `renderer.scenemanager` This class handles the management of what is currenly being shown. you can add your own scenes to the instance used by the game through the game loaded mod call back.
 6. `upgrade` The base for any upgrade you might want to add. The consttor takes a name, a sprite draw funcion, and a price calcuation funcion.
 7. `upgrades` (notice the s at the end) This file provides a table containing all the upgrades the came contains. To add your own upgrades, add new elemmtns to this table.
+
+For anyhting else you might want to do, the game is open source so take a look arround.
