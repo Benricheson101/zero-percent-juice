@@ -61,7 +61,7 @@ function GameScene:new()
     o.currentGameOverTimer = o.baseGameOverTimer
     ---@diagnostic disable-next-line: redundant-parameter
     o.PowerUpSpawner = EntitySpawner:new {
-        spawnUpgradeName = '',
+        spawnUpgradeName = 'Boosters',
         spawnDistance = designWidth / 2,
         baseVelocityX = 50,
         image = 'images/Powerup.png',
@@ -119,13 +119,15 @@ function GameScene:enter()
     assert(startSpeedUpgrade ~= nil, 'Tank Pressure upgrade not found')
     local speed = self.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the starting speed
     Camera.velocityX = speed -- apply the starting speed
-    Camera.xPos = 0 -- reset position to start
+    Camera.maxVelocityX = speed
+    Camera.xPos = 0 -- reset posotion to start
     self:reset()
 end
 
 function GameScene:checkCollision(posX, posY, dim)
     local obstacleSpeedReductionUpgrade = Upgrades.getUpgrade('Rock Buster')
     local coinValueUpgrade = Upgrades.getUpgrade('Profit Boost')
+    local powerUpUpgrade = Upgrades.getUpgrade('Boost Power')
     assert(
         obstacleSpeedReductionUpgrade ~= nil,
         'Rock Buster upgrade not found'
@@ -147,8 +149,12 @@ function GameScene:checkCollision(posX, posY, dim)
         print('Money: ' .. Player.money)
     end
 
+    assert(powerUpUpgrade ~= nil, 'Boost Power upgrade not found')
     if self.PowerUpSpawner:checkCollision(posX, posY, dim) then
-        Camera.changeVelocityX(200)
+        local boostAmount = GameScene.calculatePowerupBoost(
+            powerUpUpgrade:getLevel()
+        )
+        Camera.changeVelocityX(boostAmount)
     end
 end
 
@@ -170,7 +176,10 @@ end
 --- @param level number the level of the <relevant upgrade name here> upgrade
 --- @return number the distance the player has to travel before the next power up spawns
 function GameScene.powerUpSpawnerFrequencyCalculation(level)
-    return 3840
+    if level == 0 then
+        return 2147483648 -- basically never
+    end
+    return 1000 / (0.1 * level)
 end
 
 --- Calculate how much speed to remove from the player when they hit an obstacle
@@ -185,6 +194,10 @@ end
 --- @return number the value of each coin
 function GameScene.calculateCoinValue(level)
     return 10 + math.floor(math.pow(level, 1.15))
+end
+
+function GameScene.calculatePowerupBoost(level)
+    return 200 * math.pow(1.1, level)
 end
 
 function GameScene:checkGameOver(dt)
