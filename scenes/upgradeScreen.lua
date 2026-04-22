@@ -11,6 +11,8 @@ local UpgradeScreen = {}
 setmetatable(UpgradeScreen, { __index = Scene })
 UpgradeScreen.__index = UpgradeScreen
 
+local playSound = false
+
 --- Draws the juice tank witht the pressure valve at the inptut position
 --- @param pressure number the pressure of the juice in the tank, between 0 and 1
 --- @param selected boolean wether theguage should be hilighted yellow
@@ -363,10 +365,18 @@ function UpgradeScreen:draw()
         Ui:scaleDimension(680),
         'center'
     )
+    
+    if playSound then
+        local sound = assets.loadSound('assets/sounds/buttonClickSound.mp3')
+        sound:play()
+        playSound = false
+    end
+
 end
 
 function UpgradeScreen:mousepressed(x, y, button)
     if button == 1 then
+        playSound = true
         --check if an upgrade was clicked
         for i = 1, #upgrades do
             local upgradeX, upgradeY, _ =

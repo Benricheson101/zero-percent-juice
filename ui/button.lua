@@ -86,4 +86,6 @@ function UIButton:update()
     self.state = 'normal'
 end
 
+UIButton.soundPath = 'assets/sounds/buttonClickSound.mp3'
+
 return UIButton
