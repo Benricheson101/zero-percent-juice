@@ -12,7 +12,7 @@ describe('EntitySpawner', function()
                     spawnDistance = 1000,
                     baseVelocityX = 50,
                     image = 'images/Obstacle.png',
-                    spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation,
+                    spawnUpgradeEffectFunc = GameScene.obstacleSpawnFrequencyCalculation,
                 }
 
                 assert.are.equal(1000, entitySpawner.spawnDistance)
@@ -32,7 +32,7 @@ describe('EntitySpawner', function()
                     spawnDistance = 1000,
                     baseVelocityX = 50,
                     image = 'images/Obstacle.png',
-                    spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation,
+                    spawnUpgradeEffectFunc = GameScene.obstacleSpawnFrequencyCalculation,
                 }
 
                 entitySpawner:update(1)
@@ -50,7 +50,7 @@ describe('EntitySpawner', function()
                 spawnDistance = 1000,
                 baseVelocityX = 50,
                 image = 'images/Obstacle.png',
-                spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation,
+                spawnUpgradeEffectFunc = GameScene.obstacleSpawnFrequencyCalculation,
             }
 
             entitySpawner:spawn(200)
@@ -69,7 +69,7 @@ describe('EntitySpawner', function()
                     spawnDistance = 1000,
                     baseVelocityX = 50,
                     image = 'images/Obstacle.png',
-                    spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation,
+                    spawnUpgradeEffectFunc = GameScene.obstacleSpawnFrequencyCalculation,
                 }
 
                 entitySpawner:spawn(200)
