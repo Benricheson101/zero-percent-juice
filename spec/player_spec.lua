@@ -365,4 +365,30 @@ describe('Player_Suite', function()
             assert.is_true(approxEqual(bounce2, expected2))
         end)
     end)
+
+    describe('changeScore', function ()
+
+        before_each(function()
+            Player.load {
+                posX = 100,
+                posY = 200,
+                velocityX = 0,
+                velocityY = 0,
+                accelerationX = 300,
+                accelerationY = 300,
+                decelerationX = 50,
+                decelerationY = 50,
+                maxVelocityX = 500,
+                maxVelocityY = 600,
+            }
+        end)
+
+        it('updates the player score', function ()
+            Player.changeScore(200)
+            Player.changeScore(-100)
+
+            assert.are_equal(100, Player.score)
+        end)
+    end)
+
 end)

@@ -265,6 +265,18 @@ function Player.changeVelocityX(changeX)
     Player.velocityX = newX
 end
 
+function Player.changeScore(change)
+
+    Player.score = Player.score + change
+
+end
+
+function Player.roundGameOver()
+
+    Player.score = math.ceil(Player.score)
+
+end
+
 Player.money = 1000
 
 return Player
