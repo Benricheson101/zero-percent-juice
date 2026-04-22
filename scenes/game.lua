@@ -44,10 +44,10 @@ function GameScene:new()
         spawnDistance = designWidth,
         baseVelocityX = 50,
         image = 'images/Obstacle.png',
-        spawnUpgradeEffectFunc = GameScene.obsticaleSpawFrequencyCalculation,
+        spawnUpgradeEffectFunc = GameScene.obstacleSpawnFrequencyCalculation,
     }
 
-    --TODO: find a way for coins to be able to spawn way eriler
+    --TODO: find a way for coins to be able to spawn way earlier
     ---@diagnostic disable-next-line: redundant-parameter
     o.CoinSpawner = EntitySpawner:new {
         spawnUpgradeName = 'Coin Replictor',
@@ -106,7 +106,7 @@ function GameScene:keyreleased(key)
     Player.keyreleased(key)
 end
 
---- Calucates the inital speed of the player based on the level of the start speed upgreade
+--- Calculates the inital speed of the player based on the level of the start speed upgrade
 --- @param level number the level of the start speed upgrade
 --- @return number the starting speed of the player
 function GameScene.calculateStartingSpeed(level)
@@ -117,26 +117,27 @@ function GameScene:enter()
     --when the game starts
     local startSpeedUpgrade = Upgrades.getUpgrade('Tank Pressure') -- get the start speed upgrade
     assert(startSpeedUpgrade ~= nil, 'Tank Pressure upgrade not found')
-    local speed = self.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the statring speed
+    local speed = self.calculateStartingSpeed(startSpeedUpgrade:getLevel()) --calculate the starting speed
     Camera.velocityX = speed -- apply the starting speed
     Camera.maxVelocityX = speed
     Camera.xPos = 0 -- reset posotion to start
+    self:reset()
 end
 
 function GameScene:checkCollision(posX, posY, dim)
-    local obsticalSpeedReductionUpgrade = Upgrades.getUpgrade('Rock Buster')
+    local obstacleSpeedReductionUpgrade = Upgrades.getUpgrade('Rock Buster')
     local coinValueUpgrade = Upgrades.getUpgrade('Profit Boost')
     local powerUpUpgrade = Upgrades.getUpgrade('Boost Power')
     assert(
-        obsticalSpeedReductionUpgrade ~= nil,
+        obstacleSpeedReductionUpgrade ~= nil,
         'Rock Buster upgrade not found'
     )
     assert(coinValueUpgrade ~= nil, 'Profit Boost upgrade not found')
-    --obstical collision
+    --obstacle collision
     if self.ObstacleSpawner:checkCollision(posX, posY, dim) then
         -- Camera now to handle x velocity
-        local reduction = GameScene.calculateObsticalSpeedReduction(
-            obsticalSpeedReductionUpgrade:getLevel()
+        local reduction = GameScene.calculateObstacleSpeedReduction(
+            obstacleSpeedReductionUpgrade:getLevel()
         )
         Camera.changeVelocityX(reduction)
     end
@@ -157,22 +158,22 @@ function GameScene:checkCollision(posX, posY, dim)
     end
 end
 
---- Calculates how often the rock obstical should spawn based on the level of the rock buster upgrade
+--- Calculates how often the rock obstacle should spawn based on the level of the rock buster upgrade
 --- @param level number the level of the rock buster upgrade
---- @return number the distance the player has to travel before the next obstical spawns
-function GameScene.obsticaleSpawFrequencyCalculation(level)
+--- @return number the distance the player has to travel before the next obstacle spawns
+function GameScene.obstacleSpawnFrequencyCalculation(level)
     return 720 + 15 * level
 end
 
---- Calulte how often coins should spawn based on the level of <relavant upgrade name here>
---- @param level number the level of the <relavant upgrade name here> upgrade
+--- Calculate how often coins should spawn based on the level of <relavant upgrade name here>
+--- @param level number the level of the <relevant upgrade name here> upgrade
 --- @return number the distance the player has to travel before the next coin spawns
 function GameScene.coinSpawnFrequencyCalculation(level)
     return 720 / (1 + 0.1 * level)
 end
 
 --- TEMPORARY FUNCTION, CHANGE ONCE POWER UP UPGRADES ARE IMPLEMENTED
---- @param level number the level of the <relavant upgrade name here> upgrade
+--- @param level number the level of the <relevant upgrade name here> upgrade
 --- @return number the distance the player has to travel before the next power up spawns
 function GameScene.powerUpSpawnerFrequencyCalculation(level)
     if level == 0 then
@@ -181,10 +182,10 @@ function GameScene.powerUpSpawnerFrequencyCalculation(level)
     return 1000 / (0.1 * level)
 end
 
---- Calculate how much speed to remove from the player when they hit an obstical
+--- Calculate how much speed to remove from the player when they hit an obstacle
 --- @param level number the level of the rock reducer upgrade
 --- @return number the amount of speed to remove
-function GameScene.calculateObsticalSpeedReduction(level)
+function GameScene.calculateObstacleSpeedReduction(level)
     return -150 * math.pow(0.96, level)
 end
 
@@ -206,7 +207,6 @@ function GameScene:checkGameOver(dt)
     then
         self.currentGameOverTimer = self.currentGameOverTimer - dt
         if self.currentGameOverTimer < 0 then
-            self:reset()
             self.scene_manager:transition('leaderboardsubmit')
         end
     else
@@ -246,14 +246,15 @@ function GameScene:reset()
     Player.velocityX = 0
     Player.velocityY = 0
 
-    Camera.velocityX = Player.maxVelocityX
-
     self.ObstacleSpawner:clearEntities()
     self.CoinSpawner:clearEntities()
+    self.PowerUpSpawner:clearEntities()
 
     -- FIXME: can we just make a new instance of these? or add a reset() function to them?
     self.ObstacleSpawner.spawnDistance = designWidth
-    self.CoinSpawner.spawnDistance = designWidth / 2
+    self.CoinSpawner.spawnDistance = 0
+    self.PowerUpSpawner.spawnDistance = designWidth / 2
+    
 end
 
 return GameScene

@@ -6,6 +6,7 @@ local Assets = require('util.assets')
 --- @field posY number the y position of the Entity
 --- @field velocityX number the x velocity of the Entity
 --- @field image love.Image the image of the Entity
+--- @field imagePath string path to image
 --- @field dim number the distance from the center of the Entity to the edge
 --- @field rotation number the rotation of the Entity in radians
 --- @field showHitboxes boolean whether the hitboxes of the Entity should be shown or not
