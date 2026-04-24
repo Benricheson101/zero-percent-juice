@@ -9,10 +9,10 @@ LoadingScreen.__index = LoadingScreen
 
 --images to display during "loading"
 local boxes = {
-    love.graphics.newImage('assets/loadingScreen/natural fruit blend.png'),
-    love.graphics.newImage('assets/loadingScreen/artifical flavour blend.png'),
+    love.graphics.newImage('assets/loadingScreen/natural_fruit_blend.png'),
+    love.graphics.newImage('assets/loadingScreen/artifical_flavour_blend.png'),
     love.graphics.newImage(
-        'assets/loadingScreen/experimental flavour synthesis.png'
+        'assets/loadingScreen/experimental_flavour_synthesis.png'
     ),
 }
 

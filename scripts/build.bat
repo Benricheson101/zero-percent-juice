@@ -1,0 +1,1 @@
+powershell -Executionpolicy Bypass -File %~dp0build_powershell.ps1

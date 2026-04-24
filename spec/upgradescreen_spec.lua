@@ -8,7 +8,7 @@ local GameScene = require('scenes.game')
 describe('UpgradeScreen', function()
     UpgradeScreen.scene_manager = SceneManager:new {
         upgrade = UpgradeScreen,
-        game = GameScene,
+        game = GameScene:new(),
     }
 
     before_each(function()
