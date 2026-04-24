@@ -12,27 +12,42 @@ set -e
 LOVE_VERSION=11.5
 RELEASE_NAME="Zero Percent Juice"
 PACKAGE_NAME="edu.sunypoly.cs371.zpj"
-OUTPUT_DIRECTORY="$(git rev-parse --show-toplevel)/build"
+OUTPUT_DIRECTORY=./build
 
-GAME_FILES="$(git ls-files -- . :\!:{.gitignore,\*.md,scripts/,linux_appimage_files/})"
+pushd "$(dirname "${BASH_SOURCE[0]}")/.." > /dev/null
+
+GAME_FILES="$(find . \
+  -type f \
+  -not \( \
+    -path './.git*' \
+    -o -name '*.md' \
+    -o -path './linux_appimage_files/*' \
+    -o -path './scripts/*' \
+    -o -path './build/*' \
+    -o -path './leaderboard/*' \
+  \) \
+  -prune)"
+
+OUTPUT_DIRECTORY="$(realpath "$OUTPUT_DIRECTORY")"
+TMPDIR="${TMPDIR:-/tmp}"
 
 mkdir -p "$OUTPUT_DIRECTORY"
 
 err() {
-  echo "$@" >&2
+  echo "${@:-$(</dev/stdin)}" >&2
 }
 
 __setup() {
   local PLATFORM="$1"
   local EXT="${2:-zip}"
 
-  local DL_PATH="${TMPDIR:-/tmp}/love-${LOVE_VERSION}-${PLATFORM}.${EXT}"
+  local DL_PATH="${TMPDIR}/love-${LOVE_VERSION}-${PLATFORM}.${EXT}"
 
   if [[ ! -f "$DL_PATH" ]] ; then
     curl -L -o "$DL_PATH" "https://github.com/love2d/love/releases/download/${LOVE_VERSION}/love-${LOVE_VERSION}-${PLATFORM}.${EXT}"
   fi
 
-  builddir="$(mktemp -d "${TMPDIR:-/tmp}/zpj_build_${PLATFORM}.XXXXXX")"
+  builddir="$(mktemp -d "${TMPDIR}/zpj_build_${PLATFORM}.XXXXXX")"
   err "  => building in $builddir"
 
   case "$EXT" in
@@ -43,7 +58,7 @@ __setup() {
     AppImage)
       chmod +x "$DL_PATH"
 
-      APPIMAGE_TOOL="${TMPDIR:-/tmp}/appimagetool-${PLATFORM}.AppImage"
+      APPIMAGE_TOOL="${TMPDIR}/appimagetool-${PLATFORM}.AppImage"
 
       if [[ ! -f "$APPIMAGE_TOOL" ]] ; then
         curl -L -o "$APPIMAGE_TOOL" "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-${PLATFORM}.AppImage"
@@ -56,6 +71,7 @@ __setup() {
 
 __cleanup() {
   [[ -v builddir ]] && rm -rf "$builddir"
+  popd > /dev/null
 }
 
 trap '__cleanup' EXIT
@@ -87,6 +103,11 @@ build_darwin() {
   (cd "$builddir" && zip -y -q -9 -r "$zip_out" "$(basename "$app")")
 
   err "  => macos build succeeded"
+  err <<EOF
+       note: this is an unsigned build. it will run on the machine that built it, but
+             others must manually approve it after a failed launch attempt:
+               => System Settings > Privacy & Security > Zero Percent Juice.app > Open Anyway
+EOF
 }
 
 build_windows() {
@@ -125,7 +146,7 @@ build_linux() {
   chmod +x "$exefile"
   rm "$appimage/bin/love"
 
-  cp $(git ls-files -- linux_appimage_files) "$appimage"
+  cp ./linux_appimage_files/* "$appimage"
 
   appimageout="$builddir/${RELEASE_NAME// /_}.AppImage"
   $APPIMAGE_TOOL "$appimage" "$appimageout"
@@ -173,11 +194,12 @@ for target in ${targets[@]} ; do
 
     clean)
       find \
-        "${TMPDIR:-/tmp}" \
+        "${TMPDIR}" \
         -maxdepth 1 \
         \( \
         -type f -iname 'love-*.*-*.zip' \
         -o -type d -iname 'zpj_build.*' \
+        -o -type f -iname 'appimagetool-*'
         \) \
         -print0 \
         | xargs -0 rm -r
