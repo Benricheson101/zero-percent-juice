@@ -9,7 +9,7 @@ local UpgradeScreen = require('scenes.upgradeScreen')
 local MainMenuScene = require('scenes.mainmenu')
 local LeaderboardSubmitScene = require('scenes.leaderboardSubmit')
 local GameOverScene = require('scenes.gameOver')
-local modLoader = require('modloader')
+local modLoader = require('modLoader')
 
 local START_SCENE = os.getenv('ZPJ_START_SCREEN') or 'loading'
 

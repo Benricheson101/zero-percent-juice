@@ -5,6 +5,8 @@ modloader.mods = {}
 
 --- Look for and load mods from the mods folder
 function modloader.loadMods()
+    -- mount the base dir so we can list the fils in fused mdoe 
+    love.filesystem.mount(love.filesystem.getSourceBaseDirectory(),"")
     --list all the files in the mods folder
     local files = love.filesystem.getDirectoryItems('mods')
     for i = 1, #files, 1 do
