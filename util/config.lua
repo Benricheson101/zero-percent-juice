@@ -1,4 +1,4 @@
-local json = require('JSON')
+local json = require('vendor.JSON')
 
 ---@class GameConfig
 ---@field leaderboard_api string

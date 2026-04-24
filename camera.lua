@@ -82,6 +82,10 @@ function Camera.getVelocityX()
     return Camera.velocityX
 end
 
+function Camera.getMaxVelocityX()
+    return Camera.maxVelocityX
+end
+
 -- Also would do upgrade stuff here same as above
 -- Would also do similar thing where player has the data and we just
 -- pass player and handle it that way so upgrade logic is simple

@@ -5,9 +5,9 @@ describe('Rock Reducer Upgrade', function()
     local game = gameScene:new()
     it('spawn frequency calculation', function()
         --test that the spawn frequency goes up
-        local initalSpawnFrequency = game.obsticaleSpawFrequencyCalculation(0)
-        local spawnFrequency1 = game.obsticaleSpawFrequencyCalculation(1)
-        local spawnFrequency2 = game.obsticaleSpawFrequencyCalculation(2)
+        local initalSpawnFrequency = game.obstacleSpawnFrequencyCalculation(0)
+        local spawnFrequency1 = game.obstacleSpawnFrequencyCalculation(1)
+        local spawnFrequency2 = game.obstacleSpawnFrequencyCalculation(2)
         assert.is_true(spawnFrequency1 > initalSpawnFrequency)
         assert.is_true(spawnFrequency2 > spawnFrequency1)
     end)
@@ -16,17 +16,17 @@ describe('Rock Reducer Upgrade', function()
         assert.is_not_nil(rockReducerUpgrade)
     end)
     it('spawn frequency function applied', function()
-        local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(2)
+        local expectedSpawnFrequency = game.obstacleSpawnFrequencyCalculation(2)
         assert.is_true(
             expectedSpawnFrequency
                 == game.ObstacleSpawner.spawnUpgradeEffectFunc(2)
         )
-        local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(3)
+        local expectedSpawnFrequency = game.obstacleSpawnFrequencyCalculation(3)
         assert.is_true(
             expectedSpawnFrequency
                 == game.ObstacleSpawner.spawnUpgradeEffectFunc(3)
         )
-        local expectedSpawnFrequency = game.obsticaleSpawFrequencyCalculation(4)
+        local expectedSpawnFrequency = game.obstacleSpawnFrequencyCalculation(4)
         assert.is_true(
             expectedSpawnFrequency
                 == game.ObstacleSpawner.spawnUpgradeEffectFunc(4)
@@ -37,16 +37,16 @@ describe('Rock Reducer Upgrade', function()
         assert.is_not_nil(rockReducerUpgrade)
         assert.is_true(game.ObstacleSpawner.spawnUpgrade == rockReducerUpgrade)
     end)
-    --the funcility of the varible spawn disrance should be tested with the entity spawner class tests
+    --the functionality of the varible spawn disrance should be tested with the entity spawner class tests
 end)
 
 describe('Rock Buster Upgrade', function()
     local game = gameScene:new()
     it('damage reduction calculation', function()
         --test that the spawn frequency goes up
-        local initaldamage = game.calculateObsticalSpeedReduction(0)
-        local damage1 = game.calculateObsticalSpeedReduction(1)
-        local damage2 = game.calculateObsticalSpeedReduction(2)
+        local initaldamage = game.calculateObstacleSpeedReduction(0)
+        local damage1 = game.calculateObstacleSpeedReduction(1)
+        local damage2 = game.calculateObstacleSpeedReduction(2)
         --number are negative
         assert.is_true(damage1 > initaldamage)
         assert.is_true(damage2 > damage1)
@@ -56,7 +56,7 @@ describe('Rock Buster Upgrade', function()
         assert.is_not_nil(rockBusterUpgrade)
     end)
 
-    --prbly should have a behavior test to check that when the player hits an obstical they take damege, not currently sure how to implment this
+    --probably should have a behavior test to check that when the player hits an obstacle they take damege, not currently sure how to implement this
     -- this would also check that the upgrade is being used
 end)
 
@@ -93,7 +93,7 @@ describe('Coin Spawn Frequency Upgrade', function()
         assert.is_not_nil(coinSpawnUpgrade)
         assert.is_true(game.CoinSpawner.spawnUpgrade == coinSpawnUpgrade)
     end)
-    --the funcility of the variable spawn distance should be tested with the entity spawner class tests
+    --the functionality of the variable spawn distance should be tested with the entity spawner class tests
 end)
 
 describe('Coin Value Upgrade', function()
@@ -110,6 +110,58 @@ describe('Coin Value Upgrade', function()
         local coinValueUpgrade = upgrades.getUpgrade('Profit Boost')
         assert.is_not_nil(coinValueUpgrade)
     end)
-    --prbly should have a behavior test to check that when the player collects a coin they get points, not currently sure how to implment this
+    --probably should have a behavior test to check that when the player collects a coin they get points, not currently sure how to implement this
     -- this would also check that the upgrade is being used
+end)
+
+describe('Booster Upgrade', function()
+    local game = gameScene:new()
+    it('spawn frequency calculation', function()
+        --test that the spawn frequency goes up
+        local initalSpawnFrequency = game.powerUpSpawnerFrequencyCalculation(0)
+        local spawnFrequency1 = game.powerUpSpawnerFrequencyCalculation(1)
+        local spawnFrequency2 = game.powerUpSpawnerFrequencyCalculation(2)
+        assert.is_true(initalSpawnFrequency == 2147483648)
+        assert.is_true(spawnFrequency1 < initalSpawnFrequency)
+        assert.is_true(spawnFrequency2 < spawnFrequency1)
+    end)
+    it('upgrade exists', function()
+        local boosterUpgrade = upgrades.getUpgrade('Boosters')
+        assert.is_not_nil(boosterUpgrade)
+    end)
+    it('spawn frequency function applied', function()
+        local expectedSpawnFrequency = game.powerUpSpawnerFrequencyCalculation(2)
+        assert.is_true(
+            expectedSpawnFrequency == game.PowerUpSpawner.spawnUpgradeEffectFunc(2)
+        )
+        local expectedSpawnFrequency = game.powerUpSpawnerFrequencyCalculation(3)
+        assert.is_true(
+            expectedSpawnFrequency == game.PowerUpSpawner.spawnUpgradeEffectFunc(3)
+        )
+        local expectedSpawnFrequency = game.powerUpSpawnerFrequencyCalculation(4)
+        assert.is_true(
+            expectedSpawnFrequency == game.PowerUpSpawner.spawnUpgradeEffectFunc(4)
+        )
+    end)
+    it('spawner gets upgrade', function()
+        local boosterUpgrade = upgrades.getUpgrade('Boosters')
+        assert.is_not_nil(boosterUpgrade)
+        assert.is_true(game.PowerUpSpawner.spawnUpgrade == boosterUpgrade)
+    end)
+end)
+
+describe('Booster Power Upgrade', function()
+    local game = gameScene:new()
+    it('boost amount calculation', function()
+        --test that the boost amount goes up
+        local initalBoost = game.calculatePowerupBoost(0)
+        local boost1 = game.calculatePowerupBoost(1)
+        local boost2 = game.calculatePowerupBoost(2)
+        assert.is_true(boost1 > initalBoost)
+        assert.is_true(boost2 > boost1)
+    end)
+    it('upgrade exists', function()
+        local boosterPowerUpgrade = upgrades.getUpgrade('Boost Power')
+        assert.is_not_nil(boosterPowerUpgrade)
+    end)
 end)

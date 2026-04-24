@@ -79,7 +79,7 @@ local upgrades = {
     end),
     Upgrade:new(
         'Rock Reducer',
-        function(x, y, scale) --Obstical spacing upgrade
+        function(x, y, scale) --Obstacle spacing upgrade
             local sprite = assets.loadImage('images/Obstacle.png', 'nearest')
             love.graphics.setColor(colors.hex(0xFFFFFF))
             love.graphics.draw(
@@ -129,7 +129,7 @@ local upgrades = {
             return 8 * (level + 1) * level + 25
         end
     ),
-    Upgrade:new('Rock Buster', function(x, y, scale) --Obstical damage upgrade
+    Upgrade:new('Rock Buster', function(x, y, scale) --Obstacle damage upgrade
         local sprite = assets.loadImage('images/Obstacle.png', 'nearest')
         love.graphics.setColor(colors.hex(0xFFFFFF))
         love.graphics.draw(
@@ -161,7 +161,7 @@ local upgrades = {
             y + 55 * scale
         )
 
-        --the guy smakshing the rock
+        --the guy smashing the rock
         love.graphics.setColor(colors.hex(0x545454))
         love.graphics.circle('fill', x + 75 * scale, y + 45 * scale, 7 * scale)
         love.graphics.setLineWidth(3 * scale)
@@ -269,6 +269,34 @@ local upgrades = {
         love.graphics.setLineWidth(3 * scale)
     end, function(level)
         return 9 * (level + 1) * level + 45
+    end),
+    Upgrade:new("Boosters", function (x ,y, scale)
+        love.graphics.setColor(colors.hex(0xFFFFFF))
+        local sprite = assets.loadImage('images/Powerup.png', 'nearest')
+        love.graphics.draw(
+            sprite,
+            x + 75 * scale,
+            y + 20 * scale,
+            0,
+            3 * scale,
+            3 * scale
+        )
+    end, function(level)
+        return 150+(40 * level * level)
+    end),
+    Upgrade:new("Boost Power", function (x ,y, scale)
+        local sprite = assets.loadImage('assets/upgradeScreen/SuperPowerup.png', 'nearest')
+        love.graphics.setColor(colors.hex(0xFFFFFF))
+        love.graphics.draw(
+            sprite,
+            x + 75 * scale,
+            y + 20 * scale,
+            0,
+            3 * scale,
+            3 * scale
+        )
+    end, function(level)
+        return 10 * (level + 1) * level + 50
     end),
 }
 

@@ -3,6 +3,7 @@ local UIButton = require('ui.button')
 local Ui = require('util.ui')
 local constants = require('util.constants')
 local fonts = require('util.fonts')
+local Assets = require('util.assets')
 
 ---@class MainMenuScene : Scene
 local MainMenuScene = {}
@@ -17,6 +18,8 @@ local mainMenu = {
         height = 200 / 3,
         onClick = function(self)
             print('clicked Start Game')
+            local sound = Assets.loadSound(UIButton.soundPath)
+            sound:play()
             self.scene.scene_manager:transition('game')
         end,
     },
@@ -26,6 +29,8 @@ local mainMenu = {
         height = 200 / 3,
         onClick = function()
             print('clicked Leaderboard')
+            local sound = Assets.loadSound(UIButton.soundPath)
+            sound:play()
         end,
     },
     UIButton:new {
@@ -34,6 +39,8 @@ local mainMenu = {
         height = 200 / 3,
         onClick = function()
             print('clicked Exit')
+            local sound = Assets.loadSound(UIButton.soundPath)
+            sound:play()
             love.event.quit(0)
         end,
     },
