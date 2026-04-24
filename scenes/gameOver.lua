@@ -3,6 +3,7 @@ local UIButton = require('ui.button')
 local Ui = require('util.ui')
 local Constants = require('util.constants')
 local Fonts = require('util.fonts')
+local Assets = require('util.assets')
 
 ---@class GameOverScene : Scene
 local GameOverScene = {}
@@ -17,6 +18,8 @@ local gameOverMenu = {
         height = 200 / 3,
         onClick = function(self)
             print('clicked Retry')
+            local sound = Assets.loadSound(UIButton.soundPath)
+            sound:play()
             self.scene.scene_manager:transition('game')
         end,
     },
@@ -26,6 +29,8 @@ local gameOverMenu = {
         height = 200 / 3,
         onClick = function(self)
             print('clicked Leaderboard')
+            local sound = Assets.loadSound(UIButton.soundPath)
+            sound:play()
             self.scene.scene_manager:transition('upgrade')
         end,
     },
@@ -35,6 +40,8 @@ local gameOverMenu = {
         height = 200 / 3,
         onClick = function(self)
             print('clicked Main Menu')
+            local sound = Assets.loadSound(UIButton.soundPath)
+            sound:play()
             self.scene.scene_manager:transition('mainmenu')
         end,
     },

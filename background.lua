@@ -8,6 +8,7 @@ function Background.load() end
 function Background.draw(Camera)
     --only load the image once, during the render pass so testing does not break
     Background.image = assets.loadImage('images/Background.png', 'linear')
+    Background.sound = assets.loadSound('assets/sounds/windSound.mp3')
 
     local scaledImageWidth = Background.image:getWidth() * Ui.scale
     local background_cam_offset = Camera.xPos % scaledImageWidth
@@ -27,6 +28,13 @@ function Background.draw(Camera)
             Ui.scale
         )
     end
+
+    if not Background.sound:isPlaying() then
+        Background.sound:play()
+    end
+
+    local volume = Camera.getVelocityX() / Camera.getMaxVelocityX()
+    Background.sound:setVolume(volume)
 
     -- love.graphics.draw(Background.image, Background.offsetX, Background.offsetY, 0, Background.scale, Background.scale)
 

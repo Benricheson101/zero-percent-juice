@@ -1,6 +1,7 @@
 local assets = {
     fonts = {},
     images = {},
+    sounds = {},
 }
 
 function assets.loadFont(path, size)
@@ -34,6 +35,17 @@ function assets.loadImage(path, filter)
     image = love.graphics.newImage(path)
     assets.images[path] = image
     return image
+end
+
+function assets.loadSound(path)
+    local sound = assets.sounds[path]
+    if sound ~= nil then
+        return sound
+    end
+    
+    sound = love.audio.newSource(path, "static")
+    assets.sounds[path] = sound
+    return sound
 end
 
 return assets

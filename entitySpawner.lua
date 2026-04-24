@@ -1,5 +1,6 @@
 local Entity = require('entity')
 local upgrades = require('upgrades')
+local Assets = require('util.assets')
 
 --- @class EntitySpawner
 --- @field spawnUpgrade Upgrade the upgrade that affects the spawn spacing of this entity type
@@ -7,6 +8,9 @@ local upgrades = require('upgrades')
 --- @field baseVelocityX number the base x velocity of the entities that are spawned
 --- @field velocityX number the x velocity of the entities that are spawned
 --- @field image string the file path of the image that the entities that are spawned will use
+--- @field sound love.Source the sound that will play when a collision is detected
+--- @field soundPath string the file path of the sound that will be used on collision
+--- @field playSound boolean whether the sound will play or not
 --- @field showHitboxes boolean whether the hitboxes of the entities that are spawned should be shown or not
 --- @field spawnUpgradeEffectFunc function the function that determines how the upgrade level effects spawn
 --- @field entities Entity[] the entities that have been spawned and are still on screen
@@ -27,6 +31,7 @@ local designHeight = 720
 --- @field spawnDistance number how far the player has to travel before a new entity is spawned
 --- @field baseVelocityX number the base x velocity of the entities that are spawned
 --- @field image string the file path of the image that the entities that are spawned will use
+--- @field soundPath string the file path of the sound that will be used on collision
 --- @field spawnUpgradeEffectFunc function<number, number> the function that determines how the upgrade level effects spawn
 
 --- Creates a new entity spawner
@@ -45,6 +50,9 @@ function EntitySpawner:new(opts)
     o.baseVelocityX = opts.baseVelocityX
     o.velocityX = o.baseVelocityX
     o.image = opts.image
+    o.sound = nil
+    o.soundPath = opts.soundPath
+    o.playSound = false
     o.showHitboxes = false
     o.spawnUpgradeEffectFunc = opts.spawnUpgradeEffectFunc --the function that determines how the upgrade level effects spawn spacing
 
@@ -82,6 +90,13 @@ end
 function EntitySpawner:draw()
     for i = #self.entities, 1, -1 do
         self.entities[i]:draw()
+    end
+
+    if self.playSound == true then
+        self.sound = Assets.loadSound(self.soundPath)
+        self.sound:setVolume(0.8)
+        self.sound:play()
+        self.playSound = false
     end
 end
 
@@ -137,6 +152,7 @@ function EntitySpawner:checkCollision(posX, posY, dim)
         if collided then
             collisionDetected = true
             table.remove(self.entities, i)
+            self.playSound = true
         end
     end
 

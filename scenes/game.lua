@@ -33,6 +33,7 @@ function GameScene:new()
         decelerationY = 50,
         maxVelocityX = 600,
         maxVelocityY = 300,
+        soundPath = 'assets/sounds/bounceSound.mp3'
     }
 
     Camera.load(Player)
@@ -44,6 +45,7 @@ function GameScene:new()
         spawnDistance = designWidth,
         baseVelocityX = 50,
         image = 'images/Obstacle.png',
+        soundPath = 'assets/sounds/obstacleSound.mp3',
         spawnUpgradeEffectFunc = GameScene.obstacleSpawnFrequencyCalculation,
     }
 
@@ -54,6 +56,7 @@ function GameScene:new()
         spawnDistance = 0,
         baseVelocityX = 50,
         image = 'images/Coin.png',
+        soundPath = 'assets/sounds/coinSound.mp3',
         spawnUpgradeEffectFunc = GameScene.coinSpawnFrequencyCalculation,
     }
 
@@ -65,6 +68,7 @@ function GameScene:new()
         spawnDistance = designWidth / 2,
         baseVelocityX = 50,
         image = 'images/Powerup.png',
+        soundPath = 'assets/sounds/powerUpSound.mp3',
         spawnUpgradeEffectFunc = GameScene.powerUpSpawnerFrequencyCalculation,
     }
 
