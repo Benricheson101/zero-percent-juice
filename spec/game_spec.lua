@@ -1,6 +1,7 @@
 local GameScene = require('scenes.game')
 local Ui = require('util.ui')
 local Camera = require('camera')
+local Player = require('player')
 
 describe('GameScene', function()
     describe('new', function()
@@ -22,6 +23,7 @@ describe('GameScene', function()
                 game:checkCollision(300, 200, 10)
 
                 assert.are.equal(450.0, Camera.velocityX)
+                assert.are.equal(-200, Player.score)
             end
         )
     end)

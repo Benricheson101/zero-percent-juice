@@ -76,6 +76,7 @@ function GameScene:new()
 end
 
 function GameScene:update(dt)
+    Player.changeScore(Camera.getVelocityX() * dt)
     Player.update(dt)
     Camera.update(dt)
     self.ObstacleSpawner:update(dt)
@@ -97,6 +98,7 @@ function GameScene:draw()
     self.CoinSpawner:draw()
     self:gameOverTimerText()
     self.PowerUpSpawner:draw()
+    self:displayScore()
 end
 
 function GameScene:keypressed(key)
@@ -125,6 +127,7 @@ function GameScene:enter()
     Camera.velocityX = speed -- apply the starting speed
     Camera.maxVelocityX = speed
     Camera.xPos = 0 -- reset posotion to start
+    Player.score = 0
     self:reset()
 end
 
@@ -144,6 +147,9 @@ function GameScene:checkCollision(posX, posY, dim)
             obstacleSpeedReductionUpgrade:getLevel()
         )
         Camera.changeVelocityX(reduction)
+
+        Player.changeScore(-200)
+
     end
 
     --coin collision
@@ -151,6 +157,7 @@ function GameScene:checkCollision(posX, posY, dim)
         Player.money = Player.money
             + GameScene.calculateCoinValue(coinValueUpgrade:getLevel())
         print('Money: ' .. Player.money)
+        Player.changeScore(100)
     end
 
     assert(powerUpUpgrade ~= nil, 'Boost Power upgrade not found')
@@ -159,6 +166,7 @@ function GameScene:checkCollision(posX, posY, dim)
             powerUpUpgrade:getLevel()
         )
         Camera.changeVelocityX(boostAmount)
+        Player.changeScore(500)
     end
 end
 
@@ -211,6 +219,8 @@ function GameScene:checkGameOver(dt)
     then
         self.currentGameOverTimer = self.currentGameOverTimer - dt
         if self.currentGameOverTimer < 0 then
+            self:reset()
+            Player:roundGameOver()
             self.scene_manager:transition('leaderboardsubmit')
         end
     else
@@ -241,6 +251,30 @@ function GameScene:gameOverTimerText()
         love.graphics.setColor(1, 1, 1)
         love.graphics.setDefaultFilter('linear', 'linear')
     end
+end
+
+function GameScene:displayScore()
+
+    local posX, posY = Ui:scaleCoord(math.floor(Ui:getWidth() * 0.1), math.floor(Ui:getHeight() * 0.1))
+    local scale = Ui:getScale()
+
+    love.graphics.setColor(1, 0, 0)
+    love.graphics.setDefaultFilter('nearest', 'nearest')
+    love.graphics.setFont(Fonts.impact75)
+
+    love.graphics.printf(
+            'Score: ' .. math.ceil(Player.score),
+            posX,
+            posY,
+            Ui:getWidth(),
+            'left',
+            0,
+            scale,
+            scale
+    )
+
+    love.graphics.setColor(1, 1, 1)
+
 end
 
 function GameScene:reset()
