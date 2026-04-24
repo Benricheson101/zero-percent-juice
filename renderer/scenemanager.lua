@@ -10,6 +10,7 @@
 ---@field keyreleased fun(self: SceneManager, key: string, scancode: string)
 ---@field mousepressed fun(self: SceneManager, x: number, y: number, button: number, istouch: boolean, presses: number)
 ---@field mousereleased fun(self: SceneManager, x: number, y: number, button: number, istouch: boolean, presses: number)
+---@field wheelmoved fun(self: SceneManager, x: number, y: number)
 ---@field resize fun(self: SceneManager, w: number, h: number)
 ---@field textinput fun(self: SceneManager, str: string)
 local SceneManager = {}
@@ -64,6 +65,7 @@ local love_callbacks = {
     'mousereleased',
     'resize',
     'textinput',
+    'wheelmoved'
 }
 
 for _, name in ipairs(love_callbacks) do

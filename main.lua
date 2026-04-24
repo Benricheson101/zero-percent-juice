@@ -86,3 +86,7 @@ end
 function love.textinput(...)
     scene_manager:textinput(...)
 end
+
+function love.wheelmoved(...)
+    scene_manager:wheelmoved(...)
+end
