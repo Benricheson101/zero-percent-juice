@@ -183,14 +183,14 @@ end
 --- @param level number the level of the rock buster upgrade
 --- @return number the distance the player has to travel before the next obstacle spawns
 function GameScene.obstacleSpawnFrequencyCalculation(level)
-    return 720 + 15 * level + math.random(-50, 50)
+    return 720 + 15 * level 
 end
 
 --- Calculate how often coins should spawn based on the level of <relavant upgrade name here>
 --- @param level number the level of the <relevant upgrade name here> upgrade
 --- @return number the distance the player has to travel before the next coin spawns
 function GameScene.coinSpawnFrequencyCalculation(level)
-    return 720 / (1 + 0.1 * level) + math.random(-50, 50)
+    return 720 / (1 + 0.1 * level) 
 end
 
 --- TEMPORARY FUNCTION, CHANGE ONCE POWER UP UPGRADES ARE IMPLEMENTED
@@ -200,7 +200,7 @@ function GameScene.powerUpSpawnerFrequencyCalculation(level)
     if level == 0 then
         return 2147483648 -- basically never
     end
-    return 1000 / (0.1 * level) + math.random(-50, 50) + Player.score / 10 -- decreazse how often they apppear the farteher the player gets to try and prevent infinte runs
+    return 1000 / (0.1 * level) + Player.score / 10 -- decreazse how often they apppear the farteher the player gets to try and prevent infinte runs
 end
 
 --- Calculate how much speed to remove from the player when they hit an obstacle
