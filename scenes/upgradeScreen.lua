@@ -135,6 +135,8 @@ local function drawTank(pressure, selected)
     )
 end
 
+local scroll = 0 
+
 ---Caclues the on screen position of the upgrade Ui elements
 ---@param index number the index of the upgrade
 ---@return number upgradeX the onscreen x position of the upgrade
@@ -148,7 +150,8 @@ function UpgradeScreen.calculateUpgradePosition(index)
     else
         upgradeX, upgradeY = Ui:scaleCoord(1030, 25 + 150 * vslot)
     end
-    return upgradeX, upgradeY, vslot
+    local scaledScroll = Ui:scaleDimension(scroll)
+    return upgradeX, upgradeY-scaledScroll, vslot
 end
 
 --- Draws a specific upgrade and the upgrade clicker
@@ -210,9 +213,9 @@ local function drawUpgrade(index, hilighted)
     --draw sprite here
     upgrades[index]:draw(upgradeX, upgradeY, Ui:getScale())
     --text for the boxes
-    local titleX, titleY = Ui:scaleCoord(colOff, 25 + 150 * vslot)
-    local levelX, levelY = Ui:scaleCoord(colOff + 3, 25 + 150 * vslot + 95)
-    local costX, costY = Ui:scaleCoord(colOff + 103, 25 + 150 * vslot + 95)
+    local titleX, titleY = Ui:scaleCoord(colOff, 25 + 150 * vslot - scroll) 
+    local levelX, levelY = Ui:scaleCoord(colOff + 3, 25 + 150 * vslot + 95 - scroll)
+    local costX, costY = Ui:scaleCoord(colOff + 103, 25 + 150 * vslot + 95 - scroll)
     love.graphics.setColor(0, 0, 0)
     love.graphics.printf(
         upgrades[index].name,
@@ -401,6 +404,17 @@ function UpgradeScreen:mousepressed(x, y, button)
             --eventually: start the animation for starting the round
         end
     end
+end
+
+function UpgradeScreen:wheelmoved(x, y)
+    scroll = scroll - y * 30
+    local minScroll = 0
+    local maxScroll = Ui:scaleDimension(150 * math.ceil(#upgrades / 2) - 300)
+    scroll = math.max(minScroll, math.min(maxScroll, scroll))
+end
+
+function UpgradeScreen:enter()
+    scroll = 0
 end
 
 return UpgradeScreen
