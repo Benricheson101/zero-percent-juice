@@ -28,7 +28,7 @@ function GameScene:new()
         velocityX = 0,
         velocityY = 0,
         accelerationX = 300,
-        accelerationY = 300,
+        accelerationY = 350,
         decelerationX = 50,
         decelerationY = 50,
         maxVelocityX = 600,
