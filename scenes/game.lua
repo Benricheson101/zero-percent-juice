@@ -200,7 +200,7 @@ function GameScene.powerUpSpawnerFrequencyCalculation(level)
     if level == 0 then
         return 2147483648 -- basically never
     end
-    return 1000 / (0.1 * level) + math.random(-50, 50)
+    return 1000 / (0.1 * level) + math.random(-50, 50) + Player.score / 10 -- decreazse how often they apppear the farteher the player gets to try and prevent infinte runs
 end
 
 --- Calculate how much speed to remove from the player when they hit an obstacle
