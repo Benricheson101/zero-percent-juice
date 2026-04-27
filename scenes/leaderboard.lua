@@ -8,7 +8,6 @@ local Ui = require('util.ui')
 local config = require('util.config')
 local constants = require('util.constants')
 local fonts = require('util.fonts')
-local utf8 = require('utf8')
 
 ---@class LeaderboardEntry
 ---@field name string
