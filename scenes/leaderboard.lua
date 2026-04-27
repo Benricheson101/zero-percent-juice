@@ -1,12 +1,14 @@
-local Scene = require('renderer.scene')
 local http = require('socket.http')
-local ltn12 = require('ltn12')
 local json = require('JSON')
-local config = require('util.config')
-local fonts = require('util.fonts')
-local Ui = require('util.ui')
+local ltn12 = require('ltn12')
+local Scene = require('renderer.scene')
+local UIButton = require('ui.button')
 local UILeaderboardEntry = require('ui.leaderboardEntry')
+local Ui = require('util.ui')
+local config = require('util.config')
 local constants = require('util.constants')
+local fonts = require('util.fonts')
+local utf8 = require('utf8')
 
 ---@class LeaderboardEntry
 ---@field name string
@@ -14,6 +16,7 @@ local constants = require('util.constants')
 
 ---@class LeaderboardScene : Scene
 ---@field entries LeaderboardEntry[]
+---@field backButton UIButton
 local LeaderboardScene = {}
 setmetatable(LeaderboardScene, { __index = Scene })
 LeaderboardScene.__index = LeaderboardScene
@@ -21,8 +24,6 @@ LeaderboardScene.__index = LeaderboardScene
 ---@return LeaderboardEntry[]
 local function fetchLeaderboard()
     local responseBodyChunks = {}
-
-    print('fetchLeaderboard')
 
     local b = http.request {
         url = config.leaderboard_api .. '/leaderboard',
@@ -53,6 +54,16 @@ end
 
 function LeaderboardScene:enter()
     self.entries = fetchLeaderboard()
+    self.backButton = UIButton:new {
+        text = '\u{f00d}',
+        width = fonts.faSolid30:getWidth('\u{f00d}') + 40,
+        height = fonts.faSolid30:getBaseline() + 40,
+        font = 'faSolid30',
+        onClick = function(btn)
+            btn.scene.scene_manager:transition('mainmenu')
+        end,
+    }
+    self.backButton.scene = self.scene_manager.active
 end
 
 function LeaderboardScene:draw()
@@ -87,6 +98,40 @@ function LeaderboardScene:draw()
             break
         end
     end
+
+    local buttonX = Ui:getWidth()
+        - Ui:scaleDimension(25)
+        - Ui:scaleDimension(self.backButton.width)
+    local buttonY = Ui:scaleDimension(25)
+    local btn = self.backButton
+
+    btn.x = buttonX
+    btn.y = buttonY
+
+    self.backButton.worldBounds = {
+        { btn.x, btn.y },
+        {
+            btn.x + Ui:scaleDimension(btn.width),
+            btn.y + Ui:scaleDimension(btn.height),
+        },
+    }
+
+    local mX, mY = love.mouse.getPosition()
+    if btn:isWithin(mX, mY) then
+        btn:hover(mX, mY)
+    end
+
+    love.graphics.draw(self.backButton:draw(), buttonX, buttonY)
+end
+
+function LeaderboardScene:mousepressed(x, y)
+    if self.backButton:isWithin(x, y) then
+        self.backButton:onclick(x, y)
+    end
+end
+
+function LeaderboardScene:update(dt)
+    self.backButton:update(dt)
 end
 
 return LeaderboardScene
