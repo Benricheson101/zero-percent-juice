@@ -1,5 +1,5 @@
 local http = require('socket.http')
-local json = require('JSON')
+local json = require('vendor.JSON')
 local ltn12 = require('ltn12')
 local Scene = require('renderer.scene')
 local UIButton = require('ui.button')
