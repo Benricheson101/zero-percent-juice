@@ -264,12 +264,12 @@ end
 
 function GameScene:displayScore()
 
-    local posX, posY = Ui:scaleCoord(math.floor(Ui:getWidth() * 0.1), math.floor(Ui:getHeight() * 0.1))
+    local posX, posY = Ui:scaleCoord(0,0)
     local scale = Ui:getScale()
 
     love.graphics.setColor(1, 0, 0)
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    love.graphics.setFont(Fonts.impact75)
+    love.graphics.setFont(Fonts.impact50)
 
     love.graphics.printf(
             'Score: ' .. math.ceil(Player.score),
