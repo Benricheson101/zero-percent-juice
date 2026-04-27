@@ -157,7 +157,7 @@ function GameScene:checkCollision(posX, posY, dim)
         )
         Camera.changeVelocityX(reduction)
 
-        Player.changeScore(-200)
+        Player.changeScore(-800)
 
     end
 
@@ -166,7 +166,7 @@ function GameScene:checkCollision(posX, posY, dim)
         Player.money = Player.money
             + GameScene.calculateCoinValue(coinValueUpgrade:getLevel())
         print('Money: ' .. Player.money)
-        Player.changeScore(100)
+        Player.changeScore(250)
     end
 
     assert(powerUpUpgrade ~= nil, 'Boost Power upgrade not found')
@@ -175,7 +175,7 @@ function GameScene:checkCollision(posX, posY, dim)
             powerUpUpgrade:getLevel()
         )
         Camera.changeVelocityX(boostAmount)
-        Player.changeScore(500)
+        Player.changeScore(1000)
     end
 end
 
