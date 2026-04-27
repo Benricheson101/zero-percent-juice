@@ -37,7 +37,10 @@ local function fetchLeaderboard()
     ---@type LeaderboardEntry[]
     local body = { { name = 'No highscores yet!', score = 0 } }
     if b ~= nil then
-        body = json:decode(respBody)
+        local parsedBody = json:decode(respBody)
+        if parsedBody ~= nil and type(parsedBody) == "table" then
+            body = parsedBody
+        end
     end
 
     return body
@@ -129,8 +132,8 @@ function LeaderboardScene:mousepressed(x, y)
     end
 end
 
-function LeaderboardScene:update(dt)
-    self.backButton:update(dt)
+function LeaderboardScene:update()
+    self.backButton:update()
 end
 
 return LeaderboardScene
