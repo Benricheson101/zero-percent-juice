@@ -116,7 +116,7 @@ end
 --- @param level number the level of the start speed upgrade
 --- @return number the starting speed of the player
 function GameScene.calculateStartingSpeed(level)
-    return 100 + 125 * level
+    return 225 + 125 * level
 end
 
 function GameScene:enter()
@@ -129,6 +129,15 @@ function GameScene:enter()
     Camera.xPos = 0 -- reset posotion to start
     Player.score = 0
     self:reset()
+    --spawn some coins at the start of the level so players just staring out can actually get some coins for upgreads
+    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
+    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
+    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
+    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
+    self.CoinSpawner.entities[1].posX = 1280 * 0.33
+    self.CoinSpawner.entities[2].posX = 1280 * 0.66
+    self.CoinSpawner.entities[3].posX = 1280 * 0.99
+    self.CoinSpawner.entities[4].posX = 1280 * 1.33
 end
 
 function GameScene:checkCollision(posX, posY, dim)
