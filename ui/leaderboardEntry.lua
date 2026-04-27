@@ -34,23 +34,34 @@ function UILeaderboardEntry:draw()
 
     local maxWidth = font:getWidth('M') * 15
 
-    love.graphics.printf(
-        str.trunc(font, self.entry.name, maxWidth),
-        font,
-        -math.floor(maxWidth / 2),
-        math.floor(height / 2) - math.floor(font:getHeight() / 2),
-        width,
-        'center'
-    )
+    if self.entry.placeholder then
+        love.graphics.printf(
+            str.trunc(font, self.entry.name, maxWidth),
+            font,
+            0,
+            math.floor(height / 2) - math.floor(font:getHeight() / 2),
+            width,
+            'center'
+        )
+    else
+        love.graphics.printf(
+            str.trunc(font, self.entry.name, maxWidth),
+            font,
+            -math.floor(maxWidth / 2),
+            math.floor(height / 2) - math.floor(font:getHeight() / 2),
+            width,
+            'center'
+        )
 
-    love.graphics.printf(
-        self.entry.score,
-        font,
-        math.floor(maxWidth / 2),
-        math.floor(height / 2) - math.floor(font:getHeight() / 2),
-        width,
-        'center'
-    )
+        love.graphics.printf(
+            self.entry.score,
+            font,
+            math.floor(maxWidth / 2),
+            math.floor(height / 2) - math.floor(font:getHeight() / 2),
+            width,
+            'center'
+        )
+    end
 
     love.graphics.setCanvas()
 

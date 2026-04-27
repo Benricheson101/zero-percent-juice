@@ -12,6 +12,7 @@ local fonts = require('util.fonts')
 ---@class LeaderboardEntry
 ---@field name string
 ---@field score number
+---@field placeholder? true
 
 ---@class LeaderboardScene : Scene
 ---@field entries LeaderboardEntry[]
@@ -35,7 +36,7 @@ local function fetchLeaderboard()
 
     local respBody = table.concat(responseBodyChunks)
     ---@type LeaderboardEntry[]
-    local body = { { name = 'No highscores yet!', score = 0 } }
+    local body = { { name = 'No highscores yet!', score = 0, placeholder = true } }
     if b ~= nil then
         local parsedBody = json:decode(respBody)
         if parsedBody ~= nil and type(parsedBody) == "table" then
