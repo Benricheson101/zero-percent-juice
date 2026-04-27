@@ -214,7 +214,7 @@ end
 --- @param level number the level of the profit boost upgrade
 --- @return number the value of each coin
 function GameScene.calculateCoinValue(level)
-    return 10 + math.floor(math.pow(level, 1.15))
+    return 10 + math.floor(math.pow(level, 1.35))
 end
 
 function GameScene.calculatePowerupBoost(level)
