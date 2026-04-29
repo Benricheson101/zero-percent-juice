@@ -7,6 +7,7 @@ local fonts = require('util.fonts')
 ---@field text string
 ---@field state 'hover'|'normal
 ---@field clickCallback fun(self: UIButton)
+---@field font string
 local UIButton = {}
 setmetatable(UIButton, { __index = BaseUIElement })
 UIButton.__index = UIButton
@@ -14,6 +15,7 @@ UIButton.__index = UIButton
 ---@class UIButtonOptions : BaseUIElementOptions
 ---@field text string
 ---@field onClick fun(self: UIButton)
+---@field font? string
 
 ---@param opts UIButtonOptions
 function UIButton:new(opts)
@@ -33,6 +35,7 @@ function UIButton:new(opts)
     }
 
     o.clickCallback = opts.onClick
+    o.font = opts.font or 'tahoma30'
 
     return o
 end
@@ -58,7 +61,7 @@ function UIButton:draw()
             height - strokeSize * 2
         )
 
-        local font = fonts.tahoma30
+        local font = fonts[self.font] or fonts.tahoma30
         love.graphics.setFont(font)
         love.graphics.setColor(constants.colors.menu.button_fill)
 

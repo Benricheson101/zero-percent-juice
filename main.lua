@@ -1,3 +1,4 @@
+package.path = './vendor/share/lua/5.1/?.lua;' .. package.path
 local Ui = require('util.ui')
 local fonts = require('util.fonts')
 local SceneManager = require('renderer.scenemanager')
@@ -9,6 +10,7 @@ local UpgradeScreen = require('scenes.upgradeScreen')
 local MainMenuScene = require('scenes.mainmenu')
 local LeaderboardSubmitScene = require('scenes.leaderboardSubmit')
 local GameOverScene = require('scenes.gameOver')
+local LeaderboardScene = require('scenes.leaderboard')
 
 local START_SCENE = os.getenv('ZPJ_START_SCREEN') or 'loading'
 
@@ -25,6 +27,7 @@ function love.load()
         upgrade = UpgradeScreen:new(),
         mainmenu = MainMenuScene:new(),
         leaderboardsubmit = LeaderboardSubmitScene:new(),
+        leaderboard = LeaderboardScene:new(),
         gameover = GameOverScene:new(),
     }
 
