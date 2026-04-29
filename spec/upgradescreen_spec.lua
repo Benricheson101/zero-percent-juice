@@ -72,6 +72,7 @@ describe('UpgradeScreen', function()
 
         local x, y = Ui:scaleCoord(640, 500)
         UpgradeScreen:mousepressed(x, y, 1)
+        UpgradeScreen:update(4)
         assert.is.equal(
             UpgradeScreen.scene_manager.active,
             UpgradeScreen.scene_manager.scenes.game

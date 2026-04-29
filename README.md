@@ -15,6 +15,8 @@ $ ./scripts/build [...darwin|win64|linux|clean]
 
 ```
 
+For building a windows binary on windows run the script `scripts/build.bat` 
+
 ## Tools
 ### Code Formatter
 This project uses [StyLua](https://github.com/JohnnyMorganz/StyLua) to keep code format consistent. StyLua can be run with the following command

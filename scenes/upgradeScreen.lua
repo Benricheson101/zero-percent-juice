@@ -12,6 +12,8 @@ setmetatable(UpgradeScreen, { __index = Scene })
 UpgradeScreen.__index = UpgradeScreen
 
 local playSound = false
+local transitionToGame = true
+local transitionTimer = 3
 
 --- Draws the juice tank with the pressure valve at the input position
 --- @param pressure number the pressure of the juice in the tank, between 0 and 1
@@ -375,10 +377,22 @@ function UpgradeScreen:draw()
         playSound = false
     end
 
+    if transitionToGame then
+        
+        love.graphics.setColor(1, 0.655, 0)
+
+        local width, height = love.graphics.getDimensions()
+
+        love.graphics.rectangle("fill", 0, height * (transitionTimer / 3), width, height)
+
+        love.graphics.setColor(1, 1, 1)
+
+    end
+
 end
 
 function UpgradeScreen:mousepressed(x, y, button)
-    if button == 1 then
+    if button == 1 and not transitionToGame then
         playSound = true
         --check if an upgrade was clicked
         for i = 1, #upgrades do
@@ -400,7 +414,8 @@ function UpgradeScreen:mousepressed(x, y, button)
         local gaugeX, gaugeY = Ui:scaleCoord(640, 500)
         local mouseDistance = math.sqrt((x - gaugeX) ^ 2 + (y - gaugeY) ^ 2)
         if mouseDistance < Ui:scaleDimension(125) then
-            self.scene_manager:transition('game')
+            transitionToGame = true
+            --self.scene_manager:transition('game')
             --eventually: start the animation for starting the round
         end
     end
@@ -412,9 +427,24 @@ function UpgradeScreen:wheelmoved(x, y)
     local maxScroll = Ui:scaleDimension(150 * math.ceil(#upgrades / 2) - 300)
     scroll = math.max(minScroll, math.min(maxScroll, scroll))
 end
+    
+function UpgradeScreen:update(dt)
+
+    if transitionToGame then
+        transitionTimer = transitionTimer - dt
+    
+        if transitionTimer < 0 then
+            self.scene_manager:transition('game')
+        end
+    end
+
+end
 
 function UpgradeScreen:enter()
     scroll = 0
+    transitionTimer = 3
+    transitionToGame = false
+
 end
 
 return UpgradeScreen

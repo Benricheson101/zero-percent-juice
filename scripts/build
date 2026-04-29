@@ -25,6 +25,7 @@ GAME_FILES="$(find . \
     -o -path './scripts/*' \
     -o -path './build/*' \
     -o -path './leaderboard/*' \
+    -o -path './mods/*' \
   \) \
   -prune)"
 
