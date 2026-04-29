@@ -137,7 +137,7 @@ local function drawTank(pressure, selected)
     )
 end
 
-local scroll = 0 
+local scroll = 0
 
 ---Caclues the on screen position of the upgrade Ui elements
 ---@param index number the index of the upgrade
@@ -153,7 +153,7 @@ function UpgradeScreen.calculateUpgradePosition(index)
         upgradeX, upgradeY = Ui:scaleCoord(1030, 25 + 150 * vslot)
     end
     local scaledScroll = Ui:scaleDimension(scroll)
-    return upgradeX, upgradeY-scaledScroll, vslot
+    return upgradeX, upgradeY - scaledScroll, vslot
 end
 
 --- Draws a specific upgrade and the upgrade clicker
@@ -215,9 +215,11 @@ local function drawUpgrade(index, hilighted)
     --draw sprite here
     upgrades[index]:draw(upgradeX, upgradeY, Ui:getScale())
     --text for the boxes
-    local titleX, titleY = Ui:scaleCoord(colOff, 25 + 150 * vslot - scroll) 
-    local levelX, levelY = Ui:scaleCoord(colOff + 3, 25 + 150 * vslot + 95 - scroll)
-    local costX, costY = Ui:scaleCoord(colOff + 103, 25 + 150 * vslot + 95 - scroll)
+    local titleX, titleY = Ui:scaleCoord(colOff, 25 + 150 * vslot - scroll)
+    local levelX, levelY =
+        Ui:scaleCoord(colOff + 3, 25 + 150 * vslot + 95 - scroll)
+    local costX, costY =
+        Ui:scaleCoord(colOff + 103, 25 + 150 * vslot + 95 - scroll)
     love.graphics.setColor(0, 0, 0)
     love.graphics.printf(
         upgrades[index].name,
@@ -370,7 +372,7 @@ function UpgradeScreen:draw()
         Ui:scaleDimension(680),
         'center'
     )
-    
+
     if playSound then
         local sound = assets.loadSound('assets/sounds/buttonClickSound.mp3')
         sound:play()
@@ -378,17 +380,20 @@ function UpgradeScreen:draw()
     end
 
     if transitionToGame then
-        
         love.graphics.setColor(1, 0.655, 0)
 
         local width, height = love.graphics.getDimensions()
 
-        love.graphics.rectangle("fill", 0, height * (transitionTimer / 3), width, height)
+        love.graphics.rectangle(
+            'fill',
+            0,
+            height * (transitionTimer / 3),
+            width,
+            height
+        )
 
         love.graphics.setColor(1, 1, 1)
-
     end
-
 end
 
 function UpgradeScreen:mousepressed(x, y, button)
@@ -427,24 +432,21 @@ function UpgradeScreen:wheelmoved(x, y)
     local maxScroll = Ui:scaleDimension(150 * math.ceil(#upgrades / 2) - 300)
     scroll = math.max(minScroll, math.min(maxScroll, scroll))
 end
-    
-function UpgradeScreen:update(dt)
 
+function UpgradeScreen:update(dt)
     if transitionToGame then
         transitionTimer = transitionTimer - dt
-    
+
         if transitionTimer < 0 then
             self.scene_manager:transition('game')
         end
     end
-
 end
 
 function UpgradeScreen:enter()
     scroll = 0
     transitionTimer = 3
     transitionToGame = false
-
 end
 
 return UpgradeScreen

@@ -366,8 +366,7 @@ describe('Player_Suite', function()
         end)
     end)
 
-    describe('changeScore', function ()
-
+    describe('changeScore', function()
         before_each(function()
             Player.load {
                 posX = 100,
@@ -383,12 +382,11 @@ describe('Player_Suite', function()
             }
         end)
 
-        it('updates the player score', function ()
+        it('updates the player score', function()
             Player.changeScore(200)
             Player.changeScore(-100)
 
             assert.are_equal(100, Player.score)
         end)
     end)
-
 end)

@@ -130,17 +130,23 @@ describe('Booster Upgrade', function()
         assert.is_not_nil(boosterUpgrade)
     end)
     it('spawn frequency function applied', function()
-        local expectedSpawnFrequency = game.powerUpSpawnerFrequencyCalculation(2)
+        local expectedSpawnFrequency =
+            game.powerUpSpawnerFrequencyCalculation(2)
         assert.is_true(
-            expectedSpawnFrequency == game.PowerUpSpawner.spawnUpgradeEffectFunc(2)
+            expectedSpawnFrequency
+                == game.PowerUpSpawner.spawnUpgradeEffectFunc(2)
         )
-        local expectedSpawnFrequency = game.powerUpSpawnerFrequencyCalculation(3)
+        local expectedSpawnFrequency =
+            game.powerUpSpawnerFrequencyCalculation(3)
         assert.is_true(
-            expectedSpawnFrequency == game.PowerUpSpawner.spawnUpgradeEffectFunc(3)
+            expectedSpawnFrequency
+                == game.PowerUpSpawner.spawnUpgradeEffectFunc(3)
         )
-        local expectedSpawnFrequency = game.powerUpSpawnerFrequencyCalculation(4)
+        local expectedSpawnFrequency =
+            game.powerUpSpawnerFrequencyCalculation(4)
         assert.is_true(
-            expectedSpawnFrequency == game.PowerUpSpawner.spawnUpgradeEffectFunc(4)
+            expectedSpawnFrequency
+                == game.PowerUpSpawner.spawnUpgradeEffectFunc(4)
         )
     end)
     it('spawner gets upgrade', function()

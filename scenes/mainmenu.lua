@@ -32,7 +32,7 @@ local mainMenu = {
             local sound = Assets.loadSound(UIButton.soundPath)
             sound:play()
             self.scene.scene_manager:transition('leaderboard')
-        end
+        end,
     },
     UIButton:new {
         text = 'Exit',

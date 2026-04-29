@@ -18,7 +18,8 @@ describe('GameScene', function()
                 local game = GameScene:new()
 
                 game.ObstacleSpawner:spawn(200)
-                game.ObstacleSpawner.entities[#game.ObstacleSpawner.entities].posX = 300
+                game.ObstacleSpawner.entities[#game.ObstacleSpawner.entities].posX =
+                    300
 
                 game:checkCollision(300, 200, 10)
 

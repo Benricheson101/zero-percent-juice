@@ -270,7 +270,7 @@ local upgrades = {
     end, function(level)
         return 9 * (level + 1) * level + 45
     end),
-    Upgrade:new("Boosters", function (x ,y, scale)
+    Upgrade:new('Boosters', function(x, y, scale)
         love.graphics.setColor(colors.hex(0xFFFFFF))
         local sprite = assets.loadImage('images/Powerup.png', 'nearest')
         love.graphics.draw(
@@ -282,10 +282,11 @@ local upgrades = {
             3 * scale
         )
     end, function(level)
-        return 150+(40 * level * level)
+        return 150 + (40 * level * level)
     end),
-    Upgrade:new("Boost Power", function (x ,y, scale)
-        local sprite = assets.loadImage('assets/upgradeScreen/SuperPowerup.png', 'nearest')
+    Upgrade:new('Boost Power', function(x, y, scale)
+        local sprite =
+            assets.loadImage('assets/upgradeScreen/SuperPowerup.png', 'nearest')
         love.graphics.setColor(colors.hex(0xFFFFFF))
         love.graphics.draw(
             sprite,
