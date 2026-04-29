@@ -19,14 +19,12 @@ remove-item "build\Zero Percent Juice.love" -ErrorAction Ignore
 remove-item "build\Zero Percent Juice.exe" -ErrorAction Ignore
 remove-item "build\*.dll" -ErrorAction Ignore
 Start-Sleep 1 
-# Copy-Item -Path "*" -Destination "build/tmp/" -Include "*.lua", "*.json", "*.png", "*.ttf" -Recurse
-# Get-ChildItem -Path "*" -Include "*.lua", "*.json", "*.png", "*.ttf" -Recurse | Compress-Archive -DestinationPath "build\Zero Percent Juice.zip"
 
 $wd = (Get-Location).Path
 $basePath = $wd
 if (!$basePath.EndsWith("\")) { $basePath += "\" }
 $zip = [System.IO.Compression.ZipFile]::Open("build\Zero Percent Juice.zip", "Create")
-Get-ChildItem -Path $wd -Include "*.lua", "*.json", "*.png", "*.ttf" -Recurse | ForEach-Object {
+Get-ChildItem -Path $wd -Include "*.lua", "*.json", "*.png", "*.ttf", "*.mp3", "*.otf" -Recurse | ForEach-Object {
     # Calculate the relative path to keep the folder structure
     $relativePath = $_.FullName.Replace($basePath, "")
     [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $relativePath)
