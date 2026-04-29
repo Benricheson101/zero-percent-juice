@@ -27,11 +27,12 @@ local mainMenu = {
         text = 'Leaderboard',
         width = 200,
         height = 200 / 3,
-        onClick = function()
+        onClick = function(self)
             print('clicked Leaderboard')
             local sound = Assets.loadSound(UIButton.soundPath)
             sound:play()
-        end,
+            self.scene.scene_manager:transition('leaderboard')
+        end
     },
     UIButton:new {
         text = 'Exit',

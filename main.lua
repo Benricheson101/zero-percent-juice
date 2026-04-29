@@ -1,3 +1,4 @@
+package.path = './vendor/share/lua/5.1/?.lua;' .. package.path
 local Ui = require('util.ui')
 local fonts = require('util.fonts')
 local SceneManager = require('renderer.scenemanager')
@@ -10,6 +11,7 @@ local MainMenuScene = require('scenes.mainmenu')
 local LeaderboardSubmitScene = require('scenes.leaderboardSubmit')
 local GameOverScene = require('scenes.gameOver')
 local modLoader = require('modLoader')
+local LeaderboardScene = require('scenes.leaderboard')
 
 local START_SCENE = os.getenv('ZPJ_START_SCREEN') or 'loading'
 
@@ -21,6 +23,15 @@ function love.load()
     modLoader:loadMods() -- attmpt to load mods
 
     -- print("START SCENE", START_SCENE)
+    scene_manager = SceneManager:new {
+        game = GameScene:new(),
+        loading = LoadingScreen:new(),
+        upgrade = UpgradeScreen:new(),
+        mainmenu = MainMenuScene:new(),
+        leaderboardsubmit = LeaderboardSubmitScene:new(),
+        leaderboard = LeaderboardScene:new(),
+        gameover = GameOverScene:new(),
+    }
 
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()

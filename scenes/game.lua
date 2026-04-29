@@ -28,7 +28,7 @@ function GameScene:new()
         velocityX = 0,
         velocityY = 0,
         accelerationX = 300,
-        accelerationY = 300,
+        accelerationY = 350,
         decelerationX = 50,
         decelerationY = 50,
         maxVelocityX = 600,
@@ -116,7 +116,7 @@ end
 --- @param level number the level of the start speed upgrade
 --- @return number the starting speed of the player
 function GameScene.calculateStartingSpeed(level)
-    return 100 + 125 * level
+    return 225 + 125 * level
 end
 
 function GameScene:enter()
@@ -129,6 +129,15 @@ function GameScene:enter()
     Camera.xPos = 0 -- reset posotion to start
     Player.score = 0
     self:reset()
+    --spawn some coins at the start of the level so players just staring out can actually get some coins for upgreads
+    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
+    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
+    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
+    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
+    self.CoinSpawner.entities[1].posX = 1280 * 0.33
+    self.CoinSpawner.entities[2].posX = 1280 * 0.66
+    self.CoinSpawner.entities[3].posX = 1280 * 0.99
+    self.CoinSpawner.entities[4].posX = 1280 * 1.33
 end
 
 function GameScene:checkCollision(posX, posY, dim)
@@ -148,7 +157,7 @@ function GameScene:checkCollision(posX, posY, dim)
         )
         Camera.changeVelocityX(reduction)
 
-        Player.changeScore(-200)
+        Player.changeScore(-800)
 
     end
 
@@ -157,7 +166,7 @@ function GameScene:checkCollision(posX, posY, dim)
         Player.money = Player.money
             + GameScene.calculateCoinValue(coinValueUpgrade:getLevel())
         print('Money: ' .. Player.money)
-        Player.changeScore(100)
+        Player.changeScore(250)
     end
 
     assert(powerUpUpgrade ~= nil, 'Boost Power upgrade not found')
@@ -166,7 +175,7 @@ function GameScene:checkCollision(posX, posY, dim)
             powerUpUpgrade:getLevel()
         )
         Camera.changeVelocityX(boostAmount)
-        Player.changeScore(500)
+        Player.changeScore(1000)
     end
 end
 
@@ -174,14 +183,14 @@ end
 --- @param level number the level of the rock buster upgrade
 --- @return number the distance the player has to travel before the next obstacle spawns
 function GameScene.obstacleSpawnFrequencyCalculation(level)
-    return 720 + 15 * level
+    return 720 + 15 * level 
 end
 
 --- Calculate how often coins should spawn based on the level of <relavant upgrade name here>
 --- @param level number the level of the <relevant upgrade name here> upgrade
 --- @return number the distance the player has to travel before the next coin spawns
 function GameScene.coinSpawnFrequencyCalculation(level)
-    return 720 / (1 + 0.1 * level)
+    return 720 / (1 + 0.1 * level) 
 end
 
 --- TEMPORARY FUNCTION, CHANGE ONCE POWER UP UPGRADES ARE IMPLEMENTED
@@ -191,7 +200,7 @@ function GameScene.powerUpSpawnerFrequencyCalculation(level)
     if level == 0 then
         return 2147483648 -- basically never
     end
-    return 1000 / (0.1 * level)
+    return 1000 / (0.1 * level) + Player.score / 10 -- decreazse how often they apppear the farteher the player gets to try and prevent infinte runs
 end
 
 --- Calculate how much speed to remove from the player when they hit an obstacle
@@ -205,7 +214,7 @@ end
 --- @param level number the level of the profit boost upgrade
 --- @return number the value of each coin
 function GameScene.calculateCoinValue(level)
-    return 10 + math.floor(math.pow(level, 1.15))
+    return 10 + math.floor(math.pow(level, 1.35))
 end
 
 function GameScene.calculatePowerupBoost(level)
@@ -255,12 +264,12 @@ end
 
 function GameScene:displayScore()
 
-    local posX, posY = Ui:scaleCoord(math.floor(Ui:getWidth() * 0.1), math.floor(Ui:getHeight() * 0.1))
+    local posX, posY = Ui:scaleCoord(0,0)
     local scale = Ui:getScale()
 
     love.graphics.setColor(1, 0, 0)
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    love.graphics.setFont(Fonts.impact75)
+    love.graphics.setFont(Fonts.impact50)
 
     love.graphics.printf(
             'Score: ' .. math.ceil(Player.score),
