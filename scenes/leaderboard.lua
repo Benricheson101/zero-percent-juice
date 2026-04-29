@@ -36,10 +36,11 @@ local function fetchLeaderboard()
 
     local respBody = table.concat(responseBodyChunks)
     ---@type LeaderboardEntry[]
-    local body = { { name = 'No highscores yet!', score = 0, placeholder = true } }
+    local body =
+        { { name = 'No highscores yet!', score = 0, placeholder = true } }
     if b ~= nil then
         local parsedBody = json:decode(respBody)
-        if parsedBody ~= nil and type(parsedBody) == "table" then
+        if parsedBody ~= nil and type(parsedBody) == 'table' then
             body = parsedBody
         end
     end

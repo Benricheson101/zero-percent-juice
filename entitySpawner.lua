@@ -69,10 +69,12 @@ function EntitySpawner:update(dt)
     if self.spawnDistance < 0 then
         local baseSpawnDistance = designWidth
         if self.spawnUpgrade == nil then
-            baseSpawnDistance = self.spawnUpgradeEffectFunc(0) + math.random(-50, 50)
+            baseSpawnDistance = self.spawnUpgradeEffectFunc(0)
+                + math.random(-50, 50)
         else
-            baseSpawnDistance =
-                self.spawnUpgradeEffectFunc(self.spawnUpgrade.level) + math.random(-50, 50)
+            baseSpawnDistance = self.spawnUpgradeEffectFunc(
+                self.spawnUpgrade.level
+            ) + math.random(-50, 50)
         end
         self.spawnDistance = self.spawnDistance + baseSpawnDistance
         self:spawn(math.random(designHeight * 0.05, designHeight * 0.95))

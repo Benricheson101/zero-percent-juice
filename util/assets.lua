@@ -42,8 +42,8 @@ function assets.loadSound(path)
     if sound ~= nil then
         return sound
     end
-    
-    sound = love.audio.newSource(path, "static")
+
+    sound = love.audio.newSource(path, 'static')
     assets.sounds[path] = sound
     return sound
 end

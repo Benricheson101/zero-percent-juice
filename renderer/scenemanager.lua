@@ -65,7 +65,7 @@ local love_callbacks = {
     'mousereleased',
     'resize',
     'textinput',
-    'wheelmoved'
+    'wheelmoved',
 }
 
 for _, name in ipairs(love_callbacks) do

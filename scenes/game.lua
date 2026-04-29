@@ -37,7 +37,7 @@ function GameScene:new()
         decelerationY = 50,
         maxVelocityX = 600,
         maxVelocityY = 300,
-        soundPath = 'assets/sounds/bounceSound.mp3'
+        soundPath = 'assets/sounds/bounceSound.mp3',
     }
 
     Camera.load(Player)
@@ -152,10 +152,18 @@ function GameScene:enter()
     Player.score = 0
     self:reset()
     --spawn some coins at the start of the level so players just staring out can actually get some coins for upgreads
-    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
-    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
-    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
-    self.CoinSpawner:spawn(math.random(designHeight * 0.05, designHeight * 0.95))
+    self.CoinSpawner:spawn(
+        math.random(designHeight * 0.05, designHeight * 0.95)
+    )
+    self.CoinSpawner:spawn(
+        math.random(designHeight * 0.05, designHeight * 0.95)
+    )
+    self.CoinSpawner:spawn(
+        math.random(designHeight * 0.05, designHeight * 0.95)
+    )
+    self.CoinSpawner:spawn(
+        math.random(designHeight * 0.05, designHeight * 0.95)
+    )
     self.CoinSpawner.entities[1].posX = 1280 * 0.33
     self.CoinSpawner.entities[2].posX = 1280 * 0.66
     self.CoinSpawner.entities[3].posX = 1280 * 0.99
@@ -180,7 +188,6 @@ function GameScene:checkCollision(posX, posY, dim)
         Camera.changeVelocityX(reduction)
 
         Player.changeScore(-800)
-
     end
 
     --coin collision
@@ -193,9 +200,8 @@ function GameScene:checkCollision(posX, posY, dim)
 
     assert(powerUpUpgrade ~= nil, 'Boost Power upgrade not found')
     if self.PowerUpSpawner:checkCollision(posX, posY, dim) then
-        local boostAmount = GameScene.calculatePowerupBoost(
-            powerUpUpgrade:getLevel()
-        )
+        local boostAmount =
+            GameScene.calculatePowerupBoost(powerUpUpgrade:getLevel())
         Camera.changeVelocityX(boostAmount)
         Player.changeScore(1000)
     end
@@ -205,14 +211,14 @@ end
 --- @param level number the level of the rock buster upgrade
 --- @return number the distance the player has to travel before the next obstacle spawns
 function GameScene.obstacleSpawnFrequencyCalculation(level)
-    return 720 + 15 * level 
+    return 720 + 15 * level
 end
 
 --- Calculate how often coins should spawn based on the level of <relavant upgrade name here>
 --- @param level number the level of the <relevant upgrade name here> upgrade
 --- @return number the distance the player has to travel before the next coin spawns
 function GameScene.coinSpawnFrequencyCalculation(level)
-    return 720 / (1 + 0.1 * level) 
+    return 720 / (1 + 0.1 * level)
 end
 
 --- TEMPORARY FUNCTION, CHANGE ONCE POWER UP UPGRADES ARE IMPLEMENTED
@@ -287,8 +293,7 @@ function GameScene:gameOverTimerText()
 end
 
 function GameScene:displayScore()
-
-    local posX, posY = Ui:scaleCoord(0,0)
+    local posX, posY = Ui:scaleCoord(0, 0)
     local scale = Ui:getScale()
 
     love.graphics.setColor(1, 0, 0)
@@ -296,18 +301,17 @@ function GameScene:displayScore()
     love.graphics.setFont(Fonts.impact50)
 
     love.graphics.printf(
-            'Score: ' .. math.ceil(Player.score),
-            posX,
-            posY,
-            Ui:getWidth(),
-            'left',
-            0,
-            scale,
-            scale
+        'Score: ' .. math.ceil(Player.score),
+        posX,
+        posY,
+        Ui:getWidth(),
+        'left',
+        0,
+        scale,
+        scale
     )
 
     love.graphics.setColor(1, 1, 1)
-
 end
 
 function GameScene:reset()
@@ -330,14 +334,15 @@ function GameScene:reset()
     self.gameOver = false
     self.gameOverAnimationTimer = 6
     self.gameOverSound = false
-    
 end
 
 function GameScene:drawGameOverAnimation()
-
     local tsunami = Assets.loadImage('images/Tsunami.png', 'nearest')
     -- 1.5625
-    local posX, posY = Ui:scaleCoord(designWidth * ((5 - self.gameOverAnimationTimer) * 2.25/ 5), 0)
+    local posX, posY = Ui:scaleCoord(
+        designWidth * ((5 - self.gameOverAnimationTimer) * 2.25 / 5),
+        0
+    )
     local scale = Ui:getScale()
     love.graphics.draw(
         tsunami,
@@ -349,25 +354,34 @@ function GameScene:drawGameOverAnimation()
         tsunami:getWidth(),
         0
     )
-    
+
     love.graphics.setColor(1, 0.655, 0)
 
-    love.graphics.polygon("fill",
-                          posX - (scale * designHeight * 2), posY,
-                          posX - (scale * designHeight * 0.5), posY + (scale * designHeight),
-                          posX - (scale * designHeight * 2), posY + (scale * designHeight))
+    love.graphics.polygon(
+        'fill',
+        posX - (scale * designHeight * 2),
+        posY,
+        posX - (scale * designHeight * 0.5),
+        posY + (scale * designHeight),
+        posX - (scale * designHeight * 2),
+        posY + (scale * designHeight)
+    )
 
-    love.graphics.rectangle("fill", posX - ((scale * designHeight * 2) + (scale * designWidth * 1.5)) , posY, scale * designWidth * 1.5, scale * designHeight)
+    love.graphics.rectangle(
+        'fill',
+        posX - ((scale * designHeight * 2) + (scale * designWidth * 1.5)),
+        posY,
+        scale * designWidth * 1.5,
+        scale * designHeight
+    )
 
     love.graphics.setColor(1, 1, 1)
 end
 
 function GameScene:playGameOverSound()
-
     local sound = Assets.loadSound('assets/sounds/patheticScreamingSound.mp3')
     sound:play()
     self.gameOverSound = false
-
 end
 
 return GameScene
