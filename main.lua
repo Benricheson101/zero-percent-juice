@@ -45,15 +45,6 @@ function love.load()
     love.window.setIcon(love.image.newImageData('assets/logo.png'))
     love.window.setTitle('Zero Percent Juice')
 
-    scene_manager = SceneManager:new {
-        game = GameScene:new(),
-        loading = LoadingScreen:new(),
-        upgrade = UpgradeScreen:new(),
-        mainmenu = MainMenuScene:new(),
-        leaderboardsubmit = LeaderboardSubmitScene:new(),
-        gameover = GameOverScene:new(),
-    }
-
     modLoader.gameLoaded(scene_manager)
 
     scene_manager:transition(START_SCENE)
