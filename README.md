@@ -15,7 +15,7 @@ $ ./scripts/build [...darwin|win64|linux|clean]
 
 ```
 
-For building a windows binarry on windows run the script `scripts/build.bat` 
+For building a windows binary on windows run the script `scripts/build.bat` 
 
 ## Tools
 ### Code Formatter
