@@ -6,6 +6,7 @@ local Upgrades = require('upgrades')
 local Ui = require('util.ui')
 local EntitySpawner = require('entitySpawner')
 local Fonts = require('util.fonts')
+local Assets = require('util.assets')
 
 local designWidth = 1280
 local designHeight = 720
@@ -14,6 +15,9 @@ local designHeight = 720
 ---@field ObstacleSpawner EntitySpawner
 ---@field CoinSpawner EntitySpawner
 ---@field baseGameOverTimer number
+---@field gameOver boolean
+---@field gameOverAnimationTimer number
+---@field gameOverSound boolean
 ---@field PowerUpSpawner EntitySpawner
 local GameScene = {}
 setmetatable(GameScene, { __index = Scene })
@@ -62,6 +66,10 @@ function GameScene:new()
 
     o.baseGameOverTimer = 3
     o.currentGameOverTimer = o.baseGameOverTimer
+    o.gameOver = false
+    o.gameOverAnimationTimer = 6
+    o.gameOverSound = false
+
     ---@diagnostic disable-next-line: redundant-parameter
     o.PowerUpSpawner = EntitySpawner:new {
         spawnUpgradeName = 'Boosters',
@@ -87,7 +95,15 @@ function GameScene:update(dt)
     self.CoinSpawner:updateEntityVelocityX(Camera.getVelocityX())
     self.PowerUpSpawner:updateEntityVelocityX(Camera.getVelocityX())
     self:checkCollision(Player.posX, Player.posY, Player.dim)
-    self:checkGameOver(dt)
+
+    if self.gameOver then
+        self.gameOverAnimationTimer = self.gameOverAnimationTimer - dt
+        if self.gameOverAnimationTimer < 0 then
+            self.scene_manager:transition('leaderboardsubmit')
+        end
+    else
+        self:checkGameOver(dt)
+    end
 end
 
 function GameScene:draw()
@@ -99,6 +115,12 @@ function GameScene:draw()
     self:gameOverTimerText()
     self.PowerUpSpawner:draw()
     self:displayScore()
+    if self.gameOver then
+        self:drawGameOverAnimation()
+    end
+    if self.gameOverSound then
+        self:playGameOverSound()
+    end
 end
 
 function GameScene:keypressed(key)
@@ -219,9 +241,11 @@ function GameScene:checkGameOver(dt)
     then
         self.currentGameOverTimer = self.currentGameOverTimer - dt
         if self.currentGameOverTimer < 0 then
-            self:reset()
+            self.currentGameOverTimer = 0
             Player:roundGameOver()
-            self.scene_manager:transition('leaderboardsubmit')
+            --- self.scene_manager:transition('leaderboardsubmit')
+            self.gameOver = true
+            self.gameOverSound = true
         end
     else
         self.currentGameOverTimer = self.baseGameOverTimer
@@ -292,7 +316,49 @@ function GameScene:reset()
     self.ObstacleSpawner.spawnDistance = designWidth
     self.CoinSpawner.spawnDistance = 0
     self.PowerUpSpawner.spawnDistance = designWidth / 2
+
+    self.currentGameOverTimer = self.baseGameOverTimer
+    self.gameOver = false
+    self.gameOverAnimationTimer = 6
+    self.gameOverSound = false
     
+end
+
+function GameScene:drawGameOverAnimation()
+
+    local tsunami = Assets.loadImage('images/Tsunami.png', 'nearest')
+    -- 1.5625
+    local posX, posY = Ui:scaleCoord(designWidth * ((5 - self.gameOverAnimationTimer) * 2.25/ 5), 0)
+    local scale = Ui:getScale()
+    love.graphics.draw(
+        tsunami,
+        posX,
+        posY,
+        0,
+        scale,
+        scale,
+        tsunami:getWidth(),
+        0
+    )
+    
+    love.graphics.setColor(1, 0.655, 0)
+
+    love.graphics.polygon("fill",
+                          posX - (scale * designHeight * 2), posY,
+                          posX - (scale * designHeight * 0.5), posY + (scale * designHeight),
+                          posX - (scale * designHeight * 2), posY + (scale * designHeight))
+
+    love.graphics.rectangle("fill", posX - ((scale * designHeight * 2) + (scale * designWidth * 1.5)) , posY, scale * designWidth * 1.5, scale * designHeight)
+
+    love.graphics.setColor(1, 1, 1)
+end
+
+function GameScene:playGameOverSound()
+
+    local sound = Assets.loadSound('assets/sounds/patheticScreamingSound.mp3')
+    sound:play()
+    self.gameOverSound = false
+
 end
 
 return GameScene

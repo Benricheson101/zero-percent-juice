@@ -20,7 +20,7 @@ local mainMenu = {
             print('clicked Start Game')
             local sound = Assets.loadSound(UIButton.soundPath)
             sound:play()
-            self.scene.scene_manager:transition('game')
+            self.scene.scene_manager:transition('upgrade')
         end,
     },
     UIButton:new {
