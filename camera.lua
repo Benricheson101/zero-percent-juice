@@ -38,17 +38,17 @@ function Camera.update(dt)
     -- NOTE:
     -- Debug: making it possible to increase and decrease velocity
     -- normally we will not be able to do this
-    if love.keyboard.isDown('=') then -- basically '+' without having to hit shift
-        -- print("Increasing vel:", Camera.velocityX)
-        -- Camera.velocityX = Camera.velocityX + 25
-        Camera.changeVelocityX(25)
-    end
-    if love.keyboard.isDown('-') then
-        -- print("Decreasing vel:", Camera.velocityX)
-        -- Camera.velocityX = Camera.velocityX - 25
-        Camera.changeVelocityX(-25)
-    end
-
+    -- if love.keyboard.isDown('=') then -- basically '+' without having to hit shift
+    --     -- print("Increasing vel:", Camera.velocityX)
+    --     -- Camera.velocityX = Camera.velocityX + 25
+    --     Camera.changeVelocityX(25)
+    -- end
+    -- if love.keyboard.isDown('-') then
+    --     -- print("Decreasing vel:", Camera.velocityX)
+    --     -- Camera.velocityX = Camera.velocityX - 25
+    --     Camera.changeVelocityX(-25)
+    -- end
+    --
     Camera.updateVelocityX(dt)
 
     -- print("Current vel: ", Camera.velocityX)
